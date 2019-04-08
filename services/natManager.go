@@ -8,22 +8,27 @@ import (
 	"git.iotserv.com/iotserv/utils/models"
 	"git.iotserv.com/iotserv/utils/msg"
 	"net"
+	"time"
 
 	//"github.com/xtaci/smux"
 	"git.iotserv.com/iotserv/utils/mux"
-	"time"
 )
 
-var mytoken string
-var lastPing time.Time
-var try = true
-var sub = false
+var lastSalt, lastToken string
 
 func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
+	defer func() {
+		if stream == nil {
+			return
+		}
+		err := stream.Close()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}()
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
 		fmt.Printf(err.Error() + "从stream读取数据错误")
-		stream.Close()
 		return
 	}
 	//fmt.Printf("begin Swc")
@@ -33,7 +38,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("tcp")
 			err := connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.ConnectSTCP:
@@ -41,7 +47,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("stcp")
 			err := connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.ConnectUDP:
@@ -49,7 +56,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("udp")
 			err := connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.ConnectSerialPort:
@@ -57,7 +65,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("sertp")
 			err := serial.JoinSerialPort(stream, m.TargetPort, m.Baud)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 
@@ -66,7 +75,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("wstp")
 			err := connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 
@@ -75,7 +85,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("wsstp")
 			err := connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.ConnectSSH:
@@ -83,7 +94,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("ssh")
 			err := connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.NewService:
@@ -91,7 +103,8 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("service")
 			err := serviceHdl(stream, m)
 			if err != nil {
-				stream.Close()
+				fmt.Println(err.Error())
+				return
 			}
 		}
 	case *models.NewSubSession:
@@ -110,7 +123,6 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			if err != nil {
 				return
 			}
-			sub = true
 			go dlSubSession(session, tokenModel)
 		}
 
@@ -122,14 +134,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 
 	case *models.Ping:
 		{
-			defer func() {
-				err := stream.Close()
-				if err != nil {
-					fmt.Println(err.Error())
-				}
-			}()
-			fmt.Printf("Ping from server")
-			lastPing = time.Now()
+			//fmt.Printf("Ping from server")
 			err := msg.WriteMsg(stream, &models.Pong{})
 			if err != nil {
 				fmt.Println(err.Error())
@@ -158,15 +163,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
 		{
-			defer func() {
-				if stream != nil {
-					err := stream.Close()
-					if err != nil {
-						fmt.Println(err.Error())
-					}
-				}
-			}()
-			fmt.Println("CheckStatusRequest")
+			//fmt.Println("CheckStatusRequest")
 			switch m.Type {
 			case "tcp", "udp", "tls":
 				{
@@ -194,38 +191,35 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	}
 }
 
-func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims, salt string) {
-	relogin := func() {
-		for {
-			retry, err := RunNATManager(salt, mytoken)
+func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
+	defer func() {
+		if session != nil {
+			err := session.Close()
 			if err != nil {
-				if retry == false { //停止重试登陆
-					fmt.Printf("token 过期或者token错误，停止尝试登陆")
-					break
-				}
-				time.Sleep(time.Second * 60)
-			} else {
-				break
+				fmt.Println(err.Error())
 			}
 		}
-	}
+		go func() {
+			for {
+				err := RunNATManager(lastSalt, lastToken)
+				if err != nil {
+					fmt.Printf("重新登录失败！原因：%s,5秒钟后重试...\n", err.Error())
+					time.Sleep(time.Second * 5)
+					continue
+				}
+				break
+			}
+		}()
+	}()
 	for {
 		// Accept a stream
 		stream, err := session.AcceptStream()
 		if err != nil {
-			fmt.Printf("accpStream" + err.Error())
-			fmt.Println(time.Now())
-			try = true
+			fmt.Println("accpStreamErr：" + err.Error())
 			break
 		}
-		fmt.Println("Session获取到一个stream处理")
+		fmt.Println("获取到一个连接需要处理")
 		go dlstream(stream, tokenModel)
-	}
-	if try != false {
-		go relogin()
-		fmt.Printf("重新登陆")
-	} else {
-		fmt.Printf("可能是token校验失败，停止尝试登陆")
 	}
 }
 
@@ -243,7 +237,6 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 		stream, err := session.AcceptStream()
 		if err != nil {
 			fmt.Printf("accpStream" + err.Error())
-			fmt.Println(time.Now())
 			break
 		}
 		fmt.Println("Sub Session获取到一个stream处理")
@@ -263,17 +256,15 @@ func newWorkConn(tokenModel *crypto.TokenClaims) {
 	go dlstream(conn, tokenModel)
 }
 
-func RunNATManager(salt, token string) (bool, error) {
+func RunNATManager(salt, token string) (err error) {
 	var session *mux.Session
-	var retry bool
-	var err error
 	var tokenModel *crypto.TokenClaims
-	mytoken = token
-	session, retry, tokenModel, err = Login(salt, token)
+	lastSalt, lastToken = salt, token
+	session, _, tokenModel, err = Login(salt, token)
 	if err != nil {
-		fmt.Printf("login" + err.Error())
-		return retry, err
+		//fmt.Println("登录失败：" + err.Error())
+		return err
 	}
-	go dlsession(session, tokenModel, salt)
-	return retry, nil
+	go dlsession(session, tokenModel)
+	return nil
 }

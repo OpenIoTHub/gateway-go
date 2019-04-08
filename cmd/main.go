@@ -81,7 +81,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	_, err = services.RunNATManager(configMode.Server.LoginKey, clientToken)
+	err = services.RunNATManager(configMode.Server.LoginKey, clientToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
