@@ -12,8 +12,8 @@ import (
 
 var ServerIp string
 
-func Login(tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, error) { //bool retry? false :dont retry
-	token, err := crypto.DecodeToken(tokenstr)
+func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, error) { //bool retry? false :dont retry
+	token, err := crypto.DecodeToken(salt, tokenstr)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return nil, false, &crypto.TokenClaims{}, err

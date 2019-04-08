@@ -72,6 +72,7 @@ func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) {
 	rawMsg, err := msg.ReadMsg(kcpconn)
 	if err != nil {
 		fmt.Println(err.Error())
+		return
 	}
 	switch m := rawMsg.(type) {
 	//TODO:初步使用ping、pong握手，下一步应该弄成验证校验身份

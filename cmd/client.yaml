@@ -1,0 +1,10 @@
+srever:
+  connection_type: tcp
+  server_host: s1.365hour.com
+  tcp_port: 34320
+  kcp_port: 34320
+  udp_p2p_port: 34321
+  tls_port: 34321
+  server_key: HLLdsa544&*S
+last_id: 93af123c-8a4c-4e18-afa2-350fb4fbd67c
+last_explorer_id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyaWQiOiI5M2FmMTIzYy04YTRjLTRlMTgtYWZhMi0zNTBmYjRmYmQ2N2MiLCJoc3QiOiJzMS4zNjVob3VyLmNvbSIsInRjcHQiOjM0MzIwLCJrY3B0IjozNDMyMCwidGxzcCI6MzQzMjEsInAycHQiOjM0MzIxLCJwbSI6MiwiZXhwIjoyMDE1NTQ3MDQ5NTgsIm5iZiI6MTU1NDY3NjE1OH0.PSs7W_DbX-QYz0OCF3AY331eKSfGFbb33-aIgRT67H4

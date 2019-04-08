@@ -194,10 +194,10 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	}
 }
 
-func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
+func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims, salt string) {
 	relogin := func() {
 		for {
-			retry, err := RunNATManager(mytoken)
+			retry, err := RunNATManager(salt, mytoken)
 			if err != nil {
 				if retry == false { //停止重试登陆
 					fmt.Printf("token 过期或者token错误，停止尝试登陆")
@@ -263,17 +263,17 @@ func newWorkConn(tokenModel *crypto.TokenClaims) {
 	go dlstream(conn, tokenModel)
 }
 
-func RunNATManager(token string) (bool, error) {
+func RunNATManager(salt, token string) (bool, error) {
 	var session *mux.Session
 	var retry bool
 	var err error
 	var tokenModel *crypto.TokenClaims
 	mytoken = token
-	session, retry, tokenModel, err = Login(token)
+	session, retry, tokenModel, err = Login(salt, token)
 	if err != nil {
 		fmt.Printf("login" + err.Error())
 		return retry, err
 	}
-	go dlsession(session, tokenModel)
+	go dlsession(session, tokenModel, salt)
 	return retry, nil
 }
