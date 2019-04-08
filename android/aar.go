@@ -27,14 +27,13 @@ func init() {
 }
 
 func Run() {
-	id := uuid.Must(uuid.NewV4()).String()
-	clientToken, err := crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	clientToken, err := crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	_, err = services.RunNATManager(configMode.Server.ServerKey, clientToken)
+	_, err = services.RunNATManager(configMode.Server.LoginKey, clientToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
@@ -43,7 +42,7 @@ func Run() {
 		fmt.Printf("登陆成功！\n")
 	}
 	//fmt.Printf(tkstr+"\n")
-	explorerToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	explorerToken, err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
 	fmt.Printf("要想访问本内网，请用explorer使用以下token：\n" + explorerToken + "\n")
 	if err != nil {
