@@ -76,21 +76,21 @@ func main() {
 	if len(configMode.LastId) < 35 {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	clientToken, err = crypto.GetToken(configMode.Srever.ServerKey, configMode.LastId, configMode.Srever.ServerHost, configMode.Srever.TcpPort,
-		configMode.Srever.KcpPort, configMode.Srever.TlsPort, configMode.Srever.UdpApiPort, 1, 200000000000)
+	clientToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	_, err = services.RunNATManager(configMode.Srever.ServerKey, clientToken)
+	_, err = services.RunNATManager(configMode.Server.ServerKey, clientToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
 		os.Exit(0)
 	}
 	fmt.Printf("登陆成功！\n")
-	explorerToken, err = crypto.GetToken(configMode.Srever.ServerKey, configMode.LastId, configMode.Srever.ServerHost, configMode.Srever.TcpPort,
-		configMode.Srever.KcpPort, configMode.Srever.TlsPort, configMode.Srever.UdpApiPort, 2, 200000000000)
+	explorerToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
 	if err != nil {
 		fmt.Println(err.Error())
 		return

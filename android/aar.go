@@ -2,26 +2,39 @@ package android
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/client/config"
 	"git.iotserv.com/iotserv/client/services"
 	"git.iotserv.com/iotserv/utils/crypto"
+	"git.iotserv.com/iotserv/utils/models"
 	"github.com/satori/go.uuid"
 	"net/http"
 )
 
-var tkstr = ""
-var tkstr2 = ""
+var clientToken = ""
+var explorerToken = ""
+var configMode = models.ClientConfig{}
 
-func token(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, tkstr2)
+func init() {
+	configMode.LastId = uuid.Must(uuid.NewV4()).String()
+	configMode.Server = models.Srever{
+		"tcp",
+		"s1.365hour.com",
+		34320,
+		34320,
+		34321,
+		34321,
+		"HLLdsa544&*S",
+	}
 }
 
 func Run() {
-	//crypto.Salt = "abc"
 	id := uuid.Must(uuid.NewV4()).String()
-	host := config.RegisterHost
-	tkstr, _ = crypto.GetToken(id, host, config.TcpPort, config.KcpPort, config.TlsPort, config.UdpApiPort, 1, 200000000000) //47.96.185.226，118.89.106.226
-	_, err := services.RunNATManager(tkstr)
+	clientToken, err := crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	_, err = services.RunNATManager(configMode.Server.ServerKey, clientToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
@@ -30,8 +43,9 @@ func Run() {
 		fmt.Printf("登陆成功！\n")
 	}
 	//fmt.Printf(tkstr+"\n")
-	tkstr2, _ = crypto.GetToken(id, host, config.TcpPort, config.KcpPort, config.TlsPort, config.UdpApiPort, 2, 200000000000) //118.89.106.226
-	fmt.Printf("要想访问本内网，请用explorer使用以下token：\n" + tkstr2 + "\n")
+	explorerToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
+	fmt.Printf("要想访问本内网，请用explorer使用以下token：\n" + explorerToken + "\n")
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -42,4 +56,8 @@ func Run() {
 	if err != nil {
 		fmt.Printf("请检查端口1082是否被占用")
 	}
+}
+
+func token(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, explorerToken)
 }
