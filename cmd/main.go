@@ -17,7 +17,6 @@ var (
 	h              bool
 	configFilePath string
 	p              string
-	id             = ""
 )
 var clientToken = ""
 var explorerToken = ""
@@ -76,20 +75,20 @@ func main() {
 	if len(configMode.LastId) < 35 {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	clientToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	clientToken, err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	_, err = services.RunNATManager(configMode.Server.ServerKey, clientToken)
+	_, err = services.RunNATManager(configMode.Server.LoginKey, clientToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
 		os.Exit(0)
 	}
 	fmt.Printf("登陆成功！\n")
-	explorerToken, err = crypto.GetToken(configMode.Server.ServerKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	explorerToken, err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -110,7 +109,7 @@ func main() {
 }
 
 func writeConfigFile(configMode models.ClientConfig, path string) (err error) {
-	configByte, err := yaml.Marshal(&configMode)
+	configByte, err := yaml.Marshal(configMode)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
