@@ -243,7 +243,7 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("accpStream" + err.Error())
 			break
 		}
-		fmt.Println("Sub Session获取到一个stream处理")
+		//fmt.Println("Sub Session获取到一个stream处理")
 		go dlstream(stream, tokenModel)
 	}
 	fmt.Printf("exit sub session")
