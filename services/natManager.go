@@ -17,11 +17,12 @@ import (
 var lastSalt, lastToken string
 
 func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
+	var err error
 	defer func() {
-		if stream == nil {
+		if err == nil || stream == nil {
 			return
 		}
-		err := stream.Close()
+		err = stream.Close()
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -36,7 +37,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectTCP:
 		{
 			fmt.Printf("tcp")
-			err := connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
+			err = connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -45,7 +46,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectSTCP:
 		{
 			fmt.Printf("stcp")
-			err := connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
+			err = connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -54,7 +55,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectUDP:
 		{
 			fmt.Printf("udp")
-			err := connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
+			err = connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -63,7 +64,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectSerialPort:
 		{
 			fmt.Printf("sertp")
-			err := serial.JoinSerialPort(stream, m.TargetPort, m.Baud)
+			err = serial.JoinSerialPort(stream, m.TargetPort, m.Baud)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -73,7 +74,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectWs:
 		{
 			fmt.Printf("wstp")
-			err := connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
+			err = connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -83,7 +84,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectWss:
 		{
 			fmt.Printf("wsstp")
-			err := connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
+			err = connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -92,7 +93,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectSSH:
 		{
 			fmt.Printf("ssh")
-			err := connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
+			err = connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -101,7 +102,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.NewService:
 		{
 			fmt.Printf("service")
-			err := serviceHdl(stream, m)
+			err = serviceHdl(stream, m)
 			if err != nil {
 				fmt.Println(err.Error())
 				return
@@ -121,6 +122,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			//config.EnableKeepAlive = false
 			session, err := mux.Server(stream, config)
 			if err != nil {
+				stream.Close()
 				return
 			}
 			go dlSubSession(session, tokenModel)
@@ -129,13 +131,14 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.RequestNewWorkConn:
 		{
 			fmt.Println("server请求一个新的工作连接")
+			stream.Close()
 			go newWorkConn(tokenModel)
 		}
 
 	case *models.Ping:
 		{
 			//fmt.Printf("Ping from server")
-			err := msg.WriteMsg(stream, &models.Pong{})
+			err = msg.WriteMsg(stream, &models.Pong{})
 			if err != nil {
 				fmt.Println(err.Error())
 			}
@@ -185,6 +188,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 					fmt.Println(err.Error())
 				}
 			}
+			stream.Close()
 		}
 	default:
 		fmt.Printf("type err")
