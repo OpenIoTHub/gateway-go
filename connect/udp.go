@@ -3,13 +3,12 @@ package connect
 import (
 	"git.iotserv.com/iotserv/utils/io"
 	"net"
+	"strconv"
 	"time"
-	//"github.com/xtaci/smux"
-	"fmt"
 )
 
 func JoinUDP(stream net.Conn, ip string, port int) error {
-	c, err := net.DialTimeout("udp", fmt.Sprintf("%s:%d", ip, port), time.Second*30)
+	c, err := net.DialTimeout("udp", net.JoinHostPort(ip, strconv.Itoa(port)), time.Second*30)
 	if err != nil {
 		return err
 	}

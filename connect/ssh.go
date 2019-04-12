@@ -1,9 +1,9 @@
 package connect
 
 import (
-	"fmt"
 	"golang.org/x/crypto/ssh"
 	"net"
+	"strconv"
 )
 
 //func JoinSSHold(stream *mux.Stream,targetIP string,targetPort int,userName,passWord string) error  {
@@ -16,7 +16,7 @@ import (
 //}
 
 func JoinSSH(stream net.Conn, remoteIP string, remotePort int, userName, passWord string) (err error) {
-	client, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", remoteIP, remotePort), &ssh.ClientConfig{
+	client, err := ssh.Dial("tcp", net.JoinHostPort(remoteIP, strconv.Itoa(remotePort)), &ssh.ClientConfig{
 		User:            userName,
 		Auth:            []ssh.AuthMethod{ssh.Password(passWord)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
