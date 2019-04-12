@@ -11,12 +11,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 var (
 	h              bool
 	configFilePath string
-	p              string
+	p              int
 )
 var clientToken = ""
 var explorerToken = ""
@@ -24,7 +25,7 @@ var explorerToken = ""
 func init() {
 	flag.BoolVar(&h, "h", false, "show this help")
 	flag.StringVar(&configFilePath, "c", "./client.yaml", "set `config`")
-	flag.StringVar(&p, "p", "1082", "set `port`")
+	flag.IntVar(&p, "p", 1082, "set `port`")
 	flag.Usage = usage
 }
 func usage() {
@@ -51,13 +52,16 @@ func main() {
 		fmt.Println("没有找到配置文件：", configFilePath)
 		fmt.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 		//	生成配置文件模板
+		configMode.ExplorerTokenHttpPort = p
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 		configMode.LastExplorerToken = "不需要配置此项，随后自动生成"
 		err = writeConfigFile(configMode, configFilePath)
-		if err != nil {
-			fmt.Println(err.Error())
+		if err == nil {
+			fmt.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", configFilePath)
 			return
 		}
+		fmt.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
+		fmt.Println(err.Error())
 		return
 	}
 	//配置文件存在
@@ -100,11 +104,11 @@ func main() {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Printf("你也可以访问：http://127.0.0.1:%s/查看访问token\n", p)
-	http.HandleFunc("/", token)                  //设置访问的路由
-	err = http.ListenAndServe("0.0.0.0:"+p, nil) //设置监听的端口
+	fmt.Printf("你也可以访问：http://127.0.0.1:%d/查看访问token\n", configMode.ExplorerTokenHttpPort)
+	http.HandleFunc("/", token)                                                               //设置访问的路由
+	err = http.ListenAndServe("0.0.0.0:"+strconv.Itoa(configMode.ExplorerTokenHttpPort), nil) //设置监听的端口
 	if err != nil {
-		fmt.Printf("请检查端口" + p + "是否被占用")
+		fmt.Printf("请检查端口" + strconv.Itoa(configMode.ExplorerTokenHttpPort) + "是否被占用")
 	}
 }
 
