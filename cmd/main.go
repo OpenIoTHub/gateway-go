@@ -54,7 +54,6 @@ func main() {
 		//	生成配置文件模板
 		configMode.ExplorerTokenHttpPort = p
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
-		configMode.LastExplorerToken = "不需要配置此项，随后自动生成"
 		err = writeConfigFile(configMode, configFilePath)
 		if err == nil {
 			fmt.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", configFilePath)
@@ -99,7 +98,6 @@ func main() {
 		return
 	}
 	fmt.Println("访问token：\n\n" + explorerToken + "\n\n")
-	configMode.LastExplorerToken = explorerToken
 	err = writeConfigFile(configMode, configFilePath)
 	if err != nil {
 		fmt.Println(err.Error())
