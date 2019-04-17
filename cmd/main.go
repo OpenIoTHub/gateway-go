@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -23,8 +24,13 @@ var clientToken = ""
 var explorerToken = ""
 
 func init() {
+	var defaultConfPath = "./client.yaml"
+	appDataPath, havaAppDataPath := os.LookupEnv("SNAP_USER_DATA")
+	if havaAppDataPath {
+		defaultConfPath = filepath.Join(appDataPath, "client.yaml")
+	}
 	flag.BoolVar(&h, "h", false, "show this help")
-	flag.StringVar(&configFilePath, "c", "./client.yaml", "set `config`")
+	flag.StringVar(&configFilePath, "c", defaultConfPath, "set `config`")
 	flag.IntVar(&p, "p", 1082, "set `port`")
 	flag.Usage = usage
 }
@@ -53,10 +59,18 @@ func main() {
 		fmt.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 		//	生成配置文件模板
 		configMode.ExplorerTokenHttpPort = p
+		configMode.Server.ConnectionType = "tcp"
+		configMode.Server.ServerHost = "guonei.nat-cloud.com"
+		configMode.Server.TcpPort = 34320
+		configMode.Server.KcpPort = 34320
+		configMode.Server.UdpApiPort = 34321
+		configMode.Server.TlsPort = 34321
+		configMode.Server.LoginKey = "HLLdsa544&*S"
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 		err = writeConfigFile(configMode, configFilePath)
 		if err == nil {
 			fmt.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", configFilePath)
+			fmt.Println("你可以手动修改上述配置文件后再运行！")
 			return
 		}
 		fmt.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
@@ -64,6 +78,7 @@ func main() {
 		return
 	}
 	//配置文件存在
+	fmt.Println("使用的配置文件位置：", configFilePath)
 	content, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
 		fmt.Println(err.Error())
