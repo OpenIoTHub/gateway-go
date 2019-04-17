@@ -42,8 +42,8 @@ mv clientLinuxAMD64 %GODIST%/natcloud/client/
 set GOOS=freebsd
 go build -ldflags -w main.go
 ren main clientFreebsdAMD64
-upx freebsdAMD64
-mv freebsdAMD64 %GODIST%/natcloud/client/
+upx clientFreebsdAMD64
+mv clientFreebsdAMD64 %GODIST%/natcloud/client/
 
 set GOOS=darwin
 go build -ldflags -w main.go
