@@ -21,7 +21,7 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, erro
 	ServerIp = token.Host
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", ServerIp, token.KcpPort), nil, 10, 3)
-	////conn.SetStreamMode(true)
+	//conn.SetStreamMode(true)
 	//conn.SetWriteDelay(false)
 	//conn.SetNoDelay(0, 40, 2, 1)
 	//conn.SetWindowSize(1024, 1024)
@@ -58,7 +58,7 @@ func LoginWorkConn(token *crypto.TokenClaims) (net.Conn, error) {
 	ServerIp = token.Host
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", ServerIp, token.KcpPort), nil, 10, 3)
-	////kcpconn.SetStreamMode(true)
+	//conn.SetStreamMode(true)
 	//conn.SetWriteDelay(false)
 	//conn.SetNoDelay(0, 40, 2, 1)
 	//conn.SetWindowSize(1024, 1024)
