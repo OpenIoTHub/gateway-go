@@ -3,10 +3,10 @@ package services
 import (
 	"fmt"
 	"git.iotserv.com/iotserv/client/connect"
-	"git.iotserv.com/iotserv/client/connect/serial"
 	"git.iotserv.com/iotserv/utils/crypto"
 	"git.iotserv.com/iotserv/utils/models"
 	"git.iotserv.com/iotserv/utils/msg"
+	"github.com/jacobsa/go-serial/serial"
 	"net"
 	"time"
 
@@ -64,7 +64,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	case *models.ConnectSerialPort:
 		{
 			fmt.Printf("sertp")
-			err = serial.JoinSerialPort(stream, m.TargetPort, m.Baud)
+			err = connect.JoinSerialPort(stream, serial.OpenOptions(*m))
 			if err != nil {
 				fmt.Println(err.Error())
 				return
