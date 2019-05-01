@@ -61,16 +61,6 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 	configMode.TcpPort = r.FormValue("tcp_port")
 	configMode.UdpApiPort = r.FormValue("udp_p2p_port")
 	configMode.LoginKey = r.FormValue("login_key")
-	//if err != nil {
-	//	response := Response{
-	//		Code:    1,
-	//		Msg: ,
-	//	}
-	//	responseJson, _ := json.Marshal(response)
-	//	w.Header().Set("Content-Type", "application/json")
-	//	w.Write(responseJson)
-	//	return
-	//}
 	if configMode.LastId == "" {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
@@ -78,6 +68,16 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 	kcpP, err := strconv.Atoi(configMode.KcpPort)
 	tlsP, err := strconv.Atoi(configMode.TlsPort)
 	udpApiP, err := strconv.Atoi(configMode.UdpApiPort)
+	if err != nil {
+		response := Response{
+			Code: 1,
+			Msg:  err.Error(),
+		}
+		responseJson, _ := json.Marshal(response)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(responseJson)
+		return
+	}
 	clientToken, err := crypto.GetToken(configMode.LoginKey, configMode.LastId, configMode.ServerHost, tcpP,
 		kcpP, tlsP, udpApiP, 1, 200000000000)
 	if err != nil {
