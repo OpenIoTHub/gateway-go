@@ -11,6 +11,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type connectedUDPConn struct{ *net.UDPConn }
@@ -88,7 +89,7 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 				return
 			}
 
-			rawMsg, err := msg.ReadMsg(kcpconn)
+			rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 			if err != nil {
 				fmt.Println(err)
 				return

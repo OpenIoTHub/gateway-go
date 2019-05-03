@@ -9,6 +9,7 @@ import (
 	"git.iotserv.com/iotserv/utils/net"
 	"github.com/xtaci/kcp-go"
 	"net"
+	"time"
 )
 
 //var ExternalPort int
@@ -69,7 +70,7 @@ func kcpListener(listener *net.UDPConn, token *crypto.TokenClaims) {
 }
 
 func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) {
-	rawMsg, err := msg.ReadMsg(kcpconn)
+	rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
