@@ -101,7 +101,7 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 					_ = m
 					//TODO:认证
 					config := mux.DefaultConfig()
-					config.EnableKeepAlive = false
+					//config.EnableKeepAlive = false
 					p2pSubSession, err := mux.Server(kcpconn, config)
 					if err != nil {
 						fmt.Printf("create sub session err:" + err.Error())

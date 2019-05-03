@@ -6,6 +6,7 @@ import (
 	"git.iotserv.com/iotserv/utils/crypto"
 	"git.iotserv.com/iotserv/utils/models"
 	"git.iotserv.com/iotserv/utils/msg"
+	//"git.iotserv.com/iotserv/utils/io"
 	"github.com/jacobsa/go-serial/serial"
 	"net"
 	"time"
@@ -119,7 +120,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			//	return
 			//}
 			config := mux.DefaultConfig()
-			config.EnableKeepAlive = false
+			//config.EnableKeepAlive = false
 			session, err := mux.Server(stream, config)
 			if err != nil {
 				stream.Close()
@@ -236,6 +237,16 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 			}
 		}
 	}()
+	//session的keepalive,需要配合服务器
+	//go func() {
+	//	err := io.CheckSession(session)
+	//	if err != nil{
+	//		fmt.Println(err.Error())
+	//		if session != nil{
+	//			session.Close()
+	//		}
+	//	}
+	//}()
 	for {
 		// Accept a stream
 		stream, err := session.AcceptStream()
