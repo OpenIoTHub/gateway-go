@@ -119,7 +119,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			//	return
 			//}
 			config := mux.DefaultConfig()
-			//config.EnableKeepAlive = false
+			config.EnableKeepAlive = false
 			session, err := mux.Server(stream, config)
 			if err != nil {
 				stream.Close()

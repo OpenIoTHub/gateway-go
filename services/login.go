@@ -8,6 +8,7 @@ import (
 	"git.iotserv.com/iotserv/utils/mux"
 	"net"
 	"runtime"
+	"strconv"
 )
 
 var ServerIp string
@@ -30,7 +31,7 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, erro
 	//Tls
 	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
 	//TCP
-	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TcpPort))
+	conn, err := net.Dial("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)))
 	if err != nil {
 		return nil, true, token, err
 	}
@@ -67,7 +68,7 @@ func LoginWorkConn(token *crypto.TokenClaims) (net.Conn, error) {
 	//Tls
 	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", ServerIp, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
 	//TCP
-	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", ServerIp, token.TcpPort))
+	conn, err := net.Dial("tcp", net.JoinHostPort(ServerIp, strconv.Itoa(token.TcpPort)))
 	if err != nil {
 		return nil, err
 	}
