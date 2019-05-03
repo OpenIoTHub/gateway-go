@@ -99,7 +99,9 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 					fmt.Printf("get pong from p2p kcpconn")
 					_ = m
 					//TODO:认证
-					p2pSubSession, err := mux.Server(kcpconn, nil)
+					config := mux.DefaultConfig()
+					config.EnableKeepAlive = false
+					p2pSubSession, err := mux.Server(kcpconn, config)
 					if err != nil {
 						fmt.Printf("create sub session err:" + err.Error())
 						return

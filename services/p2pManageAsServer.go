@@ -82,6 +82,7 @@ func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) {
 			_ = m
 			msg.WriteMsg(kcpconn, &models.Pong{})
 			config := mux.DefaultConfig()
+			config.EnableKeepAlive = false
 			session, err := mux.Server(kcpconn, config)
 			if err != nil {
 				fmt.Println(err.Error())
