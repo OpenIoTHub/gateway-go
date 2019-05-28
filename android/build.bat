@@ -1,2 +1,2 @@
 gomobile bind -target=android
-::cp ./client.aar C:\Users\Farry\StudioProjects\client-android\client
+cp ./client.aar C:\Users\Farry\StudioProjects\client\client\android\client

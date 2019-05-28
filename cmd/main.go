@@ -66,6 +66,12 @@ func main() {
 		configMode.Server.UdpApiPort = 34321
 		configMode.Server.TlsPort = 34321
 		configMode.Server.LoginKey = "HLLdsa544&*S"
+		//configMode.Server.ServerHost = "netipcam.com"
+		//configMode.Server.TcpPort = 5555
+		//configMode.Server.KcpPort = 5555
+		//configMode.Server.UdpApiPort = 6666
+		//configMode.Server.TlsPort = 6666
+		//configMode.Server.LoginKey = "kasan@KASAN5555"
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 		err = writeConfigFile(configMode, configFilePath)
 		if err == nil {

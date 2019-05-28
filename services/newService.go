@@ -14,6 +14,9 @@ func serviceHdl(stream net.Conn, service *models.NewService) error {
 	case "tun":
 		err := tapTun.NewTun(stream, service)
 		return err
+	case "mDNSFind":
+		err := findAllmDNS(stream, service)
+		return err
 	default:
 
 	}
