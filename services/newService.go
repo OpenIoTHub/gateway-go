@@ -17,6 +17,9 @@ func serviceHdl(stream net.Conn, service *models.NewService) error {
 	case "mDNSFind":
 		err := findAllmDNS(stream, service)
 		return err
+	case "scanPort":
+		err := scanPort(stream, service)
+		return err
 	default:
 
 	}
