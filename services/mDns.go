@@ -39,10 +39,10 @@ func findAllmDNS(stream net.Conn, service *models.NewService) error {
 		return err
 	}
 	<-ctx.Done()
-	fmt.Println("获取完成：")
-	if len(rst) > 0 {
-		fmt.Println(rst[0])
-	}
+	//fmt.Println("获取完成：")
+	//if len(rst) > 0 {
+	//	fmt.Println(rst[0])
+	//}
 	rstByte, err := json.Marshal(&rst)
 	if err != nil {
 		fmt.Println(err.Error())

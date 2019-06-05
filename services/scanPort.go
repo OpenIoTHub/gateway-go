@@ -48,7 +48,7 @@ func scanPort(stream net.Conn, service *models.NewService) error {
 		needBreak := false
 		select {
 		case <-out:
-			fmt.Println(collect)
+			//fmt.Println(collect)
 			needBreak = true
 		default:
 			ip := net.ParseIP(config.Host)
@@ -67,7 +67,7 @@ func scanPort(stream net.Conn, service *models.NewService) error {
 		fmt.Println(err.Error())
 		return err
 	}
-	fmt.Println(string(rstByte))
+	//fmt.Println(string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
 		fmt.Println("写消息错误：")
