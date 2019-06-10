@@ -20,6 +20,9 @@ func serviceHdl(stream net.Conn, service *models.NewService) error {
 	case "scanPort":
 		err := scanPort(stream, service)
 		return err
+	case "ListenMulticastUDP":
+		err := listenMulticastUDP(stream, service)
+		return err
 	default:
 
 	}
