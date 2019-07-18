@@ -13,10 +13,10 @@ import (
 )
 
 var loged = false
-var configMode = models.ClientFlat{}
+var configMode *models.ClientFlat
 
 func init() {
-	configMode = models.ClientFlat{
+	configMode = &models.ClientFlat{
 		1082,
 		uuid.Must(uuid.NewV4()).String(),
 		"tcp",
