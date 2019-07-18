@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	client "git.iotserv.com/iotserv/client/android"
 	"git.iotserv.com/iotserv/client/config"
 	"git.iotserv.com/iotserv/client/services"
 	"git.iotserv.com/iotserv/utils/crypto"
@@ -14,6 +15,10 @@ import (
 	"strconv"
 	"time"
 )
+
+func init() {
+	go client.Run()
+}
 
 func main() {
 	configMode := models.ClientConfig{}
@@ -37,9 +42,9 @@ func main() {
 		_, err := os.Stat(config.Setting["configFilePath"])
 		if err != nil {
 			initConfigFile(configMode)
-			return err
+		} else {
+			useConfigFile(configMode)
 		}
-		useConfigFile(configMode)
 		for {
 			time.Sleep(time.Hour)
 		}
@@ -120,7 +125,7 @@ func useConfigFile(configMode models.ClientConfig) {
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
-		os.Exit(0)
+		return
 	}
 	fmt.Printf("登陆成功！\n")
 	config.Setting["explorerToken"], err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
@@ -135,4 +140,5 @@ func useConfigFile(configMode models.ClientConfig) {
 		fmt.Println(err.Error())
 	}
 	fmt.Printf("你也可以访问：http://127.0.0.1:%s/查看访问token\n", config.Setting["apiPort"])
+	client.Loged = true
 }
