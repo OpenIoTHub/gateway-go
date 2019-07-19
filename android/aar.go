@@ -14,7 +14,6 @@ import (
 	"strconv"
 )
 
-var Loged = false
 var ConfigMode *models.ClientFlat
 
 func init() {
@@ -43,12 +42,12 @@ func Run() {
 	http.Handle("/", r)
 	err = http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", config.Setting["apiPort"]), nil) //设置监听的端口
 	if err != nil {
-		fmt.Printf("请检查端口1082是否被占用")
+		fmt.Printf("请检查端口%s是否被占用", config.Setting["apiPort"])
 	}
 }
 
 func loginServer(w http.ResponseWriter, r *http.Request) {
-	if Loged {
+	if config.Loged {
 		response := Response{
 			Code: 1,
 			Msg:  "Already logged in",
@@ -107,9 +106,25 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		w.Write(responseJson)
 		return
 	}
-	Loged = true
+	config.Loged = true
 	config.Setting["explorerToken"], err = crypto.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
 		kcpP, tlsP, udpApiP, 2, 200000000000)
+	err = config.WriteConfigFile(models.ClientConfig{
+		ExplorerTokenHttpPort: ConfigMode.ExplorerTokenHttpPort,
+		Server: models.Srever{
+			ConnectionType: ConfigMode.ConnectionType,
+			ServerHost:     ConfigMode.ServerHost,
+			TcpPort:        tcpP,
+			KcpPort:        kcpP,
+			UdpApiPort:     udpApiP,
+			TlsPort:        tlsP,
+			LoginKey:       ConfigMode.LoginKey,
+		},
+		LastId: ConfigMode.LastId,
+	}, config.Setting["configFilePath"])
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	response := Response{
 		Code: 0,
 		Msg:  "success",
@@ -121,7 +136,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 }
 
 func getExplorerToken(w http.ResponseWriter, r *http.Request) {
-	if Loged != true {
+	if config.Loged != true {
 		response := Response{
 			Code: 1,
 			Msg:  "你还没有登录",

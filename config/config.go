@@ -6,6 +6,8 @@ import (
 
 var Setting = make(map[string]string)
 
+var Loged = false
+
 func init() {
 	Setting["configFilePath"] = "./client.yaml"
 	Setting["apiPort"] = "1082"
