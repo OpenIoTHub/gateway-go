@@ -31,12 +31,14 @@ func InitConfigFile(configMode models.ClientConfig) {
 	port, _ := strconv.Atoi(Setting["apiPort"])
 	configMode.ExplorerTokenHttpPort = port
 	configMode.Server.ConnectionType = "tcp"
+
 	configMode.Server.ServerHost = "guonei.nat-cloud.com"
 	configMode.Server.TcpPort = 34320
 	configMode.Server.KcpPort = 34320
 	configMode.Server.UdpApiPort = 34321
 	configMode.Server.TlsPort = 34321
 	configMode.Server.LoginKey = "HLLdsa544&*S"
+
 	//configMode.Server.ServerHost = "netipcam.com"
 	//configMode.Server.TcpPort = 5555
 	//configMode.Server.KcpPort = 5555
