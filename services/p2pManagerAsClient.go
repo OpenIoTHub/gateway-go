@@ -20,6 +20,9 @@ func (c *connectedUDPConn) WriteTo(b []byte, addr net.Addr) (int, error) { retur
 
 //作为客户端主动去连接内网client的方式创建穿透连接
 func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
+	if stream != nil {
+		defer stream.Close()
+	}
 	//stream, err := session.OpenStream()
 	//if err != nil {
 	//	fmt.Printf("get session" + err.Error())
@@ -85,12 +88,14 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 			}
 			err = msg.WriteMsg(kcpconn, &models.Ping{})
 			if err != nil {
+				kcpconn.Close()
 				fmt.Println(err)
 				return
 			}
 
 			rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 			if err != nil {
+				kcpconn.Close()
 				fmt.Println(err)
 				return
 			}
@@ -104,6 +109,9 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 					//config.EnableKeepAlive = false
 					p2pSubSession, err := mux.Server(kcpconn, config)
 					if err != nil {
+						if p2pSubSession != nil {
+							p2pSubSession.Close()
+						}
 						fmt.Printf("create sub session err:" + err.Error())
 						return
 					}
