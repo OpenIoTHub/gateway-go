@@ -43,12 +43,14 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, erro
 
 	err = msg.WriteMsg(conn, login)
 	if err != nil {
+		conn.Close()
 		return nil, true, token, err
 	}
 	config := mux.DefaultConfig()
 	//config.EnableKeepAlive = false
 	session, err := mux.Server(conn, config)
 	if err != nil {
+		conn.Close()
 		return nil, false, token, err
 	}
 	fmt.Printf("login OK!")
