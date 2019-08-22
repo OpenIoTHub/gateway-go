@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	_ "git.iotserv.com/iotserv/client/component"
 	"git.iotserv.com/iotserv/client/config"
 	"git.iotserv.com/iotserv/client/services"
 	"git.iotserv.com/iotserv/utils/crypto"

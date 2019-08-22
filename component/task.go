@@ -1,0 +1,5 @@
+package component
+
+func init() {
+
+}
