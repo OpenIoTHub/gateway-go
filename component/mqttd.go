@@ -8,6 +8,7 @@ import (
 )
 
 func init() {
+	//TODO 判断本网络是否已经存在此类型的组件，存在则不启动
 	svr := &service.Server{
 		KeepAlive:        3600,
 		ConnectTimeout:   30,
