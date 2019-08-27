@@ -14,9 +14,8 @@ func CheckComponentExist(instance string) (bool, error) {
 		return false, err
 	}
 
-	entries := make(chan *zeroconf.ServiceEntry, 100)
-	defer close(entries)
-
+	entries := make(chan *zeroconf.ServiceEntry)
+	//TODO 是否需要手动关闭channel？
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(2))
 	defer cancel()
 	err = resolver.Browse(ctx, "_component._tcp", "local", entries)

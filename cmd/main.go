@@ -22,6 +22,7 @@ func main() {
 	myApp.Usage = "-c [配置文件路径]"
 	myApp.Version = "v1.0.1"
 	myApp.Flags = []cli.Flag{
+		//TODO 应该设置工作目录，各组件共享
 		cli.StringFlag{
 			Name:   "config,c",
 			Value:  config.Setting["configFilePath"],
