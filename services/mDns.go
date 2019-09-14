@@ -31,7 +31,7 @@ func findAllmDNS(stream net.Conn, service *models.NewService) error {
 			rst = append(rst, entry)
 		}
 	}(entries)
-	timeOut := time.Second * time.Duration(config.Second)
+	timeOut := time.Millisecond * time.Duration(config.Second) * 150
 	ctx, cancel := context.WithTimeout(context.Background(), timeOut)
 	defer cancel()
 	err = resolver.Browse(ctx, config.Service, config.Domain, entries)
