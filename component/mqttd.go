@@ -10,6 +10,7 @@ import (
 func init() {
 	go func() {
 		var componentName = "mqtt"
+		var port = 1884
 		//TODO 判断本网络是否已经存在此类型的组件，存在则不启动
 		exist, err := CheckComponentExist(componentName)
 		if err != nil {
@@ -27,9 +28,8 @@ func init() {
 			SessionsProvider: "mem",
 			TopicsProvider:   "mem",
 		}
-		port := 1884
 		mqttaddr := fmt.Sprintf("tcp://0.0.0.0:%d", port)
-		server, err := zeroconf.Register(componentName, "_component._tcp", "local.", port, []string{}, nil)
+		server, err := zeroconf.Register(componentName, "_iotdevice._tcp", "local.", port, []string{"a=b", "c=d"}, nil)
 		if err != nil {
 			fmt.Printf("zeroconf: %v", err)
 			return

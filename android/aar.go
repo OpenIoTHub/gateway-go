@@ -34,7 +34,7 @@ func init() {
 func Run() {
 	port, _ := strconv.Atoi(config.Setting["apiPort"])
 	//mDNS注册服务
-	_, err := zeroconf.Register("nat-cloud-client", "_nat-cloud-client._tcp", "local.", port, []string{}, nil)
+	_, err := zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port, []string{}, nil)
 	//
 	r := mux.NewRouter()
 	r.HandleFunc("/", getExplorerToken)
