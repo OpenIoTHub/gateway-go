@@ -19,7 +19,7 @@ func init() {
 			fmt.Println(err.Error())
 		}
 		if exist {
-			fmt.Printf("本网络已经存在了%s组件，不启动/n", model)
+			fmt.Printf("本网络已经存在了%s组件，不启动\n", model)
 			return
 		}
 		svr := &service.Server{
@@ -32,9 +32,16 @@ func init() {
 		}
 		mqttaddr := fmt.Sprintf("tcp://0.0.0.0:%d", port)
 		var mac = uuid.Must(uuid.NewV4()).String()
+		fmt.Println("mac:", mac)
 		macs, err := nettool.GetMacs()
+		fmt.Println("macs:", macs)
 		if err == nil && len(macs) > 0 {
-			mac = macs[0]
+			fmt.Println("mac-len:", len(macs))
+			for _, vMac := range macs {
+				if vMac != "" {
+					mac = vMac
+				}
+			}
 		}
 		var txt = []string{
 			"name=mqtt服务器",
