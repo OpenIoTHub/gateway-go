@@ -4,10 +4,11 @@ import (
 	"context"
 	"github.com/grandcat/zeroconf"
 	"log"
+	"strings"
 	"time"
 )
 
-func CheckComponentExist(instance string) (bool, error) {
+func CheckComponentExist(model string) (bool, error) {
 	resolver, err := zeroconf.NewResolver(nil)
 	if err != nil {
 		log.Fatalln("Failed to initialize resolver:", err.Error())
@@ -26,8 +27,11 @@ func CheckComponentExist(instance string) (bool, error) {
 
 	<-ctx.Done()
 	for entry := range entries {
-		if entry.Instance == instance {
-			return true, nil
+		for _, text := range entry.Text {
+			keyValue := strings.Split(text, "=")
+			if len(keyValue) == 2 && keyValue[0] == "model" && keyValue[1] == model {
+				return true, nil
+			}
 		}
 	}
 	return false, nil
