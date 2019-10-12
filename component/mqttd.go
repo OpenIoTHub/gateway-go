@@ -3,7 +3,7 @@ package component
 
 import (
 	"fmt"
-	nettool "git.iotserv.com/iotserv/utils/net"
+	"github.com/mDNSService/utils/nettool"
 	"github.com/surgemq/surgemq/service"
 )
 
