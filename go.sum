@@ -2,6 +2,8 @@ git.iotserv.com/iotserv/iotserv v0.0.0-20190404080041-43f4bcf693ea h1:xxKCgSUsSF
 git.iotserv.com/iotserv/iotserv v0.0.0-20190404080041-43f4bcf693ea/go.mod h1:bQ/hr6hWsTAbehGo2EsPgXiIrpD0Ac5oUlIVbr5Pv5Q=
 git.iotserv.com/iotserv/utils v0.0.0-20191012073945-e4e2a2dac5b8 h1:HeN2pzxqZIdZDFoS70WgD+M4z96ExNxd0CO1CSfVnu4=
 git.iotserv.com/iotserv/utils v0.0.0-20191012073945-e4e2a2dac5b8/go.mod h1:5GB6ICy42C+9igswtl2s+65iBZVE1xkNY/0Wcw6apfc=
+git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd h1:5De5D3MpkxtdXHvcaiIRAKIkwVrRd6iCHWxGVITk87A=
+git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd/go.mod h1:5GB6ICy42C+9igswtl2s+65iBZVE1xkNY/0Wcw6apfc=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=

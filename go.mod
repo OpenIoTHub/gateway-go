@@ -3,8 +3,7 @@ module git.iotserv.com/iotserv/client
 go 1.13
 
 require (
-	git.iotserv.com/iotserv/iotserv v0.0.0-20190404080041-43f4bcf693ea
-	git.iotserv.com/iotserv/utils v0.0.0-20191012073945-e4e2a2dac5b8
+	git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/gorilla/mux v1.7.3

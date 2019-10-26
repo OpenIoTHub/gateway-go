@@ -46,10 +46,10 @@ func Join(p1 io.ReadWriteCloser, p2 io.ReadWriteCloser) (inCount int64, outCount
 	defer p2.Close()
 	// start tunnel
 	p1die := make(chan struct{})
-	buf1 := make([]byte, 96*1024)
+	buf1 := make([]byte, 1024)
 	go func() { io.CopyBuffer(p1, p2, buf1); close(p1die) }()
 	p2die := make(chan struct{})
-	buf2 := make([]byte, 96*1024)
+	buf2 := make([]byte, 1024)
 	go func() { io.CopyBuffer(p2, p1, buf2); close(p2die) }()
 	// wait for tunnel termination
 	select {

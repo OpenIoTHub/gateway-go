@@ -1,7 +1,4 @@
-# git.iotserv.com/iotserv/iotserv v0.0.0-20190404080041-43f4bcf693ea
-git.iotserv.com/iotserv/iotserv/utils/io
-git.iotserv.com/iotserv/iotserv/utils/pool
-# git.iotserv.com/iotserv/utils v0.0.0-20191012073945-e4e2a2dac5b8
+# git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd
 git.iotserv.com/iotserv/utils/crypto
 git.iotserv.com/iotserv/utils/errors
 git.iotserv.com/iotserv/utils/io
