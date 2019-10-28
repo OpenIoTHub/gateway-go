@@ -10,7 +10,7 @@ import (
 func init() {
 	go func() {
 		var txtInfo = nettool.MDNSServiceBaseInfo
-		var model = "com.iotserv.devices.mqttd"
+		var model = "com.iotserv.services.mqttd"
 		port, err := nettool.GetOneFreeTcpPort()
 		if err != nil {
 			fmt.Println(err.Error())
