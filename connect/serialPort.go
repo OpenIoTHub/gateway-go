@@ -2,7 +2,7 @@ package connect
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/iotserv/utils/io"
+	"git.iotserv.com/iotserv/utils/io"
 	"github.com/jacobsa/go-serial/serial"
 	"net"
 )
