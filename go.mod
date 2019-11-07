@@ -29,3 +29,10 @@ require (
 	golang.org/x/net v0.0.0-20191014212845-da9a3fd4c582
 	gopkg.in/yaml.v2 v2.2.4
 )
+
+replace (
+	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20191011191535-87dc89f01550
+	golang.org/x/net => github.com/golang/net v0.0.0-20191014212845-da9a3fd4c582
+	golang.org/x/sync => github.com/golang/sync v0.0.0-20190911185100-cd5d95a43a6e
+	google.golang.org/grpc => github.com/grpc/grpc-go v1.20.1
+)
