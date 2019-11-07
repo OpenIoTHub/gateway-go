@@ -1,98 +1,98 @@
-rm -rf %GODIST%/natcloud/client/*
+rm -rf %GODIST%/natcloud/gateway/*
 set CGO_ENABLED=0
 set GOROOT_BOOTSTRAP=C:/Go
 ::x86块
 set GOARCH=386
 set GOOS=windows
 go build -ldflags -w main.go
-ren main.exe clientWindows386.exe
+ren main.exe gatewayWindows386.exe
 ::upx windows386.exe
-mv clientWindows386.exe %GODIST%/natcloud/client/
+mv gatewayWindows386.exe %GODIST%/natcloud/gateway/
 set GOOS=linux
 go build -ldflags -w main.go
-ren main clientLinux386
-upx clientLinux386
-mv clientLinux386 %GODIST%/natcloud/client/
+ren main gatewayLinux386
+upx gatewayLinux386
+mv gatewayLinux386 %GODIST%/natcloud/gateway/
 set GOOS=freebsd
 go build -ldflags -w main.go
-ren main clientFreebsd386
-upx clientFreebsd386
-mv clientFreebsd386 %GODIST%/natcloud/client/
+ren main gatewayFreebsd386
+upx gatewayFreebsd386
+mv gatewayFreebsd386 %GODIST%/natcloud/gateway/
 set GOOS=darwin
 go build -ldflags -w main.go
-ren main clientDarwin386
-upx clientDarwin386
-mv clientDarwin386 %GODIST%/natcloud/client/
+ren main gatewayDarwin386
+upx gatewayDarwin386
+mv gatewayDarwin386 %GODIST%/natcloud/gateway/
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   
 ::x64块
 set GOARCH=amd64
 set GOOS=windows
 go build -ldflags -w main.go
-ren main.exe clientWindowsAmd64.exe
+ren main.exe gatewayWindowsAmd64.exe
 ::upx windowsAmd64.exe
-mv clientWindowsAmd64.exe %GODIST%/natcloud/client/
+mv gatewayWindowsAmd64.exe %GODIST%/natcloud/gateway/
 
 set GOOS=linux
 go build -ldflags -w main.go
-ren main clientLinuxAMD64
-upx clientLinuxAMD64
-mv clientLinuxAMD64 %GODIST%/natcloud/client/
+ren main gatewayLinuxAMD64
+upx gatewayLinuxAMD64
+mv gatewayLinuxAMD64 %GODIST%/natcloud/gateway/
 
 set GOOS=freebsd
 go build -ldflags -w main.go
-ren main clientFreebsdAMD64
-upx clientFreebsdAMD64
-mv clientFreebsdAMD64 %GODIST%/natcloud/client/
+ren main gatewayFreebsdAMD64
+upx gatewayFreebsdAMD64
+mv gatewayFreebsdAMD64 %GODIST%/natcloud/gateway/
 
 set GOOS=darwin
 go build -ldflags -w main.go
-ren main clientDarwinAMD64
-upx clientDarwinAMD64
-mv clientDarwinAMD64 %GODIST%/natcloud/client/
+ren main gatewayDarwinAMD64
+upx gatewayDarwinAMD64
+mv gatewayDarwinAMD64 %GODIST%/natcloud/gateway/
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   
 ::arm块
 set GOARCH=arm
 set GOOS=linux
 go build -ldflags -w main.go
-ren main clientLinuxArm
-upx clientLinuxArm
-mv clientLinuxArm %GODIST%/natcloud/client/
+ren main gatewayLinuxArm
+upx gatewayLinuxArm
+mv gatewayLinuxArm %GODIST%/natcloud/gateway/
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   
 ::mips块
 set GOARCH=mips64le
 set GOOS=linux
 go build -ldflags -w main.go
-ren main clientLinuxMips64le
-upx clientLinuxMips64le
-mv clientLinuxMips64le %GODIST%/natcloud/client/
+ren main gatewayLinuxMips64le
+upx gatewayLinuxMips64le
+mv gatewayLinuxMips64le %GODIST%/natcloud/gateway/
 
 set GOARCH=mips64
 set GOOS=linux
 go build -ldflags -w main.go
-ren main clientLinuxMips64
-upx clientLinuxMips64
-mv clientLinuxMips64 %GODIST%/natcloud/client/
+ren main gatewayLinuxMips64
+upx gatewayLinuxMips64
+mv gatewayLinuxMips64 %GODIST%/natcloud/gateway/
 
 set GOARCH=mipsle
 set GOOS=linux
 set CGO_ENABLED=0
 set GOMIPS=softfloat
 go build -ldflags -w main.go
-ren main clientLinuxMipsle
-upx clientLinuxMipsle
-mv clientLinuxMipsle %GODIST%/natcloud/client/
+ren main gatewayLinuxMipsle
+upx gatewayLinuxMipsle
+mv gatewayLinuxMipsle %GODIST%/natcloud/gateway/
 
 set GOARCH=mips
 set GOOS=linux
 set CGO_ENABLED=0
 set GOMIPS=softfloat
 go build -ldflags -w main.go
-ren main clientLinuxMips
-upx clientLinuxMips
-mv clientLinuxMips %GODIST%/natcloud/client/
+ren main gatewayLinuxMips
+upx gatewayLinuxMips
+mv gatewayLinuxMips %GODIST%/natcloud/gateway/
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 set GOARCH=amd64
 set GOOS=windows
