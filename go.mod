@@ -11,8 +11,7 @@ require (
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/klauspost/reedsolomon v1.9.3 // indirect
-	github.com/mDNSService/utils v0.0.0-20191012092825-eecaf5b22bd0
-	github.com/pkg/errors v0.8.1 // indirect
+	github.com/mDNSService/utils v0.1.1
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
 	github.com/songgao/water v0.0.0-20190725173103-fd331bda3f4b
 	github.com/stretchr/testify v1.4.0 // indirect

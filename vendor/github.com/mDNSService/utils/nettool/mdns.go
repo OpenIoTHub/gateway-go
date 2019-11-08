@@ -3,7 +3,7 @@ package nettool
 import (
 	"context"
 	"fmt"
-	"github.com/grandcat/zeroconf"
+	"github.com/iotdevice/zeroconf"
 	"github.com/satori/go.uuid"
 	"log"
 	"strings"
@@ -11,10 +11,8 @@ import (
 )
 
 var MDNSServiceBaseInfo = map[string]string{
-	"name": "OpenIoTHub服务",
-	//web,native,none
-	"ui-support":           "none",
-	"ui-first":             "none",
+	"name":                 "OpenIoTHub服务",
+	"model":                "com.iotserv.services.web",
 	"author":               "Farry",
 	"email":                "newfarry@126.com",
 	"home-page":            "https://github.com/OpenIoTHub",
@@ -58,9 +56,6 @@ func CheckmDNSServiceInfo(info map[string]string) error {
 		"model",
 		"mac",
 		"id",
-		//web,native,none
-		"ui-support",
-		"ui-first",
 		"author",
 		"email",
 		"home-page",
