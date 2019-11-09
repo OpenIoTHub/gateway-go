@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"github.com/mDNSService/utils/nettool"
 	"github.com/surgemq/surgemq/service"
+	"runtime"
 )
 
 func init() {
+	if runtime.GOOS == "android" {
+		return
+	}
 	go func() {
 		var txtInfo = nettool.MDNSServiceBaseInfo
 		var model = "com.iotserv.services.mqttd"

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"git.iotserv.com/iotserv/utils/io"
 	"git.iotserv.com/iotserv/utils/models"
 	"log"
@@ -15,7 +16,7 @@ func listenMulticastUDP(stream net.Conn, service *models.NewService) error {
 	}
 	portInt, err := strconv.Atoi(port)
 	if err != nil {
-		log.Println(err.Error())
+		fmt.Println(err.Error())
 		return err
 	}
 	l, err := net.ListenMulticastUDP("udp4", nil, &net.UDPAddr{
