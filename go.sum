@@ -29,6 +29,8 @@ github.com/gorilla/mux v1.7.3/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2z
 github.com/iotdevice/zeroconf v0.0.0-20190424104450-85eadb44205c/go.mod h1:38eciZlYiQcW1WL0g+Pl0FwD0Md2v39yWyT2MA4Z2ag=
 github.com/iotdevice/zeroconf v0.0.0-20190527085138-7225942b5495 h1:sF9QxOnrUjvzwcl/gdv2iaB7AubgfZie9kbd15NoV5U=
 github.com/iotdevice/zeroconf v0.0.0-20190527085138-7225942b5495/go.mod h1:38eciZlYiQcW1WL0g+Pl0FwD0Md2v39yWyT2MA4Z2ag=
+github.com/iotdevice/zeroconf v0.1.0 h1:0kxREvotHB4GuPSAfIYxSqZt8NFxFBaM5KB4ydi0WA0=
+github.com/iotdevice/zeroconf v0.1.0/go.mod h1:38eciZlYiQcW1WL0g+Pl0FwD0Md2v39yWyT2MA4Z2ag=
 github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4 h1:G2ztCwXov8mRvP0ZfjE6nAlaCX2XbykaeHdbT6KwDz0=
 github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4/go.mod h1:2RvX5ZjVtsznNZPEt4xwJXNJrM3VTZoQf7V6gk0ysvs=
 github.com/klauspost/cpuid v1.2.1 h1:vJi+O/nMdFt0vqm8NZBI6wzALWdA2X+egi0ogNyrC/w=
