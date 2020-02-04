@@ -1,12 +1,12 @@
-# git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd
-git.iotserv.com/iotserv/utils/crypto
-git.iotserv.com/iotserv/utils/errors
-git.iotserv.com/iotserv/utils/io
-git.iotserv.com/iotserv/utils/models
-git.iotserv.com/iotserv/utils/msg
-git.iotserv.com/iotserv/utils/mux
-git.iotserv.com/iotserv/utils/net
-git.iotserv.com/iotserv/utils/pool
+# github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050
+github.com/OpenIoTHub/utils/crypto
+github.com/OpenIoTHub/utils/errors
+github.com/OpenIoTHub/utils/io
+github.com/OpenIoTHub/utils/models
+github.com/OpenIoTHub/utils/msg
+github.com/OpenIoTHub/utils/mux
+github.com/OpenIoTHub/utils/net
+github.com/OpenIoTHub/utils/pool
 # github.com/cenkalti/backoff v2.2.1+incompatible
 github.com/cenkalti/backoff
 # github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d

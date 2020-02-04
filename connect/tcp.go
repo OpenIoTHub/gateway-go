@@ -1,7 +1,7 @@
 package connect
 
 import (
-	"git.iotserv.com/iotserv/utils/io"
+	"github.com/OpenIoTHub/utils/io"
 	"net"
 	"strconv"
 	"time"

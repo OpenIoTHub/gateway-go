@@ -2,8 +2,8 @@ package nettool
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/utils/crypto"
-	"git.iotserv.com/iotserv/utils/models"
+	"github.com/OpenIoTHub/utils/crypto"
+	"github.com/OpenIoTHub/utils/models"
 	"net"
 	"strconv"
 	"strings"

@@ -1,7 +1,10 @@
-git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd h1:5De5D3MpkxtdXHvcaiIRAKIkwVrRd6iCHWxGVITk87A=
-git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd/go.mod h1:5GB6ICy42C+9igswtl2s+65iBZVE1xkNY/0Wcw6apfc=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
+github.com/OpenIoTHub/utils v0.0.0-20191026054824-20bcd93c69cd h1:5De5D3MpkxtdXHvcaiIRAKIkwVrRd6iCHWxGVITk87A=
+github.com/OpenIoTHub/utils v0.0.0-20191026054824-20bcd93c69cd/go.mod h1:5GB6ICy42C+9igswtl2s+65iBZVE1xkNY/0Wcw6apfc=
+github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050 h1:NmYeSDNX8HNJUvSDZnejNKqVKZcJbvcij/blb2ClCE4=
+github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050/go.mod h1:LFPD5qpWg8ljLwDM7c0meZ8NGKsNbojQRj9n9vvbx1o=
+github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=

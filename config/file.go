@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/client/services"
-	"git.iotserv.com/iotserv/utils/crypto"
-	"git.iotserv.com/iotserv/utils/models"
+	"github.com/OpenIoTHub/GateWay-go/services"
+	"github.com/OpenIoTHub/utils/crypto"
+	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

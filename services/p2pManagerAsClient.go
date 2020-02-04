@@ -2,11 +2,11 @@ package services
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/utils/crypto"
-	"git.iotserv.com/iotserv/utils/models"
-	"git.iotserv.com/iotserv/utils/msg"
-	"git.iotserv.com/iotserv/utils/mux"
-	"git.iotserv.com/iotserv/utils/net"
+	"github.com/OpenIoTHub/utils/crypto"
+	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/msg"
+	"github.com/OpenIoTHub/utils/mux"
+	"github.com/OpenIoTHub/utils/net"
 	"github.com/xtaci/kcp-go"
 	"net"
 	"strconv"

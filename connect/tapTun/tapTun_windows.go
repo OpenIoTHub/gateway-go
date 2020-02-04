@@ -3,8 +3,8 @@ package tapTun
 import (
 	"errors"
 	"fmt"
-	"git.iotserv.com/iotserv/utils/io"
-	"git.iotserv.com/iotserv/utils/models"
+	"github.com/OpenIoTHub/utils/io"
+	"github.com/OpenIoTHub/utils/models"
 	"github.com/songgao/water"
 	"net"
 	"os/exec"

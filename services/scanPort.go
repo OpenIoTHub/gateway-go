@@ -3,8 +3,8 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"git.iotserv.com/iotserv/utils/models"
-	"git.iotserv.com/iotserv/utils/msg"
+	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/msg"
 	"net"
 )
 

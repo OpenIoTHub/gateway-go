@@ -1,8 +1,8 @@
 package services
 
 import (
-	"git.iotserv.com/iotserv/client/connect/tapTun"
-	"git.iotserv.com/iotserv/utils/models"
+	"github.com/OpenIoTHub/GateWay-go/connect/tapTun"
+	"github.com/OpenIoTHub/utils/models"
 	"net"
 )
 

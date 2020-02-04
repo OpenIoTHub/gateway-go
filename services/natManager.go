@@ -2,17 +2,17 @@ package services
 
 import (
 	"fmt"
-	"git.iotserv.com/iotserv/client/connect"
-	"git.iotserv.com/iotserv/utils/crypto"
-	"git.iotserv.com/iotserv/utils/models"
-	"git.iotserv.com/iotserv/utils/msg"
-	//"git.iotserv.com/iotserv/utils/io"
+	"github.com/OpenIoTHub/GateWay-go/connect"
+	"github.com/OpenIoTHub/utils/crypto"
+	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/msg"
+	//"github.com/OpenIoTHub/utils/io"
 	"github.com/jacobsa/go-serial/serial"
 	"net"
 	"time"
 
 	//"github.com/xtaci/smux"
-	"git.iotserv.com/iotserv/utils/mux"
+	"github.com/OpenIoTHub/utils/mux"
 )
 
 var lastSalt, lastToken string

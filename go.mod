@@ -1,11 +1,9 @@
-module git.iotserv.com/iotserv/client
+module github.com/OpenIoTHub/GateWay-go
 
 go 1.13
 
 require (
-	git.iotserv.com/iotserv/utils v0.0.0-20191026054824-20bcd93c69cd
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
-	github.com/golang/snappy v0.0.1 // indirect
+	github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4

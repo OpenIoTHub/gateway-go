@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	client "git.iotserv.com/iotserv/client/android"
-	"git.iotserv.com/iotserv/client/config"
-	"git.iotserv.com/iotserv/utils/models"
+	client "github.com/OpenIoTHub/GateWay-go/android"
+	"github.com/OpenIoTHub/GateWay-go/config"
+	"github.com/OpenIoTHub/utils/models"
 	"github.com/urfave/cli"
 	"os"
 	"time"
