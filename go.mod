@@ -3,13 +3,12 @@ module github.com/OpenIoTHub/GateWay-go
 go 1.13
 
 require (
-	github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050
+	github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/klauspost/reedsolomon v1.9.3 // indirect
-	github.com/mDNSService/utils v0.1.1
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
 	github.com/songgao/water v0.0.0-20190725173103-fd331bda3f4b
 	github.com/stretchr/testify v1.4.0 // indirect

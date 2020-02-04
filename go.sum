@@ -4,6 +4,8 @@ github.com/OpenIoTHub/utils v0.0.0-20191026054824-20bcd93c69cd h1:5De5D3MpkxtdXH
 github.com/OpenIoTHub/utils v0.0.0-20191026054824-20bcd93c69cd/go.mod h1:5GB6ICy42C+9igswtl2s+65iBZVE1xkNY/0Wcw6apfc=
 github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050 h1:NmYeSDNX8HNJUvSDZnejNKqVKZcJbvcij/blb2ClCE4=
 github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050/go.mod h1:LFPD5qpWg8ljLwDM7c0meZ8NGKsNbojQRj9n9vvbx1o=
+github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961 h1:HaHn8TBzQAuv6QTvoAGnxyFEBrMkrTEimlerUHLK4CI=
+github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961/go.mod h1:LFPD5qpWg8ljLwDM7c0meZ8NGKsNbojQRj9n9vvbx1o=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=

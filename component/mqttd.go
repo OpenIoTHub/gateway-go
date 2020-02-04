@@ -3,7 +3,7 @@ package component
 
 import (
 	"fmt"
-	"github.com/mDNSService/utils/nettool"
+	nettool "github.com/OpenIoTHub/utils/net"
 	"github.com/surgemq/surgemq/service"
 	"runtime"
 )

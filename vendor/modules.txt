@@ -1,4 +1,4 @@
-# github.com/OpenIoTHub/utils v0.0.0-20200204134506-7026a158e050
+# github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961
 github.com/OpenIoTHub/utils/crypto
 github.com/OpenIoTHub/utils/errors
 github.com/OpenIoTHub/utils/io
@@ -25,8 +25,6 @@ github.com/jacobsa/go-serial/serial
 github.com/klauspost/cpuid
 # github.com/klauspost/reedsolomon v1.9.3
 github.com/klauspost/reedsolomon
-# github.com/mDNSService/utils v0.1.1
-github.com/mDNSService/utils/nettool
 # github.com/miekg/dns v1.1.22
 github.com/miekg/dns
 # github.com/pkg/errors v0.8.1
