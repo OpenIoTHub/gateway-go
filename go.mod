@@ -3,7 +3,9 @@ module github.com/OpenIoTHub/GateWay-go
 go 1.13
 
 require (
+	git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git v0.0.0-00010101000000-000000000000 // indirect
 	github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961
+	github.com/eclipse/paho.mqtt.golang v1.2.0 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
@@ -22,12 +24,12 @@ require (
 	github.com/xtaci/kcp-go v5.4.11+incompatible
 	github.com/xtaci/lossyconn v0.0.0-20190602105132-8df528c0c9ae // indirect
 	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
-	golang.org/x/mobile v0.0.0-20191031020345-0945064e013a // indirect
 	golang.org/x/net v0.0.0-20191014212845-da9a3fd4c582
 	gopkg.in/yaml.v2 v2.2.4
 )
 
 replace (
+	git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git => github.com/eclipse/paho.mqtt.golang v1.2.0
 	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20191011191535-87dc89f01550
 	golang.org/x/net => github.com/golang/net v0.0.0-20191011234655-491137f69257
 	golang.org/x/sync => github.com/golang/sync v0.0.0-20190911185100-cd5d95a43a6e
