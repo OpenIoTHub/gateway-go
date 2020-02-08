@@ -1,2 +1,7 @@
 language: go
 go: '1.13.x'
+notifications:
+  email:
+    recipients:
+      - newfarry@126.com
+    on_success: always
