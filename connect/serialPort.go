@@ -10,7 +10,7 @@ import (
 func JoinSerialPort(stream net.Conn, options serial.OpenOptions) error {
 	conn, err := serial.Open(options)
 	if err != nil {
-		fmt.Println("serial.Open: %v", err)
+		fmt.Println(err.Error())
 		return err
 	}
 	go io.Join(stream, conn)
