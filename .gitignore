@@ -1,3 +1,4 @@
 /android/client.aar
 /android/client-sources.jar
 /vendor/github.com/miekg/dns/gomobile.exe
+/dist
