@@ -17,6 +17,10 @@ builds:
     - amd64
     - arm
     - arm64
+    - mips64
+    - mips64le
+    - mips
+    - mipsle
   ignore:
     - goos: darwin
       goarch: 386
