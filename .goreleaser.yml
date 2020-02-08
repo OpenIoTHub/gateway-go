@@ -6,6 +6,7 @@ before:
 #    - go mod tidy
 #    - go mod vendor
 builds:
+- main: ./cmd/main.go
 - env:
   - CGO_ENABLED=0
 archives:
