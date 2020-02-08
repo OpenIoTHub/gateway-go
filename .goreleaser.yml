@@ -4,8 +4,7 @@ before:
   hooks:
     # you may remove this if you don't use vgo
     - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
+    - go mod vendor
 builds:
 - env:
   - CGO_ENABLED=0
