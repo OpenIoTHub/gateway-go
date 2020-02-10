@@ -44,3 +44,71 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+brews:
+  - github:
+      owner: OpenIoTHub
+      name: homebrew-tap
+    folder: Formula
+    homepage:  http://github.com/OpenIoTHub
+    description: OpenIoTHub GateWay
+    test: |
+      system "#{bin}/GateWay-go -v"
+scoop:
+  bucket:
+    owner: OpenIoTHub
+    name: scoop-bucket
+  homepage:  http://github.com/OpenIoTHub
+  description: OpenIoTHub GateWay
+  license: MIT
+nfpms:
+  - name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    homepage:  https://goreleaser.com
+    description: OpenIoTHub GateWay
+    maintainer: OpenIoTHub <newfarry@126.com>
+    license: MIT
+    vendor: GateWay-go
+    formats:
+      - deb
+      - rpm
+snapcrafts:
+  - name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    summary: OpenIoTHub GateWay
+    description: |
+      OpenIoTHub GateWay
+    grade: stable
+    confinement: classic
+    publish: true
+dockers:
+  - image_templates:
+      - 'OpenIoTHub/GateWay:{{ .Tag }}-cgo'
+      - 'OpenIoTHub/GateWay:v{{ .Major }}.{{ .Minor }}-cgo'
+      - 'OpenIoTHub/GateWay:latest-cgo'
+    dockerfile: Dockerfile.cgo
+    binaries:
+      - GateWay-go
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    extra_files:
+      - scripts/entrypoint.sh
+  - image_templates:
+      - 'OpenIoTHub/GateWay:{{ .Tag }}'
+      - 'OpenIoTHub/GateWay:v{{ .Major }}.{{ .Minor }}'
+      - 'OpenIoTHub/GateWay:latest'
+    dockerfile: Dockerfile
+    binaries:
+      - GateWay-go
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=com.github.actions.name={{.ProjectName}}"
+
+    extra_files:
+      - scripts/entrypoint.sh
