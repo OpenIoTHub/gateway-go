@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/openiothub/gateway/connect"
+	"github.com/OpenIoTHub/gateway-go/connect"
 	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
