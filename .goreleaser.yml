@@ -81,21 +81,6 @@ snapcrafts:
     publish: true
 dockers:
   - image_templates:
-      - 'openiothub/gateway:{{ .Tag }}-cgo'
-      - 'openiothub/gateway:v{{ .Major }}.{{ .Minor }}-cgo'
-      - 'openiothub/gateway:latest-cgo'
-    dockerfile: Dockerfile.cgo
-    binaries:
-      - GateWay-go
-    build_flag_templates:
-      - "--pull"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.name={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-    extra_files:
-      - scripts/entrypoint.sh
-  - image_templates:
       - 'openiothub/gateway:{{ .Tag }}'
       - 'openiothub/gateway:v{{ .Major }}.{{ .Minor }}'
       - 'openiothub/gateway:latest'
