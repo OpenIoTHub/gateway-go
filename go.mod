@@ -1,4 +1,4 @@
-module github.com/OpenIoTHub/openiothub/gateway
+module github.com/OpenIoTHub/gateway-go
 
 go 1.13
 
