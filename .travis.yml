@@ -1,42 +1,28 @@
-# .travis.yml
 language: go
-go: '1.13.x'
+go: 1.13.x
 env:
-  - GO111MODULE=on
-#script:
-#  - go test -v ./...
+- GO111MODULE=on
 notifications:
   email:
     recipients:
-      - newfarry@126.com
+    - newfarry@126.com
     on_success: always
-
 addons:
   apt:
     packages:
-      # needed only if you use the snap pipe:
-      - snapcraft
-
-# needed for the docker pipe
+    - snapcraft
 services:
-  - docker
-
+- docker
 after_success:
-  # docker login is required if you want to push docker images.
-  # DOCKER_PASSWORD should be a secret in your .travis.yml configuration.
-  - test -n "$TRAVIS_TAG" && docker login -u=openiothub -p="$DOCKER_PASSWORD"
-  # snapcraft login is required if you want to push snapcraft packages to the
-  # store.
-  # You'll need to run `snapcraft export-login snap.login` and
-  # `travis encrypt-file snap.login --add` to add the key to the travis
-  # environment.
-  - test -n "$TRAVIS_TAG" && snapcraft login --with snap.login
-
-# calls goreleaser
+- test -n "$TRAVIS_TAG" && docker login -u=openiothub -p="$DOCKER_PASSWORD"
+- test -n "$TRAVIS_TAG" && snapcraft login --with snap.login
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: curl -sL https://git.io/goreleaser | bash
-    on:
-      tags: true
-      condition: $TRAVIS_OS_NAME = linux
+- provider: script
+  skip_cleanup: true
+  script: curl -sL https://git.io/goreleaser | bash
+  on:
+    tags: true
+    condition: "$TRAVIS_OS_NAME = linux"
+before_install:
+- openssl aes-256-cbc -K $encrypted_219439784b94_key -iv $encrypted_219439784b94_iv
+  -in snap.login.enc -out snap.login -d
