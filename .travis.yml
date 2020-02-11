@@ -28,8 +28,8 @@ deploy:
     tags: true
     condition: "$TRAVIS_OS_NAME = linux"
 before_install:
-- echo $TRAVIS_TAG
-- echo $DOCKER_PASSWORD
-- echo $GITHUB_TOKEN
+- test -n "$TRAVIS_TAG" && echo $TRAVIS_TAG
+- test -n "$TRAVIS_TAG" && echo $DOCKER_PASSWORD
+- test -n "$TRAVIS_TAG" && echo $GITHUB_TOKEN
 - openssl aes-256-cbc -K $encrypted_219439784b94_key -iv $encrypted_219439784b94_iv
   -in snap.login.enc -out snap.login -d
