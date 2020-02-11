@@ -81,9 +81,9 @@ snapcrafts:
     publish: true
 dockers:
   - image_templates:
-      - 'iotserv/gateway:{{ .Tag }}-cgo'
-      - 'iotserv/gateway:v{{ .Major }}.{{ .Minor }}-cgo'
-      - 'iotserv/gateway:latest-cgo'
+      - 'openiothub/gateway:{{ .Tag }}-cgo'
+      - 'openiothub/gateway:v{{ .Major }}.{{ .Minor }}-cgo'
+      - 'openiothub/gateway:latest-cgo'
     dockerfile: Dockerfile.cgo
     binaries:
       - GateWay-go
@@ -96,9 +96,9 @@ dockers:
     extra_files:
       - scripts/entrypoint.sh
   - image_templates:
-      - 'iotserv/gateway:{{ .Tag }}'
-      - 'iotserv/gateway:v{{ .Major }}.{{ .Minor }}'
-      - 'iotserv/gateway:latest'
+      - 'openiothub/gateway:{{ .Tag }}'
+      - 'openiothub/gateway:v{{ .Major }}.{{ .Minor }}'
+      - 'openiothub/gateway:latest'
     dockerfile: Dockerfile
     binaries:
       - GateWay-go
