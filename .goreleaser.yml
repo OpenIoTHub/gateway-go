@@ -53,7 +53,7 @@ brews:
     homepage:  http://github.com/OpenIoTHub
     description: OpenIoTHub GateWay
     test: |
-      system "#{bin}/GateWay-go -v"
+      system "#{bin}/openiothub/gateway -v"
 scoop:
   bucket:
     owner: OpenIoTHub
@@ -67,7 +67,7 @@ nfpms:
     description: OpenIoTHub GateWay
     maintainer: OpenIoTHub <newfarry@126.com>
     license: MIT
-    vendor: GateWay-go
+    vendor: openiothub/gateway
     formats:
       - deb
       - rpm
@@ -86,7 +86,7 @@ dockers:
       - 'openiothub/gateway:latest'
     dockerfile: Dockerfile
     binaries:
-      - GateWay-go
+      - openiothub/gateway
     build_flag_templates:
       - "--pull"
       - "--label=org.opencontainers.image.created={{.Date}}"

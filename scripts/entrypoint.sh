@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-GateWay-go $@
+openiothub/gateway $@

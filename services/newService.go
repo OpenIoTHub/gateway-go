@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/OpenIoTHub/GateWay-go/connect/tapTun"
+	"github.com/OpenIoTHub/openiothub/gateway/connect/tapTun"
 	"github.com/OpenIoTHub/utils/models"
 	"net"
 )

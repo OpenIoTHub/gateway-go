@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/GateWay-go/services"
+	"github.com/OpenIoTHub/openiothub/gateway/services"
 	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"

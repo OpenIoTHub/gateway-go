@@ -3,9 +3,9 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	_ "github.com/OpenIoTHub/GateWay-go/component"
-	"github.com/OpenIoTHub/GateWay-go/config"
-	"github.com/OpenIoTHub/GateWay-go/services"
+	_ "github.com/OpenIoTHub/openiothub/gateway/component"
+	"github.com/OpenIoTHub/openiothub/gateway/config"
+	"github.com/OpenIoTHub/openiothub/gateway/services"
 	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/gorilla/mux"
