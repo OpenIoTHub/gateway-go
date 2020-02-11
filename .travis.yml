@@ -1,7 +1,10 @@
 language: go
 go: 1.13.x
 env:
-- GO111MODULE=on
+  matrix:
+  - GO111MODULE=on
+  global:
+    secure: bkkk9by6CEJzLiDcN9hFH55fOD/Vq0Wc5RZ7d61VXHEsMoMdQzISv0ZSPdjHyzhUsL7Yr0UeHLh6IS+8tnpwxH0jcNUktATJuHYL+5phf96LJK3/aNOoVzpR9m3WEUx3JFZ+Swe8X6iYK5Go6GZsKjtFMXMQyqtiLiN3SZFBqII7wY6z9D9ikNfqa1DbFAhpn8crIpzPa+Sx5KAHTJghkHX8kRzZMU/MH8+vv86A3v+hoKADUQ6mJR6yQwdpOgCm5iNoxqaqS6fdOkDhyHp9oLezDxtyDug5H688y9txJCbSgeVeqCSoAQtakCqwiLPwfFZyQJU59TofRwy1UjhcnhWeGXMpCI+3COJY00/4M9/GAnnKkxt/E9V8EWuzcqON+Co1RFPbw6BGGut7BitM22GGlCWuj/JkF7nQLc1BLOPoPiKZlz3n6xZHxnjCbiy/osT4r/i9J1Ko9m/jF3atAuhxkIAGlytEO+UlY2YPMcPRLgWt4y4Gw5Ie8xEwQPAJa+LdHW2IwZx1C3BwZ094H+gRoXuexao3zt856xYRIdlcnFFOhnnqvuZ+euFIyKauXDUvgd01i4jO/MypUN3j9eadq83zNXjHs8zqZM1IcQJw9rFL5Rp8Nln1bRT109awnWOE5/cddALzVBRJre77VnQmbCvdTxdO2PZs7K0nrh4=
 notifications:
   email:
     recipients:
