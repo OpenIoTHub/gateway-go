@@ -64,7 +64,7 @@ scoop:
 nfpms:
   - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
     homepage:  https://goreleaser.com
-    description: OpenIoTHub GateWay
+    description: OpenIoTHub GateWay.
     maintainer: OpenIoTHub <newfarry@126.com>
     license: MIT
     vendor: gateway-go
