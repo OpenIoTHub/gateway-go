@@ -62,8 +62,8 @@ scoop:
   description: OpenIoTHub GateWay
   license: MIT
 nfpms:
-  - name_template: '{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
-    homepage:  https://goreleaser.com
+  - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
+    homepage:  http://github.com/OpenIoTHub
     description: OpenIoTHub GateWay
     maintainer: OpenIoTHub <newfarry@126.com>
     license: MIT
@@ -72,7 +72,7 @@ nfpms:
       - deb
       - rpm
 snapcrafts:
-  - name_template: '{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
+  - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
     summary: OpenIoTHub GateWay
     description: |
       OpenIoTHub GateWay
