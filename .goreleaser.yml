@@ -77,7 +77,7 @@ snapcrafts:
     description: |
       OpenIoTHub GateWay
     grade: stable
-#    confinement: classic
+    confinement: classic
     publish: true
 dockers:
   - image_templates:
