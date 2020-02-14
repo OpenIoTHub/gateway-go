@@ -1,5 +1,10 @@
 FROM golang:1.13-alpine
 
+#默认的http api端口
+EXPOSE 1082
+#mdns端口
+EXPOSE 5353/udp
+
 RUN apk add --no-cache bash
 
 ENTRYPOINT ["/entrypoint.sh"]
