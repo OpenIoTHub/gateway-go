@@ -1,0 +1,10 @@
+explorer_token_http_port: 1082
+server:
+  connection_type: tcp
+  server_host: guonei.nat-cloud.com
+  tcp_port: 34320
+  kcp_port: 34320
+  udp_p2p_port: 34321
+  tls_port: 34321
+  login_key: HLLdsa544&*S
+last_id: 205778a8-2a36-4c46-afc6-fbb90ee3ca5f
