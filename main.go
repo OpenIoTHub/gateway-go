@@ -5,29 +5,33 @@ import (
 	client "github.com/OpenIoTHub/gateway-go/android"
 	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/utils/models"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"os"
 	"time"
 )
 
-func init() {
-	go client.Run()
-}
+var (
+	version = "dev"
+	commit  = ""
+	date    = ""
+	builtBy = ""
+)
 
 func main() {
 	configMode := models.ClientConfig{}
 
 	myApp := cli.NewApp()
-	myApp.Name = "client"
-	myApp.Usage = "-c [配置文件路径]"
-	myApp.Version = "v1.0.1"
+	myApp.Name = "gateway-go"
+	myApp.Usage = "-c [config file path]"
+	myApp.Version = fmt.Sprintf("%s(commit:%s,build on:%s,buildBy:%s)", version, commit, date, builtBy)
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
-		cli.StringFlag{
-			Name:   "config,c",
-			Value:  config.Setting["configFilePath"],
-			Usage:  "配置文件路径",
-			EnvVar: "Config_File_Path",
+		&cli.StringFlag{
+			Name:    "config",
+			Aliases: []string{"c"},
+			Value:   config.Setting["configFilePath"],
+			Usage:   "config file path",
+			EnvVars: []string{"GatewayConfigFilePath"},
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
@@ -40,6 +44,7 @@ func main() {
 		} else {
 			config.UseConfigFile(configMode)
 		}
+		go client.Run()
 		for {
 			time.Sleep(time.Hour)
 		}

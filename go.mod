@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/OpenIoTHub/utils v0.0.0-20200204142038-06957c395961
+	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
@@ -18,7 +19,7 @@ require (
 	github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161 // indirect
 	github.com/templexxx/xor v0.0.0-20181023030647-4e92f724b73b // indirect
 	github.com/tjfoc/gmsm v1.0.1 // indirect
-	github.com/urfave/cli v1.22.1
+	github.com/urfave/cli/v2 v2.1.1
 	github.com/xtaci/kcp-go v5.4.11+incompatible
 	github.com/xtaci/lossyconn v0.0.0-20190602105132-8df528c0c9ae // indirect
 	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
