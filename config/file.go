@@ -8,6 +8,8 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -41,7 +43,11 @@ func InitConfigFile(configMode models.ClientConfig) {
 	configMode.Server.LoginKey = "HLLdsa544&*S"
 
 	configMode.LastId = uuid.Must(uuid.NewV4()).String()
-	err := WriteConfigFile(configMode, Setting["configFilePath"])
+	err := os.MkdirAll(filepath.Dir(Setting["configFilePath"]), 0644)
+	if err != nil {
+		return
+	}
+	err = WriteConfigFile(configMode, Setting["configFilePath"])
 	if err == nil {
 		fmt.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", Setting["configFilePath"])
 		fmt.Println("你可以手动修改上述配置文件后再运行！")

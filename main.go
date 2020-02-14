@@ -41,9 +41,8 @@ func main() {
 		_, err := os.Stat(config.Setting["configFilePath"])
 		if err != nil {
 			config.InitConfigFile(configMode)
-		} else {
-			config.UseConfigFile(configMode)
 		}
+		config.UseConfigFile(configMode)
 		go client.Run()
 		for {
 			time.Sleep(time.Hour)
