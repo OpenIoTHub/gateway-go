@@ -35,7 +35,7 @@ $ scoop install gateway-go
 
 **deb/rpm**:
 
-Download the `.deb` or `.rpm` from the [releases page](./releases) and
+Download the `.deb` or `.rpm` from the [releases page][releases] and
 install with `dpkg -i` and `rpm -i` respectively.
 
 **Shell script**:
@@ -46,7 +46,7 @@ $ curl -sfL https://install.goreleaser.com/github.com/OpenIoTHub/gateway-go.sh |
 
 **manually**:
 
-Download the pre-compiled binaries from the [releases page](./releases) and
+Download the pre-compiled binaries from the [releases page][releases] and
 copy to the desired location.
 
 ## Running with Docker
