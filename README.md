@@ -1,5 +1,5 @@
 # gateway-go
-[![Build Status](https://travis-ci.org/OpenIoTHub/gateway-go.svg?branch=master)](https://travis-ci.org/OpenIoTHub/gateway-go)
+[![Build Status](https://travis-ci.com/OpenIoTHub/gateway-go.svg?branch=master)](https://travis-ci.com/OpenIoTHub/gateway-go)
 
 You can install the pre-compiled binary (in several different ways),
 use Docker.
