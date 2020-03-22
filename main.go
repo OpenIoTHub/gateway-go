@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	client "github.com/OpenIoTHub/gateway-go/android"
 	"github.com/OpenIoTHub/gateway-go/config"
+	client "github.com/OpenIoTHub/gateway-go/mobile"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/urfave/cli/v2"
 	"os"
