@@ -2,6 +2,7 @@ explorer_token_http_port: 1082
 server:
   connection_type: tcp
   server_host: guonei.nat-cloud.com
+#  server_host: 127.0.0.1
   tcp_port: 34320
   kcp_port: 34320
   udp_p2p_port: 34321

@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"strings"
@@ -17,7 +17,7 @@ func GetIntranetIp() string {
 	addrs, err := net.InterfaceAddrs()
 
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return intranetIps
 	}
 
@@ -26,7 +26,7 @@ func GetIntranetIp() string {
 		// 检查ip地址判断是否回环地址
 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			if ipnet.IP.To4() != nil {
-				//fmt.Println("ip:", ipnet.IP.String())
+				//log.Println("ip:", ipnet.IP.String())
 				if intranetIps == "" {
 					intranetIps = ipnet.IP.String()
 				} else {
@@ -128,7 +128,7 @@ func IsPublicIP(IP net.IP) bool {
 func IsChinaIP(IP net.IP) bool {
 	data, err := Asset("chn_ip.txt")
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return true
 	}
 	r := bytes.NewReader(data)
