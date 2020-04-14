@@ -3,10 +3,10 @@ package services
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/iotdevice/zeroconf"
+	"log"
 	"net"
 	"time"
 )
@@ -27,7 +27,7 @@ func findAllmDNS(stream net.Conn, service *models.NewService) error {
 	entries := make(chan *zeroconf.ServiceEntry)
 	go func(results <-chan *zeroconf.ServiceEntry) {
 		for entry := range results {
-			fmt.Println(entry)
+			log.Println(entry)
 			//TODO 去掉记录中ip不是本网段的ip
 			rst = append(rst, entry)
 		}
@@ -40,20 +40,20 @@ func findAllmDNS(stream net.Conn, service *models.NewService) error {
 		return err
 	}
 	<-ctx.Done()
-	//fmt.Println("获取完成：")
+	//log.Println("获取完成：")
 	//if len(rst) > 0 {
-	//	fmt.Println(rst[0])
+	//	log.Println(rst[0])
 	//}
 	rstByte, err := json.Marshal(&rst)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return err
 	}
-	fmt.Println(string(rstByte))
+	log.Println(string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
-		fmt.Println("写消息错误：")
-		fmt.Println(err.Error())
+		log.Println("写消息错误：")
+		log.Println(err.Error())
 	}
 	return err
 }

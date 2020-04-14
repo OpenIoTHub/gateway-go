@@ -6,6 +6,7 @@ import (
 	client "github.com/OpenIoTHub/gateway-go/mobile"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/urfave/cli/v2"
+	"log"
 	"os"
 	"time"
 )
@@ -50,6 +51,6 @@ func main() {
 	}
 	err := myApp.Run(os.Args)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
 }

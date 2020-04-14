@@ -8,6 +8,7 @@ import (
 	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
 	"github.com/xtaci/kcp-go"
+	"log"
 	"net"
 	"time"
 )
@@ -19,7 +20,7 @@ func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *
 	//监听一个随机端口号，接受P2P方的连接
 	localIps, localPort, externalIp, externalPort, listener, err := nettool.GetP2PListener(token)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	nettool.SendPackToPeer(listener, ctrlmMsg)
@@ -46,14 +47,14 @@ func kcpListener(listener *net.UDPConn, token *crypto.TokenClaims) {
 	kcplis.SetDeadline(time.Now().Add(time.Second * 5))
 	//为了防范风险，只接受一个kcp请求
 	//for {
-	fmt.Println("start p2p kcp accpet")
+	log.Println("start p2p kcp accpet")
 	kcpconn, err := kcplis.AcceptKCP()
 	if err != nil {
 		kcplis.Close()
 		if kcpconn != nil {
 			kcpconn.Close()
 		}
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	//配置
@@ -65,11 +66,11 @@ func kcpListener(listener *net.UDPConn, token *crypto.TokenClaims) {
 	kcpconn.SetMtu(1350)
 	kcpconn.SetACKNoDelay(true)
 
-	fmt.Println("accpeted")
-	fmt.Println(kcpconn.RemoteAddr())
+	log.Println("accpeted")
+	log.Println(kcpconn.RemoteAddr())
 	//b:=make([]byte,1024)
 	//n,err:=conn.Read(b)
-	//fmt.Println(string(b[0:n]))
+	//log.Println(string(b[0:n]))
 	//lis.Close()
 	//	从从conn中读取p2p另一方发来的认证消息，认证成功之后包装为mux服务端
 	err = kcplis.SetDeadline(time.Time{})
@@ -87,7 +88,7 @@ func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) error {
 	rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 	if err != nil {
 		kcpconn.Close()
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return err
 	}
 	switch m := rawMsg.(type) {
@@ -101,14 +102,14 @@ func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) error {
 			//config.EnableKeepAlive = false
 			session, err := mux.Server(kcpconn, config)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 			}
 			go dlSubSession(session, token)
 			fmt.Printf("Client作为Serverp2p打洞成功！")
 			return nil
 		}
 	default:
-		fmt.Println("获取到了一个未知的P2P握手消息")
+		log.Println("获取到了一个未知的P2P握手消息")
 		kcpconn.Close()
 		return fmt.Errorf("获取到了一个未知的P2P握手消息")
 	}

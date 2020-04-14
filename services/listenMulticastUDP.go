@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"github.com/OpenIoTHub/utils/io"
 	"github.com/OpenIoTHub/utils/models"
 	"log"
@@ -16,7 +15,7 @@ func listenMulticastUDP(stream net.Conn, service *models.NewService) error {
 	}
 	portInt, err := strconv.Atoi(port)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return err
 	}
 	l, err := net.ListenMulticastUDP("udp4", nil, &net.UDPAddr{

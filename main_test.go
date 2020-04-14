@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"testing"
 )
 
 func TestMain(m *testing.M) {
-	fmt.Println("ok!!!")
+	log.Println("ok!!!")
 }

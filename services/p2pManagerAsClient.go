@@ -8,6 +8,7 @@ import (
 	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
 	"github.com/xtaci/kcp-go"
+	"log"
 	"net"
 	"strconv"
 	"strings"
@@ -30,12 +31,12 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 	//}
 	localAddr, ip, port, err := nettool.GetDialIpPort(token)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	localPort, err := strconv.Atoi(strings.Split(localAddr.String(), ":")[1])
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	msgsd := &models.ReqNewP2PCtrl{
@@ -46,12 +47,12 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 	}
 	err = msg.WriteMsg(stream, msgsd)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	switch m := rawMsg.(type) {
@@ -89,14 +90,14 @@ func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
 			err = msg.WriteMsg(kcpconn, &models.Ping{})
 			if err != nil {
 				kcpconn.Close()
-				fmt.Println(err)
+				log.Println(err)
 				return
 			}
 
 			rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 			if err != nil {
 				kcpconn.Close()
-				fmt.Println(err)
+				log.Println(err)
 				return
 			}
 			switch m := rawMsg.(type) {

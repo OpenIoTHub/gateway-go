@@ -1,7 +1,7 @@
 package connect
 
 import (
-	"fmt"
+	"log"
 	"net"
 	"time"
 	//"github.com/xtaci/smux"
@@ -16,7 +16,7 @@ func CheckTcpUdpTls(connType, addr string) (int, string) {
 		if c != nil {
 			err = c.Close()
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 			}
 		}
 	}()

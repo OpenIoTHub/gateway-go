@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/iotdevice/zeroconf"
 	"github.com/satori/go.uuid"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -124,7 +125,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		LastId: ConfigMode.LastId,
 	}, config.Setting["configFilePath"])
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
 	response := Response{
 		Code: 0,

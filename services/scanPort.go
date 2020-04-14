@@ -2,9 +2,9 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
+	"log"
 	"net"
 )
 
@@ -48,7 +48,7 @@ func scanPort(stream net.Conn, service *models.NewService) error {
 		needBreak := false
 		select {
 		case <-out:
-			//fmt.Println(collect)
+			//log.Println(collect)
 			needBreak = true
 		default:
 			ip := net.ParseIP(config.Host)
@@ -64,14 +64,14 @@ func scanPort(stream net.Conn, service *models.NewService) error {
 	}
 	rstByte, err := json.Marshal(&collect)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		return err
 	}
-	//fmt.Println(string(rstByte))
+	//log.Println(string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
-		fmt.Println("写消息错误：")
-		fmt.Println(err.Error())
+		log.Println("写消息错误：")
+		log.Println(err.Error())
 	}
 	return err
 }

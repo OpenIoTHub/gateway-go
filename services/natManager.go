@@ -6,6 +6,8 @@ import (
 	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
+	"log"
+
 	//"github.com/OpenIoTHub/utils/io"
 	"github.com/jacobsa/go-serial/serial"
 	"net"
@@ -25,7 +27,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 		}
 		err = stream.Close()
 		if err != nil {
-			fmt.Println(err.Error())
+			log.Println(err.Error())
 		}
 	}()
 	rawMsg, err := msg.ReadMsg(stream)
@@ -40,7 +42,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("tcp")
 			err = connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -49,7 +51,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("stcp")
 			err = connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -58,7 +60,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("udp")
 			err = connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -67,7 +69,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("sertp")
 			err = connect.JoinSerialPort(stream, serial.OpenOptions(*m))
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -77,7 +79,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("wstp")
 			err = connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -87,7 +89,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("wsstp")
 			err = connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -96,7 +98,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("ssh")
 			err = connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -105,7 +107,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("service")
 			err = serviceHdl(stream, m)
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 		}
@@ -131,7 +133,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 
 	case *models.RequestNewWorkConn:
 		{
-			fmt.Println("server请求一个新的工作连接")
+			log.Println("server请求一个新的工作连接")
 			stream.Close()
 			go newWorkConn(tokenModel)
 		}
@@ -141,7 +143,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 			//fmt.Printf("Ping from server")
 			err = msg.WriteMsg(stream, &models.Pong{})
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 			}
 		}
 
@@ -167,7 +169,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
 		{
-			//fmt.Println("CheckStatusRequest")
+			//log.Println("CheckStatusRequest")
 			switch m.Type {
 			case "tcp", "udp", "tls":
 				{
@@ -177,7 +179,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 						Message: message,
 					})
 					if err != nil {
-						fmt.Println(err.Error())
+						log.Println(err.Error())
 					}
 				}
 			default:
@@ -186,7 +188,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 					Message: "type not support",
 				})
 				if err != nil {
-					fmt.Println(err.Error())
+					log.Println(err.Error())
 				}
 			}
 			stream.Close()
@@ -201,7 +203,7 @@ func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 		if session != nil {
 			err := session.Close()
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 			}
 		}
 		go func() {
@@ -220,10 +222,10 @@ func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 		// Accept a stream
 		stream, err := session.AcceptStream()
 		if err != nil {
-			fmt.Println("accpStreamErr：" + err.Error())
+			log.Println("accpStreamErr：" + err.Error())
 			break
 		}
-		fmt.Println("获取到一个连接需要处理")
+		log.Println("获取到一个连接需要处理")
 		go dlstream(stream, tokenModel)
 	}
 }
@@ -233,7 +235,7 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 		if session != nil {
 			err := session.Close()
 			if err != nil {
-				fmt.Println(err.Error())
+				log.Println(err.Error())
 			}
 		}
 	}()
@@ -241,7 +243,7 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 	//go func() {
 	//	err := io.CheckSession(session)
 	//	if err != nil{
-	//		fmt.Println(err.Error())
+	//		log.Println(err.Error())
 	//		if session != nil{
 	//			session.Close()
 	//		}
@@ -254,7 +256,7 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 			fmt.Printf("accpStream" + err.Error())
 			break
 		}
-		//fmt.Println("Sub Session获取到一个stream处理")
+		//log.Println("Sub Session获取到一个stream处理")
 		go dlstream(stream, tokenModel)
 	}
 	fmt.Printf("exit sub session")
@@ -263,11 +265,11 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 func newWorkConn(tokenModel *crypto.TokenClaims) {
 	conn, err := LoginWorkConn(tokenModel)
 	if err != nil {
-		fmt.Println("创建一个到服务端的新的工作连接失败：")
-		fmt.Println(err.Error())
+		log.Println("创建一个到服务端的新的工作连接失败：")
+		log.Println(err.Error())
 		return
 	}
-	fmt.Println("创建一个到服务端的新的工作连接成功！")
+	log.Println("创建一个到服务端的新的工作连接成功！")
 	go dlstream(conn, tokenModel)
 }
 
@@ -277,7 +279,7 @@ func RunNATManager(salt, token string) (err error) {
 	lastSalt, lastToken = salt, token
 	session, _, tokenModel, err = Login(salt, token)
 	if err != nil {
-		//fmt.Println("登录失败：" + err.Error())
+		//log.Println("登录失败：" + err.Error())
 		return err
 	}
 	go dlsession(session, tokenModel)

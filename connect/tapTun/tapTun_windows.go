@@ -2,10 +2,10 @@ package tapTun
 
 import (
 	"errors"
-	"fmt"
 	"github.com/OpenIoTHub/utils/io"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/songgao/water"
+	"log"
 	"net"
 	"os/exec"
 )
@@ -24,7 +24,7 @@ func NewTap(stream net.Conn, service *models.NewService) error {
 		return err
 	}
 	ifaceName := ifce.Name()
-	fmt.Println("虚拟网卡名称：", ifaceName)
+	log.Println("虚拟网卡名称：", ifaceName)
 	cmd := exec.Command("netsh", "interface", "ip", "set", "address",
 		"name", "=", ifaceName, "source", "=", "static", "addr", "=", "192.168.69.1", "mask", "=", "255.255.255.0", "gateway", "=", "none")
 	err = cmd.Run()

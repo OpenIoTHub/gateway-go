@@ -5,6 +5,7 @@ import (
 	"fmt"
 	nettool "github.com/OpenIoTHub/utils/net"
 	"github.com/surgemq/surgemq/service"
+	"log"
 	"runtime"
 )
 
@@ -17,13 +18,13 @@ func init() {
 		var model = "com.iotserv.services.mqttd"
 		port, err := nettool.GetOneFreeTcpPort()
 		if err != nil {
-			fmt.Println(err.Error())
+			log.Println(err.Error())
 			return
 		}
 		//TODO 判断本网络是否已经存在此类型的组件，存在则不启动
 		exist, err := nettool.CheckComponentExist(model)
 		if err != nil {
-			fmt.Println(err.Error())
+			log.Println(err.Error())
 		}
 		if exist {
 			fmt.Printf("本网络已经存在了%s组件，不启动\n", model)

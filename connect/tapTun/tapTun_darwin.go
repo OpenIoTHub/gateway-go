@@ -1,7 +1,6 @@
 package tapTun
 
 import (
-	"fmt"
 	"github.com/OpenIoTHub/utils/io"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/songgao/water"
@@ -23,7 +22,7 @@ func NewTap(stream net.Conn, service *models.NewService) error {
 		return err
 	}
 	ifaceName := ifce.Name()
-	fmt.Println("ifaceName", ifaceName)
+	log.Println("ifaceName", ifaceName)
 	cmd := exec.Command("ifconfig", ifaceName, "192.168.69.1", "netmask", "255.255.255.0", "broadcast", "192.168.69.255", "up")
 	err = cmd.Run()
 	if err != nil {
