@@ -6,7 +6,6 @@ import (
 	_ "github.com/OpenIoTHub/gateway-go/component"
 	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/gorilla/mux"
 	"github.com/iotdevice/zeroconf"
@@ -85,7 +84,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		w.Write(responseJson)
 		return
 	}
-	clientToken, err := crypto.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
+	clientToken, err := models.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
 		kcpP, tlsP, udpApiP, 1, 200000000000)
 	if err != nil {
 		response := Response{
@@ -109,7 +108,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	config.Loged = true
-	config.Setting["explorerToken"], err = crypto.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
+	config.Setting["explorerToken"], err = models.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
 		kcpP, tlsP, udpApiP, 2, 200000000000)
 	err = config.WriteConfigFile(models.ClientConfig{
 		ExplorerTokenHttpPort: ConfigMode.ExplorerTokenHttpPort,

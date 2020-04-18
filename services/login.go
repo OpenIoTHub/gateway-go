@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/mux"
@@ -13,11 +12,11 @@ import (
 
 var ServerIp string
 
-func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, error) { //bool retry? false :dont retry
-	token, err := crypto.DecodeToken(salt, tokenstr)
+func Login(salt, tokenstr string) (*mux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
+	token, err := models.DecodeToken(salt, tokenstr)
 	if err != nil {
 		fmt.Printf(err.Error())
-		return nil, false, &crypto.TokenClaims{}, err
+		return nil, false, &models.TokenClaims{}, err
 	}
 	ServerIp = token.Host
 	//KCP方式
@@ -35,7 +34,7 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, erro
 	if err != nil {
 		return nil, true, token, err
 	}
-	login := &models.Login{
+	login := &models.GatewayLogin{
 		Token: tokenstr,
 		Os:    runtime.GOOS,
 		Arch:  runtime.GOARCH,
@@ -57,7 +56,7 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *crypto.TokenClaims, erro
 	return session, false, token, nil
 }
 
-func LoginWorkConn(token *crypto.TokenClaims) (net.Conn, error) {
+func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
 	ServerIp = token.Host
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", ServerIp, token.KcpPort), nil, 10, 3)
@@ -74,7 +73,7 @@ func LoginWorkConn(token *crypto.TokenClaims) (net.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	loginWorkConn := &models.NewWorkConn{
+	loginWorkConn := &models.GatewayWorkConn{
 		RunId:  token.RunId,
 		Secret: "",
 	}

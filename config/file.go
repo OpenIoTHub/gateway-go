@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/services"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
@@ -75,7 +74,7 @@ func UseConfigFile(configMode models.ClientConfig) {
 	if len(configMode.LastId) < 35 {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	Setting["clientToken"], err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	Setting["clientToken"], err = models.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
@@ -88,7 +87,7 @@ func UseConfigFile(configMode models.ClientConfig) {
 		return
 	}
 	fmt.Printf("登陆成功！\n")
-	Setting["explorerToken"], err = crypto.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
+	Setting["explorerToken"], err = models.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
 		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
 	if err != nil {
 		log.Println(err.Error())

@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/connect"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"log"
@@ -19,7 +18,7 @@ import (
 
 var lastSalt, lastToken string
 
-func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
+func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	var err error
 	defer func() {
 		if err == nil || stream == nil {
@@ -115,7 +114,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 		{
 			//:TODO 新创建一个全新的子连接
 			fmt.Printf("newSubSession")
-			//snappyConn, err := cryptoSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
+			//snappyConn, err := modelsSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
 			//if err != nil {
 			//	fmt.Printf(err.Error())
 			//	stream.Close()
@@ -198,7 +197,7 @@ func dlstream(stream net.Conn, tokenModel *crypto.TokenClaims) {
 	}
 }
 
-func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
+func dlsession(session *mux.Session, tokenModel *models.TokenClaims) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -230,7 +229,7 @@ func dlsession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 	}
 }
 
-func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
+func dlSubSession(session *mux.Session, tokenModel *models.TokenClaims) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -262,7 +261,7 @@ func dlSubSession(session *mux.Session, tokenModel *crypto.TokenClaims) {
 	fmt.Printf("exit sub session")
 }
 
-func newWorkConn(tokenModel *crypto.TokenClaims) {
+func newWorkConn(tokenModel *models.TokenClaims) {
 	conn, err := LoginWorkConn(tokenModel)
 	if err != nil {
 		log.Println("创建一个到服务端的新的工作连接失败：")
@@ -275,7 +274,7 @@ func newWorkConn(tokenModel *crypto.TokenClaims) {
 
 func RunNATManager(salt, token string) (err error) {
 	var session *mux.Session
-	var tokenModel *crypto.TokenClaims
+	var tokenModel *models.TokenClaims
 	lastSalt, lastToken = salt, token
 	session, _, tokenModel, err = Login(salt, token)
 	if err != nil {

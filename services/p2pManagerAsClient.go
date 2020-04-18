@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/mux"
@@ -20,7 +19,7 @@ type connectedUDPConn struct{ *net.UDPConn }
 func (c *connectedUDPConn) WriteTo(b []byte, addr net.Addr) (int, error) { return c.Write(b) }
 
 //作为客户端主动去连接内网client的方式创建穿透连接
-func MakeP2PSessionAsClient(stream net.Conn, token *crypto.TokenClaims) {
+func MakeP2PSessionAsClient(stream net.Conn, token *models.TokenClaims) {
 	if stream != nil {
 		defer stream.Close()
 	}

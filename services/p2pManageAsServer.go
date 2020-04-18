@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/utils/crypto"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/mux"
@@ -16,7 +15,7 @@ import (
 //var ExternalPort int
 //var SendPackReqChan = make(chan *models.SendUdpPackReq,10)
 
-func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *crypto.TokenClaims) {
+func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *models.TokenClaims) {
 	//监听一个随机端口号，接受P2P方的连接
 	localIps, localPort, externalIp, externalPort, listener, err := nettool.GetP2PListener(token)
 	if err != nil {
@@ -38,7 +37,7 @@ func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *
 }
 
 //TODO：listener转kcp服务侦听
-func kcpListener(listener *net.UDPConn, token *crypto.TokenClaims) {
+func kcpListener(listener *net.UDPConn, token *models.TokenClaims) {
 	kcplis, err := kcp.ServeConn(nil, 10, 3, listener)
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -84,7 +83,7 @@ func kcpListener(listener *net.UDPConn, token *crypto.TokenClaims) {
 	//}
 }
 
-func kcpConnHdl(kcpconn net.Conn, token *crypto.TokenClaims) error {
+func kcpConnHdl(kcpconn net.Conn, token *models.TokenClaims) error {
 	rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
 	if err != nil {
 		kcpconn.Close()
