@@ -3,7 +3,7 @@ module github.com/OpenIoTHub/gateway-go
 go 1.13
 
 require (
-	github.com/OpenIoTHub/utils v0.0.0-20200418155308-5dfa8066f4d6
+	github.com/OpenIoTHub/utils v0.0.0-20200419073446-65f594ffa254
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
@@ -17,7 +17,8 @@ require (
 	github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161 // indirect
 	github.com/templexxx/xor v0.0.0-20181023030647-4e92f724b73b // indirect
 	github.com/urfave/cli/v2 v2.1.1
-	github.com/xtaci/kcp-go v5.4.11+incompatible
+	github.com/xtaci/kcp-go v5.4.11+incompatible // indirect
+	github.com/xtaci/kcp-go/v5 v5.5.12
 	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413
 	golang.org/x/mobile v0.0.0-20200222142934-3c8601c510d0 // indirect
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553

@@ -1,4 +1,4 @@
-# github.com/OpenIoTHub/utils v0.0.0-20200418155308-5dfa8066f4d6
+# github.com/OpenIoTHub/utils v0.0.0-20200419073446-65f594ffa254
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models
 github.com/OpenIoTHub/utils/msg
@@ -50,18 +50,12 @@ github.com/surgemq/surgemq/sessions
 github.com/surgemq/surgemq/topics
 # github.com/templexxx/cpu v0.0.1
 github.com/templexxx/cpu
-# github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161
-github.com/templexxx/cpufeat
-# github.com/templexxx/xor v0.0.0-20181023030647-4e92f724b73b
-github.com/templexxx/xor
 # github.com/templexxx/xorsimd v0.4.1
 github.com/templexxx/xorsimd
 # github.com/tjfoc/gmsm v1.0.1
 github.com/tjfoc/gmsm/sm4
 # github.com/urfave/cli/v2 v2.1.1
 github.com/urfave/cli/v2
-# github.com/xtaci/kcp-go v5.4.11+incompatible
-github.com/xtaci/kcp-go
 # github.com/xtaci/kcp-go/v5 v5.5.12
 github.com/xtaci/kcp-go/v5
 # golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413 => github.com/golang/crypto v0.0.0-20191011191535-87dc89f01550

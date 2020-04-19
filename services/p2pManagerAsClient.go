@@ -6,43 +6,27 @@ import (
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
-	"github.com/xtaci/kcp-go"
+	"github.com/xtaci/kcp-go/v5"
 	"log"
 	"net"
-	"strconv"
-	"strings"
 	"time"
 )
-
-type connectedUDPConn struct{ *net.UDPConn }
-
-func (c *connectedUDPConn) WriteTo(b []byte, addr net.Addr) (int, error) { return c.Write(b) }
 
 //作为客户端主动去连接内网client的方式创建穿透连接
 func MakeP2PSessionAsClient(stream net.Conn, token *models.TokenClaims) {
 	if stream != nil {
 		defer stream.Close()
 	}
-	//stream, err := session.OpenStream()
-	//if err != nil {
-	//	fmt.Printf("get session" + err.Error())
-	//	return nil
-	//}
-	localAddr, ip, port, err := nettool.GetDialIpPort(token)
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-	localPort, err := strconv.Atoi(strings.Split(localAddr.String(), ":")[1])
+	ExternalUDPAddr, listener, err := nettool.GetP2PListener(token)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	msgsd := &models.ReqNewP2PCtrl{
-		IntranetIp:   nettool.GetIntranetIp(),
-		IntranetPort: localPort,
-		ExternalIp:   ip,
-		ExternalPort: port,
+		IntranetIp:   listener.LocalAddr().(*net.UDPAddr).IP.String(),
+		IntranetPort: listener.LocalAddr().(*net.UDPAddr).Port,
+		ExternalIp:   ExternalUDPAddr.IP.String(),
+		ExternalPort: ExternalUDPAddr.Port,
 	}
 	err = msg.WriteMsg(stream, msgsd)
 	if err != nil {
@@ -59,22 +43,7 @@ func MakeP2PSessionAsClient(stream net.Conn, token *models.TokenClaims) {
 		{
 			fmt.Printf("remote net info")
 			//TODO:认证；同内网直连；抽象出公共函数？
-			//kcpconn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", m.ExternalIp, m.ExternalPort), nil, 10, 3)
-			raddr := fmt.Sprintf("%s:%d", m.ExternalIp, m.ExternalPort)
-			udpaddr, err := net.ResolveUDPAddr("udp", raddr)
-			if err != nil {
-				return
-			}
-			laddr, err := net.ResolveUDPAddr("udp", localAddr.String())
-			if err != nil {
-				return
-			}
-			udpconn, err := net.DialUDP("udp", laddr, udpaddr)
-			if err != nil {
-				return
-			}
-
-			kcpconn, err := kcp.NewConn(raddr, nil, 10, 3, &connectedUDPConn{udpconn})
+			kcpconn, err := kcp.NewConn(ExternalUDPAddr.String(), nil, 10, 3, listener)
 			//设置
 			kcpconn.SetStreamMode(true)
 			kcpconn.SetWriteDelay(false)

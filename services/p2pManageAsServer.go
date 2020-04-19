@@ -6,7 +6,7 @@ import (
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
-	"github.com/xtaci/kcp-go"
+	"github.com/xtaci/kcp-go/v5"
 	"log"
 	"net"
 	"time"
@@ -17,7 +17,7 @@ import (
 
 func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *models.TokenClaims) {
 	//监听一个随机端口号，接受P2P方的连接
-	localIps, localPort, externalIp, externalPort, listener, err := nettool.GetP2PListener(token)
+	externalUDPAddr, listener, err := nettool.GetP2PListener(token)
 	if err != nil {
 		log.Println(err)
 		return
@@ -27,10 +27,10 @@ func NewP2PCtrlAsServer(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrl, token *
 	go kcpListener(listener, token)
 	//TODO：发送认证码用于后续校验
 	msg.WriteMsg(stream, &models.RemoteNetInfo{
-		IntranetIp:   localIps,
-		IntranetPort: localPort,
-		ExternalIp:   externalIp,
-		ExternalPort: externalPort,
+		IntranetIp:   listener.LocalAddr().(*net.UDPAddr).IP.String(),
+		IntranetPort: listener.LocalAddr().(*net.UDPAddr).Port,
+		ExternalIp:   externalUDPAddr.IP.String(),
+		ExternalPort: externalUDPAddr.Port,
 	})
 	//TODO:这里控制连接的处理？
 	stream.Close()
@@ -67,10 +67,6 @@ func kcpListener(listener *net.UDPConn, token *models.TokenClaims) {
 
 	log.Println("accpeted")
 	log.Println(kcpconn.RemoteAddr())
-	//b:=make([]byte,1024)
-	//n,err:=conn.Read(b)
-	//log.Println(string(b[0:n]))
-	//lis.Close()
 	//	从从conn中读取p2p另一方发来的认证消息，认证成功之后包装为mux服务端
 	err = kcplis.SetDeadline(time.Time{})
 	if err != nil {
