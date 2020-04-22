@@ -19,7 +19,7 @@ func NewTap(stream net.Conn, service *models.NewService) error {
 	config := water.Config{
 		DeviceType: water.TAP,
 	}
-	config.Name = "nat-cloud-client" + fmt.Sprintf("-%d", time.Now().UTC().Unix())
+	config.Name = "OpenIoTHub" + fmt.Sprintf("-%d", time.Now().UTC().Unix())
 	ifce, err := water.New(config)
 	if err != nil {
 		return err
