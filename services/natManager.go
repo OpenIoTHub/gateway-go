@@ -13,7 +13,7 @@ import (
 	"time"
 
 	//"github.com/xtaci/smux"
-	"github.com/OpenIoTHub/utils/mux"
+	"github.com/libp2p/go-yamux"
 )
 
 var lastSalt, lastToken string
@@ -120,9 +120,9 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 			//	stream.Close()
 			//	return
 			//}
-			config := mux.DefaultConfig()
+			config := yamux.DefaultConfig()
 			//config.EnableKeepAlive = false
-			session, err := mux.Server(stream, config)
+			session, err := yamux.Server(stream, config)
 			if err != nil {
 				stream.Close()
 				return
@@ -197,7 +197,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	}
 }
 
-func dlsession(session *mux.Session, tokenModel *models.TokenClaims) {
+func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -229,7 +229,7 @@ func dlsession(session *mux.Session, tokenModel *models.TokenClaims) {
 	}
 }
 
-func dlSubSession(session *mux.Session, tokenModel *models.TokenClaims) {
+func dlSubSession(session *yamux.Session, tokenModel *models.TokenClaims) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -273,7 +273,7 @@ func newWorkConn(tokenModel *models.TokenClaims) {
 }
 
 func RunNATManager(salt, token string) (err error) {
-	var session *mux.Session
+	var session *yamux.Session
 	var tokenModel *models.TokenClaims
 	lastSalt, lastToken = salt, token
 	session, _, tokenModel, err = Login(salt, token)

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
-	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
+	"github.com/libp2p/go-yamux"
 	"github.com/xtaci/kcp-go/v5"
 	"log"
 	"net"
@@ -74,9 +74,9 @@ func MakeP2PSessionAsClient(stream net.Conn, token *models.TokenClaims) {
 					fmt.Printf("get pong from p2p kcpconn")
 					_ = m
 					//TODO:认证
-					config := mux.DefaultConfig()
+					config := yamux.DefaultConfig()
 					//config.EnableKeepAlive = false
-					p2pSubSession, err := mux.Server(kcpconn, config)
+					p2pSubSession, err := yamux.Server(kcpconn, config)
 					if err != nil {
 						if p2pSubSession != nil {
 							p2pSubSession.Close()

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
-	"github.com/OpenIoTHub/utils/mux"
 	"github.com/OpenIoTHub/utils/net"
+	"github.com/libp2p/go-yamux"
 	"github.com/xtaci/kcp-go/v5"
 	"log"
 	"net"
@@ -93,9 +93,9 @@ func kcpConnHdl(kcpconn net.Conn, token *models.TokenClaims) error {
 			fmt.Printf("P2P握手ping")
 			_ = m
 			msg.WriteMsg(kcpconn, &models.Pong{})
-			config := mux.DefaultConfig()
+			config := yamux.DefaultConfig()
 			//config.EnableKeepAlive = false
-			session, err := mux.Server(kcpconn, config)
+			session, err := yamux.Server(kcpconn, config)
 			if err != nil {
 				log.Println(err.Error())
 			}

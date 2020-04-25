@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
-	"github.com/OpenIoTHub/utils/mux"
+	"github.com/libp2p/go-yamux"
 	"net"
 	"runtime"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 
 var ServerIp string
 
-func Login(salt, tokenstr string) (*mux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
+func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
 	token, err := models.DecodeToken(salt, tokenstr)
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -45,9 +45,9 @@ func Login(salt, tokenstr string) (*mux.Session, bool, *models.TokenClaims, erro
 		conn.Close()
 		return nil, true, token, err
 	}
-	config := mux.DefaultConfig()
+	config := yamux.DefaultConfig()
 	//config.EnableKeepAlive = false
-	session, err := mux.Server(conn, config)
+	session, err := yamux.Server(conn, config)
 	if err != nil {
 		conn.Close()
 		return nil, false, token, err

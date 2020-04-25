@@ -8,6 +8,7 @@ require (
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
+	github.com/libp2p/go-yamux v1.3.6
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
 	github.com/songgao/water v0.0.0-20190725173103-fd331bda3f4b
 	github.com/stretchr/testify v1.4.0 // indirect
