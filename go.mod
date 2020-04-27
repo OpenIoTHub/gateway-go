@@ -3,7 +3,7 @@ module github.com/OpenIoTHub/gateway-go
 go 1.13
 
 require (
-	github.com/OpenIoTHub/utils v0.0.0-20200427092359-ec5e508ea855
+	github.com/OpenIoTHub/utils v0.0.0-20200427165850-2bada5984ef6
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/iotdevice/zeroconf v0.1.0

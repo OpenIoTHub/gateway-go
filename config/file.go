@@ -74,8 +74,7 @@ func UseConfigFile(configMode models.GatewayConfig) {
 	if len(configMode.LastId) < 35 {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	Setting["clientToken"], err = models.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
-		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 1, 200000000000)
+	Setting["clientToken"], err = models.GetToken(configMode, 1, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -87,8 +86,7 @@ func UseConfigFile(configMode models.GatewayConfig) {
 		return
 	}
 	fmt.Printf("登陆成功！\n")
-	Setting["explorerToken"], err = models.GetToken(configMode.Server.LoginKey, configMode.LastId, configMode.Server.ServerHost, configMode.Server.TcpPort,
-		configMode.Server.KcpPort, configMode.Server.TlsPort, configMode.Server.UdpApiPort, 2, 200000000000)
+	Setting["explorerToken"], err = models.GetToken(configMode, 2, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return

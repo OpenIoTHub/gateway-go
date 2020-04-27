@@ -68,9 +68,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
 
-	clientToken, err := models.GetToken(ConfigMode.Server.LoginKey, ConfigMode.LastId, ConfigMode.Server.ServerHost,
-		ConfigMode.Server.TcpPort, ConfigMode.Server.KcpPort, ConfigMode.Server.TlsPort, ConfigMode.Server.UdpApiPort,
-		1, 200000000000)
+	clientToken, err := models.GetToken(*ConfigMode, 1, 200000000000)
 	if err != nil {
 		response := Response{
 			Code: 1,
@@ -93,22 +91,8 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	config.Loged = true
-	config.Setting["explorerToken"], err = models.GetToken(ConfigMode.Server.LoginKey, ConfigMode.LastId, ConfigMode.Server.ServerHost,
-		ConfigMode.Server.TcpPort, ConfigMode.Server.KcpPort, ConfigMode.Server.TlsPort, ConfigMode.Server.UdpApiPort,
-		2, 200000000000)
-	err = config.WriteConfigFile(models.GatewayConfig{
-		ExplorerTokenHttpPort: ConfigMode.ExplorerTokenHttpPort,
-		Server: models.Srever{
-			ConnectionType: ConfigMode.Server.ConnectionType,
-			ServerHost:     ConfigMode.Server.ServerHost,
-			TcpPort:        ConfigMode.Server.TcpPort,
-			KcpPort:        ConfigMode.Server.KcpPort,
-			UdpApiPort:     ConfigMode.Server.UdpApiPort,
-			TlsPort:        ConfigMode.Server.TlsPort,
-			LoginKey:       ConfigMode.Server.LoginKey,
-		},
-		LastId: ConfigMode.LastId,
-	}, config.Setting["configFilePath"])
+	config.Setting["explorerToken"], err = models.GetToken(*ConfigMode, 2, 200000000000)
+	err = config.WriteConfigFile(*ConfigMode, config.Setting["configFilePath"])
 	if err != nil {
 		log.Println(err.Error())
 	}
