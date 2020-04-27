@@ -1,4 +1,4 @@
-explorer_token_http_port: 1082
+http_api_port: 1082
 server:
   connection_type: tcp
   server_host: 127.0.0.1
@@ -6,5 +6,6 @@ server:
   kcp_port: 34320
   udp_p2p_port: 34321
   tls_port: 34321
+  grpc_port: 0
   login_key: HLLdsa544&*S
-last_id: 205778a8-2a36-4c46-afc6-fbb90ee3ca5f
+last_id: 0b46d631-23b1-4c87-a70b-1e6f2c436a49
