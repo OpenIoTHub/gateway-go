@@ -15,21 +15,7 @@ import (
 	"strconv"
 )
 
-var ConfigMode *models.ClientFlat
-
-func init() {
-	ConfigMode = &models.ClientFlat{
-		1082,
-		uuid.Must(uuid.NewV4()).String(),
-		"tcp",
-		"guonei.nat-cloud.com",
-		"34320",
-		"34320",
-		"34321",
-		"34321",
-		"HLLdsa544&*S",
-	}
-}
+var ConfigMode *models.GatewayConfig
 
 func Run() {
 	port, _ := strconv.Atoi(config.Setting["apiPort"])
@@ -48,6 +34,7 @@ func Run() {
 }
 
 func loginServer(w http.ResponseWriter, r *http.Request) {
+	var err error
 	if config.Loged {
 		response := Response{
 			Code: 1,
@@ -63,17 +50,27 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 	//err := json.Unmarshal(body, &ConfigMode)
 	r.ParseForm()
 	ConfigMode.LastId = r.FormValue("last_id")
-	ConfigMode.ServerHost = r.FormValue("server_host")
-	ConfigMode.TcpPort = r.FormValue("tcp_port")
-	ConfigMode.UdpApiPort = r.FormValue("udp_p2p_port")
-	ConfigMode.LoginKey = r.FormValue("login_key")
+	ConfigMode.Server.ServerHost = r.FormValue("server_host")
+	ConfigMode.Server.TcpPort, err = strconv.Atoi(r.FormValue("tcp_port"))
+	ConfigMode.Server.UdpApiPort, err = strconv.Atoi(r.FormValue("udp_p2p_port"))
+	if err != nil {
+		response := Response{
+			Code: 1,
+			Msg:  err.Error(),
+		}
+		responseJson, _ := json.Marshal(response)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(responseJson)
+		return
+	}
+	ConfigMode.Server.LoginKey = r.FormValue("login_key")
 	if ConfigMode.LastId == "" {
 		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	tcpP, err := strconv.Atoi(ConfigMode.TcpPort)
-	kcpP, err := strconv.Atoi(ConfigMode.KcpPort)
-	tlsP, err := strconv.Atoi(ConfigMode.TlsPort)
-	udpApiP, err := strconv.Atoi(ConfigMode.UdpApiPort)
+
+	clientToken, err := models.GetToken(ConfigMode.Server.LoginKey, ConfigMode.LastId, ConfigMode.Server.ServerHost,
+		ConfigMode.Server.TcpPort, ConfigMode.Server.KcpPort, ConfigMode.Server.TlsPort, ConfigMode.Server.UdpApiPort,
+		1, 200000000000)
 	if err != nil {
 		response := Response{
 			Code: 1,
@@ -84,19 +81,7 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		w.Write(responseJson)
 		return
 	}
-	clientToken, err := models.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
-		kcpP, tlsP, udpApiP, 1, 200000000000)
-	if err != nil {
-		response := Response{
-			Code: 1,
-			Msg:  err.Error(),
-		}
-		responseJson, _ := json.Marshal(response)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(responseJson)
-		return
-	}
-	err = services.RunNATManager(ConfigMode.LoginKey, clientToken)
+	err = services.RunNATManager(ConfigMode.Server.LoginKey, clientToken)
 	if err != nil {
 		response := Response{
 			Code: 1,
@@ -108,18 +93,19 @@ func loginServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	config.Loged = true
-	config.Setting["explorerToken"], err = models.GetToken(ConfigMode.LoginKey, ConfigMode.LastId, ConfigMode.ServerHost, tcpP,
-		kcpP, tlsP, udpApiP, 2, 200000000000)
-	err = config.WriteConfigFile(models.ClientConfig{
+	config.Setting["explorerToken"], err = models.GetToken(ConfigMode.Server.LoginKey, ConfigMode.LastId, ConfigMode.Server.ServerHost,
+		ConfigMode.Server.TcpPort, ConfigMode.Server.KcpPort, ConfigMode.Server.TlsPort, ConfigMode.Server.UdpApiPort,
+		2, 200000000000)
+	err = config.WriteConfigFile(models.GatewayConfig{
 		ExplorerTokenHttpPort: ConfigMode.ExplorerTokenHttpPort,
 		Server: models.Srever{
-			ConnectionType: ConfigMode.ConnectionType,
-			ServerHost:     ConfigMode.ServerHost,
-			TcpPort:        tcpP,
-			KcpPort:        kcpP,
-			UdpApiPort:     udpApiP,
-			TlsPort:        tlsP,
-			LoginKey:       ConfigMode.LoginKey,
+			ConnectionType: ConfigMode.Server.ConnectionType,
+			ServerHost:     ConfigMode.Server.ServerHost,
+			TcpPort:        ConfigMode.Server.TcpPort,
+			KcpPort:        ConfigMode.Server.KcpPort,
+			UdpApiPort:     ConfigMode.Server.UdpApiPort,
+			TlsPort:        ConfigMode.Server.TlsPort,
+			LoginKey:       ConfigMode.Server.LoginKey,
 		},
 		LastId: ConfigMode.LastId,
 	}, config.Setting["configFilePath"])
