@@ -40,6 +40,7 @@ func InitConfigFile(configMode models.GatewayConfig) {
 	configMode.Server.KcpPort = 34320
 	configMode.Server.UdpApiPort = 34321
 	configMode.Server.TlsPort = 34321
+	configMode.Server.GrpcPort = 34322
 	configMode.Server.LoginKey = "HLLdsa544&*S"
 
 	configMode.LastId = uuid.Must(uuid.NewV4()).String()
