@@ -6,6 +6,6 @@ server:
   kcp_port: 34320
   udp_p2p_port: 34321
   tls_port: 34321
-  grpc_port: 0
+  grpc_port: 34322
   login_key: HLLdsa544&*S
-last_id: 0b46d631-23b1-4c87-a70b-1e6f2c436a49
+last_id: 06fb1be2-ca5f-4346-843f-f36da1794bc4
