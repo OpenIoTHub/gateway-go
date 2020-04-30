@@ -1,7 +1,7 @@
 http_api_port: 1082
 server:
   connection_type: tcp
-  server_host: tencent-shanghai-v1.host.nat-cloud.com
+  server_host: 192.168.123.3
   tcp_port: 34320
   kcp_port: 34320
   udp_p2p_port: 34321

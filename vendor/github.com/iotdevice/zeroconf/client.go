@@ -197,7 +197,8 @@ func (c *client) mainloop(ctx context.Context, params *LookupParams) {
 		select {
 		case <-ctx.Done():
 			// Context expired. Notify subscriber that we are done here.
-			params.done()
+			// TODO 关闭传入的channel
+			//params.done()
 			c.shutdown()
 			return
 		case msg := <-msgCh:
