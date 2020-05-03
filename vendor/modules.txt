@@ -1,8 +1,9 @@
-# github.com/OpenIoTHub/utils v0.0.3
+# github.com/OpenIoTHub/utils v0.0.6
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models
 github.com/OpenIoTHub/utils/msg
 github.com/OpenIoTHub/utils/net
+github.com/OpenIoTHub/utils/net/p2p
 github.com/OpenIoTHub/utils/pool
 # github.com/cenkalti/backoff v2.2.1+incompatible
 github.com/cenkalti/backoff

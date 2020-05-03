@@ -36,6 +36,12 @@ github.com/OpenIoTHub/utils v0.0.0-20200429170700-6c6953458d44 h1:jkC+HY0LAsCmzr
 github.com/OpenIoTHub/utils v0.0.0-20200429170700-6c6953458d44/go.mod h1:M/77laQrMyJzeOr2btDqMi5CfW2OidHCq6b/sqwi/LI=
 github.com/OpenIoTHub/utils v0.0.3 h1:wX/FN5Y4bDNOV3U1PESDZ37ukA3rlMD4ugoMd9ZCAm4=
 github.com/OpenIoTHub/utils v0.0.3/go.mod h1:M/77laQrMyJzeOr2btDqMi5CfW2OidHCq6b/sqwi/LI=
+github.com/OpenIoTHub/utils v0.0.4 h1:BaHBjr73+iLeEIToHOQak+m+G7CkAXMMPYC9mJPIzJ4=
+github.com/OpenIoTHub/utils v0.0.4/go.mod h1:M/77laQrMyJzeOr2btDqMi5CfW2OidHCq6b/sqwi/LI=
+github.com/OpenIoTHub/utils v0.0.5 h1:mvjYFxtur8/s3WWSnbzpCjrWQ2mSO2q2xXuMOFA8Qug=
+github.com/OpenIoTHub/utils v0.0.5/go.mod h1:M/77laQrMyJzeOr2btDqMi5CfW2OidHCq6b/sqwi/LI=
+github.com/OpenIoTHub/utils v0.0.6 h1:2kV9eSq0iLyP8Yzh07Z1kJKdIb6LaLaASv7HhmGglC8=
+github.com/OpenIoTHub/utils v0.0.6/go.mod h1:M/77laQrMyJzeOr2btDqMi5CfW2OidHCq6b/sqwi/LI=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=

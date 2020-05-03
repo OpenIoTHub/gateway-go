@@ -146,19 +146,10 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 			}
 		}
 
-	case *models.ReqNewP2PCtrl:
+	case *models.ReqNewP2PCtrlAsServer:
 		{
 			fmt.Printf("作为listener方式从洞中获取kcp连接")
 			go NewP2PCtrlAsServer(stream, m, tokenModel)
-			//lastPing = time.Now()
-			//TODO:NETINFO
-			//msg.WriteMsg(stream,&models.RemoteNetInfo{
-			//	IntranetIp:net.GetIntranetIp(),
-			//	IntranetPort:7003,
-			//	ExternalIp:net.GetExternalIp(),
-			//	ExternalPort:ExternalPort,
-			//})
-			//stream.Close()
 		}
 	case *models.ReqNewP2PCtrlAsClient:
 		{
@@ -205,17 +196,7 @@ func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 				log.Println(err.Error())
 			}
 		}
-		go func() {
-			for {
-				err := RunNATManager(lastSalt, lastToken)
-				if err != nil {
-					fmt.Printf("重新登录失败！原因：%s,5秒钟后重试...\n", err.Error())
-					time.Sleep(time.Second * 5)
-					continue
-				}
-				break
-			}
-		}()
+		go reLogin()
 	}()
 	for {
 		// Accept a stream
@@ -239,15 +220,6 @@ func dlSubSession(session *yamux.Session, tokenModel *models.TokenClaims) {
 		}
 	}()
 	//session的keepalive,需要配合服务器
-	//go func() {
-	//	err := io.CheckSession(session)
-	//	if err != nil{
-	//		log.Println(err.Error())
-	//		if session != nil{
-	//			session.Close()
-	//		}
-	//	}
-	//}()
 	for {
 		// Accept a stream
 		stream, err := session.AcceptStream()
@@ -261,6 +233,7 @@ func dlSubSession(session *yamux.Session, tokenModel *models.TokenClaims) {
 	fmt.Printf("exit sub session")
 }
 
+//新创建的工作连接
 func newWorkConn(tokenModel *models.TokenClaims) {
 	conn, err := LoginWorkConn(tokenModel)
 	if err != nil {
@@ -272,6 +245,7 @@ func newWorkConn(tokenModel *models.TokenClaims) {
 	go dlstream(conn, tokenModel)
 }
 
+//登录到服务器
 func RunNATManager(salt, token string) (err error) {
 	var session *yamux.Session
 	var tokenModel *models.TokenClaims
@@ -283,4 +257,16 @@ func RunNATManager(salt, token string) (err error) {
 	}
 	go dlsession(session, tokenModel)
 	return nil
+}
+
+func reLogin() {
+	for {
+		err := RunNATManager(lastSalt, lastToken)
+		if err != nil {
+			fmt.Printf("重新登录失败！原因：%s,5秒钟后重试...\n", err.Error())
+			time.Sleep(time.Second * 5)
+			continue
+		}
+		break
+	}
 }
