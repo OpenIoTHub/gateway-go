@@ -5,6 +5,7 @@ import (
 	"github.com/OpenIoTHub/gateway-go/connect"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
+	"github.com/OpenIoTHub/utils/net/p2p/gateway"
 	"log"
 
 	//"github.com/OpenIoTHub/utils/io"
@@ -149,12 +150,27 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	case *models.ReqNewP2PCtrlAsServer:
 		{
 			fmt.Printf("作为listener方式从洞中获取kcp连接")
-			go NewP2PCtrlAsServer(stream, m, tokenModel)
+			go func() {
+				session, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+				dlSubSession(session, tokenModel)
+			}()
+
 		}
 	case *models.ReqNewP2PCtrlAsClient:
 		{
 			fmt.Printf("作为dial方式从从洞中创建kcp连接")
-			go MakeP2PSessionAsClient(stream, tokenModel)
+			go func() {
+				session, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+				dlSubSession(session, tokenModel)
+			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
