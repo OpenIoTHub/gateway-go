@@ -3,8 +3,8 @@ package component
 
 import (
 	"fmt"
+	"github.com/OpenIoTHub/surgemq/service"
 	nettool "github.com/OpenIoTHub/utils/net"
-	"github.com/surgemq/surgemq/service"
 	"log"
 	"runtime"
 )

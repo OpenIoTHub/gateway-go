@@ -153,7 +153,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 			go func() {
 				session, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
 				if err != nil {
-					log.Println(err)
+					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
 				dlSubSession(session, tokenModel)
@@ -166,7 +166,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 			go func() {
 				session, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
 				if err != nil {
-					log.Println(err)
+					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
 				dlSubSession(session, tokenModel)
@@ -240,7 +240,7 @@ func dlSubSession(session *yamux.Session, tokenModel *models.TokenClaims) {
 		// Accept a stream
 		stream, err := session.AcceptStream()
 		if err != nil {
-			fmt.Printf("accpStream" + err.Error())
+			fmt.Printf("accpStream:" + err.Error())
 			break
 		}
 		//log.Println("Sub Session获取到一个stream处理")

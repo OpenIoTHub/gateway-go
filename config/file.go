@@ -33,7 +33,7 @@ func InitConfigFile(configMode models.GatewayConfig) {
 	//	生成配置文件模板
 	port, _ := strconv.Atoi(Setting["apiPort"])
 	configMode.ExplorerTokenHttpPort = port
-	configMode.Server.ConnectionType = "tcp"
+	configMode.ConnectionType = "tcp"
 
 	configMode.Server.ServerHost = "guonei.nat-cloud.com"
 	configMode.Server.TcpPort = 34320

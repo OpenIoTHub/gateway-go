@@ -26,13 +26,7 @@ func MakeP2PSessionAsClient(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrlAsCli
 		log.Println(err.Error())
 		return nil, err
 	}
-	msgsd := &models.RemoteNetInfo{
-		IntranetIp:   listener.LocalAddr().(*net.UDPAddr).IP.String(),
-		IntranetPort: listener.LocalAddr().(*net.UDPAddr).Port,
-		ExternalIp:   ExternalUDPAddr.IP.String(),
-		ExternalPort: ExternalUDPAddr.Port,
-	}
-	err = msg.WriteMsg(stream, msgsd)
+	err = msg.WriteMsg(stream, ExternalUDPAddr)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -62,35 +56,19 @@ func MakeP2PSessionAsClient(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrlAsCli
 				log.Println(err)
 				return nil, err
 			}
-
-			rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*3)
+			//TODO:认证
+			config := yamux.DefaultConfig()
+			//config.EnableKeepAlive = false
+			p2pSubSession, err := yamux.Server(kcpconn, config)
 			if err != nil {
-				kcpconn.Close()
-				log.Println(err)
+				if p2pSubSession != nil {
+					p2pSubSession.Close()
+				}
+				log.Printf("create sub session err:" + err.Error())
 				return nil, err
 			}
-			switch m := rawMsg.(type) {
-			case *models.Pong:
-				{
-					log.Printf("get pong from p2p kcpconn")
-					_ = m
-					//TODO:认证
-					config := yamux.DefaultConfig()
-					//config.EnableKeepAlive = false
-					p2pSubSession, err := yamux.Server(kcpconn, config)
-					if err != nil {
-						if p2pSubSession != nil {
-							p2pSubSession.Close()
-						}
-						log.Printf("create sub session err:" + err.Error())
-						return nil, err
-					}
-					//return p2pSubSession
-					return p2pSubSession, err
-				}
-			default:
-				log.Printf("type err")
-			}
+			//return p2pSubSession
+			return p2pSubSession, err
 		}
 	default:
 		log.Printf("type err")
