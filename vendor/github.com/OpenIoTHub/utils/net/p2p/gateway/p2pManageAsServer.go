@@ -87,6 +87,12 @@ func kcpConnHdl(kcpconn net.Conn) (*yamux.Session, error) {
 		{
 			fmt.Printf("P2P握手ping")
 			_ = m
+			err = msg.WriteMsg(kcpconn, &models.Pong{})
+			if err != nil {
+				kcpconn.Close()
+				log.Println(err.Error())
+				return nil, err
+			}
 			config := yamux.DefaultConfig()
 			//config.EnableKeepAlive = false
 			session, err := yamux.Server(kcpconn, config)

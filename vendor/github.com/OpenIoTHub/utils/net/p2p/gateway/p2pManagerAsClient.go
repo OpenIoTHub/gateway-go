@@ -56,19 +56,34 @@ func MakeP2PSessionAsClient(stream net.Conn, ctrlmMsg *models.ReqNewP2PCtrlAsCli
 				log.Println(err)
 				return nil, err
 			}
-			//TODO:认证
-			config := yamux.DefaultConfig()
-			//config.EnableKeepAlive = false
-			p2pSubSession, err := yamux.Server(kcpconn, config)
+			rawMsg, err := msg.ReadMsgWithTimeOut(kcpconn, time.Second*5)
 			if err != nil {
-				if p2pSubSession != nil {
-					p2pSubSession.Close()
-				}
-				log.Printf("create sub session err:" + err.Error())
+				kcpconn.Close()
+				log.Println(err)
 				return nil, err
 			}
-			//return p2pSubSession
-			return p2pSubSession, err
+			switch m := rawMsg.(type) {
+			case *models.Pong:
+				{
+					log.Printf("get pong from p2p kcpconn")
+					_ = m
+					//TODO:认证
+					config := yamux.DefaultConfig()
+					//config.EnableKeepAlive = false
+					p2pSubSession, err := yamux.Server(kcpconn, config)
+					if err != nil {
+						if p2pSubSession != nil {
+							p2pSubSession.Close()
+						}
+						log.Printf("create sub session err:" + err.Error())
+						return nil, err
+					}
+					//return p2pSubSession
+					return p2pSubSession, err
+				}
+			default:
+				log.Printf("type err")
+			}
 		}
 	default:
 		log.Printf("type err")

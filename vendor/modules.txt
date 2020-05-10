@@ -1,6 +1,6 @@
 # github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 github.com/OpenIoTHub/surgemq/service
-# github.com/OpenIoTHub/utils v0.0.31
+# github.com/OpenIoTHub/utils v0.0.33
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models
 github.com/OpenIoTHub/utils/msg

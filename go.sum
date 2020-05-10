@@ -1,8 +1,8 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63 h1:wh5dkYblMJ28m9561X6uvuzkw3czhw43o34itQhhvHg=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63/go.mod h1:SUB860em/OzidIoPEAhG0OpqJYmmBjnX36fb6JeDRO0=
-github.com/OpenIoTHub/utils v0.0.31 h1:0A21fCAQYhboppmXfade48Oli3lU1Q32JuRU4ISRBTg=
-github.com/OpenIoTHub/utils v0.0.31/go.mod h1:slmbWv86SCu1f9AopK7L0Jr0hv1kMByWBxm6Q4eziSc=
+github.com/OpenIoTHub/utils v0.0.33 h1:+bOfZhWWwdbZLha860hI383MWtnj4n6AEaVt3elfJ7w=
+github.com/OpenIoTHub/utils v0.0.33/go.mod h1:slmbWv86SCu1f9AopK7L0Jr0hv1kMByWBxm6Q4eziSc=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
