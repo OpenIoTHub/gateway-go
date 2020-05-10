@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
-	github.com/OpenIoTHub/utils v0.0.26
+	github.com/OpenIoTHub/utils v0.0.30
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gorilla/mux v1.7.4
 	github.com/iotdevice/zeroconf v0.1.2
@@ -27,3 +27,5 @@ require (
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )
+
+replace github.com/OpenIoTHub/utils => C:\Users\Farry\go\src\github.com\OpenIoTHub\utils
