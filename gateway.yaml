@@ -6,6 +6,7 @@ server:
   tcp_port: 34320
   kcp_port: 34320
   udp_p2p_port: 34321
+  kcp_p2p_port: 0
   tls_port: 34321
   grpc_port: 34322
   login_key: HLLdsa544&*S
