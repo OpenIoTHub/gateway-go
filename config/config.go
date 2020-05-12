@@ -21,7 +21,8 @@ func init() {
 		ConfigFilePath = filepath.Join(appDataPath, ConfigFileName)
 	}
 	Setting["configFilePath"] = ConfigFilePath
-	Setting["apiPort"] = "1082"
+	Setting["gRpcAddr"] = "0.0.0.0"
+	Setting["gRpcPort"] = "1082"
 	Setting["GateWayToken"] = ""
 	Setting["OpenIoTHubToken"] = ""
 	if runtime.GOOS == "android" {
