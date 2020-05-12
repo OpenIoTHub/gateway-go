@@ -3,10 +3,10 @@ module github.com/OpenIoTHub/gateway-go
 go 1.13
 
 require (
+	github.com/OpenIoTHub/gateway-grpc-api v1.0.5
 	github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 	github.com/OpenIoTHub/utils v0.0.33
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/gorilla/mux v1.7.4
 	github.com/iotdevice/zeroconf v0.1.2
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/klauspost/cpuid v1.2.3 // indirect
@@ -23,9 +23,9 @@ require (
 	github.com/tjfoc/gmsm v1.3.0 // indirect
 	github.com/urfave/cli/v2 v2.2.0
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
-	golang.org/x/mobile v0.0.0-20200329125638-4c31acba0007 // indirect
 	golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
+	google.golang.org/grpc v1.29.1
 	gopkg.in/yaml.v2 v2.2.8
 )
 

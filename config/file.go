@@ -75,12 +75,12 @@ func UseConfigFile(configMode models.GatewayConfig) {
 	if len(configMode.LastId) < 35 {
 		configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	Setting["clientToken"], err = models.GetToken(configMode, 1, 200000000000)
+	Setting["GateWayToken"], err = models.GetToken(configMode, 1, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	err = services.RunNATManager(configMode.Server.LoginKey, Setting["clientToken"])
+	err = services.RunNATManager(configMode.Server.LoginKey, Setting["GateWayToken"])
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")

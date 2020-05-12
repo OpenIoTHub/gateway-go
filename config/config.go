@@ -22,8 +22,8 @@ func init() {
 	}
 	Setting["configFilePath"] = ConfigFilePath
 	Setting["apiPort"] = "1082"
-	Setting["clientToken"] = ""
-	Setting["explorerToken"] = ""
+	Setting["GateWayToken"] = ""
+	Setting["OpenIoTHubToken"] = ""
 	if runtime.GOOS == "android" {
 
 	} else {
