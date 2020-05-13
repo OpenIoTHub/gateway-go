@@ -31,8 +31,8 @@ func InitConfigFile(configMode *models.GatewayConfig) {
 	log.Println("没有找到配置文件：", Setting["configFilePath"])
 	log.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 	//	生成配置文件模板
-	port, _ := strconv.Atoi(Setting["apiPort"])
-	configMode.ExplorerTokenHttpPort = port
+	port, _ := strconv.Atoi(Setting["gRpcPort"])
+	configMode.GrpcPort = port
 	configMode.ConnectionType = "tcp"
 
 	configMode.Server.ServerHost = "guonei.nat-cloud.com"
@@ -87,16 +87,15 @@ func UseConfigFile(configMode *models.GatewayConfig) {
 		return
 	}
 	fmt.Printf("登陆成功！\n")
-	Setting["explorerToken"], err = models.GetToken(configMode, 2, 200000000000)
+	Setting["OpenIoTHubToken"], err = models.GetToken(configMode, 2, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	log.Println("访问token：\n\n" + Setting["explorerToken"] + "\n\n")
+	log.Println("访问token：\n\n" + Setting["OpenIoTHubToken"] + "\n\n")
 	err = WriteConfigFile(configMode, Setting["configFilePath"])
 	if err != nil {
 		log.Println(err.Error())
 	}
-	fmt.Printf("你也可以访问：http://127.0.0.1:%s/查看访问token\n", Setting["apiPort"])
 	Loged = true
 }
