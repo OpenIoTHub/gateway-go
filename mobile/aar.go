@@ -18,7 +18,7 @@ import (
 
 type LoginManager struct{}
 
-var ConfigMode = &models.GatewayConfig{}
+var ConfigMode = models.GatewayConfig{}
 var loginManager = &LoginManager{}
 
 func Run() {
@@ -82,7 +82,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
 
-	GateWayToken, err := models.GetToken(*ConfigMode, 1, 200000000000)
+	GateWayToken, err := models.GetToken(ConfigMode, 1, 200000000000)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -99,7 +99,8 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		}, err
 	}
 	config.Loged = true
-	err = config.WriteConfigFile(*ConfigMode, config.Setting["configFilePath"])
+	config.Setting["OpenIoTHubToken"], err = models.GetToken(ConfigMode, 2, 200000000000)
+	err = config.WriteConfigFile(ConfigMode, config.Setting["configFilePath"])
 	if err != nil {
 		log.Println(err.Error())
 		return &pb.LoginResponse{
@@ -122,7 +123,7 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 
 //rpc GetOpenIoTHubToken (Empty) returns (Token) {}
 func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	OpenIoTHubToken, err := models.GetToken(*ConfigMode, 2, 200000000000)
+	OpenIoTHubToken, err := models.GetToken(ConfigMode, 2, 200000000000)
 	if err != nil {
 		return &pb.Token{}, err
 	}
