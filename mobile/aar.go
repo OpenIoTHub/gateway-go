@@ -18,7 +18,7 @@ import (
 
 type LoginManager struct{}
 
-var ConfigMode *models.GatewayConfig
+var ConfigMode = &models.GatewayConfig{}
 var loginManager = &LoginManager{}
 
 func Run() {
@@ -57,26 +57,22 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: true,
 		}, nil
 	}
-	//string ServerHost = 1;
-	ConfigMode.Server.ServerHost = in.ServerHost
-	//string LoginKey = 2;
-	ConfigMode.Server.LoginKey = in.LoginKey
+
 	//string ConnectionType = 3;
 	ConfigMode.ConnectionType = in.ConnectionType
 	//string LastId = 4;
 	ConfigMode.LastId = in.LastId
-	//int32 TcpPort = 5;
-	ConfigMode.Server.TcpPort = int(in.TcpPort)
-	//int32 KcpPort = 6;
-	ConfigMode.Server.KcpPort = int(in.KcpPort)
-	//int32 UdpApiPort = 7;
-	ConfigMode.Server.UdpApiPort = int(in.UdpApiPort)
-	//int32 KcpApiPort = 8;
-	ConfigMode.Server.KcpApiPort = int(in.KcpApiPort)
-	//int32 TlsPort = 9;
-	ConfigMode.Server.TlsPort = int(in.TlsPort)
-	//int32 GrpcPort = 10;
-	ConfigMode.Server.GrpcPort = int(in.GrpcPort)
+
+	ConfigMode.Server = &models.Srever{
+		ServerHost: in.ServerHost,
+		TcpPort:    int(in.TcpPort),
+		KcpPort:    int(in.KcpPort),
+		UdpApiPort: int(in.UdpApiPort),
+		KcpApiPort: int(in.KcpApiPort),
+		TlsPort:    int(in.TlsPort),
+		GrpcPort:   int(in.GrpcPort),
+		LoginKey:   in.LoginKey,
+	}
 
 	if ConfigMode.LastId == "" {
 		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()

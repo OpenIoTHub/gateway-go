@@ -2,7 +2,7 @@
 github.com/OpenIoTHub/gateway-grpc-api/pb-go
 # github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 github.com/OpenIoTHub/surgemq/service
-# github.com/OpenIoTHub/utils v0.0.36
+# github.com/OpenIoTHub/utils v0.0.37
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models
 github.com/OpenIoTHub/utils/msg
