@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/config"
 	client "github.com/OpenIoTHub/gateway-go/mobile"
-	"github.com/OpenIoTHub/utils/models"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -19,8 +18,6 @@ var (
 )
 
 func main() {
-	configMode := &models.GatewayConfig{}
-
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
@@ -41,9 +38,9 @@ func main() {
 		}
 		_, err := os.Stat(config.Setting["configFilePath"])
 		if err != nil {
-			config.InitConfigFile(configMode)
+			config.InitConfigFile(client.ConfigMode)
 		}
-		config.UseConfigFile(configMode)
+		config.UseConfigFile(client.ConfigMode)
 		go client.Run()
 		for {
 			time.Sleep(time.Hour)
