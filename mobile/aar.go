@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	_ "github.com/OpenIoTHub/gateway-go/component"
 	"github.com/OpenIoTHub/gateway-go/config"
@@ -100,7 +99,6 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		}, err
 	}
 	config.Loged = true
-	config.Setting["OpenIoTHubToken"], err = models.GetToken(*ConfigMode, 2, 200000000000)
 	err = config.WriteConfigFile(*ConfigMode, config.Setting["configFilePath"])
 	if err != nil {
 		log.Println(err.Error())
@@ -124,10 +122,11 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 
 //rpc GetOpenIoTHubToken (Empty) returns (Token) {}
 func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	if config.Loged != true || config.Setting["OpenIoTHubToken"] == "" {
-		return &pb.Token{}, errors.New("还未登录")
+	OpenIoTHubToken, err := models.GetToken(*ConfigMode, 2, 200000000000)
+	if err != nil {
+		return &pb.Token{}, err
 	}
-	return &pb.Token{Value: config.Setting["OpenIoTHubToken"]}, nil
+	return &pb.Token{Value: OpenIoTHubToken}, nil
 }
 
 //rpc GetGateWayToken (Empty) returns (Token) {}
