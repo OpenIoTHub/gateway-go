@@ -17,11 +17,10 @@ import (
 	"strconv"
 )
 
-type LoginManager struct {
-}
+type LoginManager struct{}
 
 var ConfigMode *models.GatewayConfig
-var loginManager *LoginManager
+var loginManager = &LoginManager{}
 
 func Run() {
 	port, _ := strconv.Atoi(config.Setting["apiPort"])
