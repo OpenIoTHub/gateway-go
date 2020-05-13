@@ -14,7 +14,7 @@ import (
 )
 
 //将配置写入指定的路径的文件
-func WriteConfigFile(configMode models.GatewayConfig, path string) (err error) {
+func WriteConfigFile(configMode *models.GatewayConfig, path string) (err error) {
 	configByte, err := yaml.Marshal(configMode)
 	if err != nil {
 		log.Println(err.Error())
@@ -27,7 +27,7 @@ func WriteConfigFile(configMode models.GatewayConfig, path string) (err error) {
 	return
 }
 
-func InitConfigFile(configMode models.GatewayConfig) {
+func InitConfigFile(configMode *models.GatewayConfig) {
 	log.Println("没有找到配置文件：", Setting["configFilePath"])
 	log.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 	//	生成配置文件模板
@@ -58,7 +58,7 @@ func InitConfigFile(configMode models.GatewayConfig) {
 	log.Println(err.Error())
 }
 
-func UseConfigFile(configMode models.GatewayConfig) {
+func UseConfigFile(configMode *models.GatewayConfig) {
 	//配置文件存在
 	log.Println("使用的配置文件位置：", Setting["configFilePath"])
 	content, err := ioutil.ReadFile(Setting["configFilePath"])

@@ -19,7 +19,7 @@ var (
 )
 
 func main() {
-	configMode := models.GatewayConfig{}
+	configMode := &models.GatewayConfig{}
 
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
