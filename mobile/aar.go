@@ -23,15 +23,18 @@ var ConfigMode *models.GatewayConfig
 var loginManager = &LoginManager{}
 
 func Run() {
-	port, _ := strconv.Atoi(config.Setting["apiPort"])
+	port, err := strconv.Atoi(config.Setting["gRpcPort"])
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	//mDNS注册服务
-	_, err := zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port, []string{}, nil)
+	_, err = zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port, []string{}, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	//
-	//r := mux.NewRouter()
-	//r.HandleFunc("/", getExplorerToken)
-	//r.HandleFunc("/getExplorerToken", getExplorerToken)
-	//r.HandleFunc("/loginServer", loginServer)
-	//http.Handle("/", r)
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", config.Setting["gRpcAddr"], config.Setting["gRpcPort"]))
