@@ -18,7 +18,7 @@ import (
 
 type LoginManager struct{}
 
-var ConfigMode *models.GatewayConfig
+var ConfigMode = &models.GatewayConfig{}
 var loginManager = &LoginManager{}
 
 func Run() {
