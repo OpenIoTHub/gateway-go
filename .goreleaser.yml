@@ -78,7 +78,7 @@ snapcrafts:
       OpenIoTHub GateWay
     grade: stable
 #    confinement: classic
-    publish: true
+    publish: false
     apps:
       gateway-go:
         plugs: ["network", "network-bind"]
