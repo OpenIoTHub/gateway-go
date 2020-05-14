@@ -78,11 +78,17 @@ snapcrafts:
       OpenIoTHub GateWay
     grade: stable
 #    confinement: classic
-    publish: false
+    publish: true
     apps:
       gateway-go:
-        plugs: ["network", "network-bind"]
+        plugs: ["network", "network-bind", "personal-files"]
         daemon: simple
+    plugs:
+      personal-files:
+        read:
+          - $HOME/.openiothub
+        write:
+          - $HOME/.openiothub
 dockers:
   - image_templates:
       - 'openiothub/gateway:{{ .Tag }}'
