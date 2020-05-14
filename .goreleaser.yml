@@ -81,14 +81,8 @@ snapcrafts:
     publish: true
     apps:
       gateway-go:
-        plugs: ["network", "network-bind", "personal-files"]
+        plugs: ["network", "network-bind"]
         daemon: simple
-    plugs:
-      personal-files:
-        read:
-          - $HOME/.openiothub
-        write:
-          - $HOME/.openiothub
 dockers:
   - image_templates:
       - 'openiothub/gateway:{{ .Tag }}'
