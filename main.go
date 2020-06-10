@@ -2,26 +2,19 @@ package main
 
 import (
 	"fmt"
+	client "github.com/OpenIoTHub/gateway-go/client"
 	"github.com/OpenIoTHub/gateway-go/config"
-	client "github.com/OpenIoTHub/gateway-go/mobile"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 	"time"
 )
 
-var (
-	version = "dev"
-	commit  = ""
-	date    = ""
-	builtBy = ""
-)
-
 func main() {
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
-	myApp.Version = fmt.Sprintf("%s(commit:%s,build on:%s,buildBy:%s)", version, commit, date, builtBy)
+	myApp.Version = fmt.Sprintf("%s(commit:%s,build on:%s,buildBy:%s)", client.Version, client.Commit, client.Date, client.BuiltBy)
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
 		&cli.StringFlag{

@@ -16,6 +16,13 @@ import (
 	"strconv"
 )
 
+var (
+	Version = "dev"
+	Commit  = ""
+	Date    = ""
+	BuiltBy = ""
+)
+
 type LoginManager struct{}
 
 var ConfigMode = &models.GatewayConfig{Server: &models.Srever{}}
@@ -27,8 +34,24 @@ func Run() {
 		log.Println(err)
 		return
 	}
+	var Mac = "mac"
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		log.Println(err)
+	} else if len(interfaces) > 0 {
+		Mac = interfaces[0].HardwareAddr.String()
+	}
 	//mDNS注册服务
-	_, err = zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port, []string{}, nil)
+	_, err = zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port,
+		[]string{"name=网关",
+			"model=com.iotserv.services.gateway",
+			fmt.Sprintf("mac=%s", Mac),
+			fmt.Sprintf("id=%s", ConfigMode.LastId),
+			"author=Farry",
+			"email=newfarry@126.com",
+			"home-page=https://github.com/OpenIoTHub",
+			"firmware-respository=https://github.com/OpenIoTHub/gateway-go",
+			fmt.Sprintf("firmware-version=%s", Version)}, nil)
 	if err != nil {
 		log.Println(err)
 		return
