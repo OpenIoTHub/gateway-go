@@ -42,7 +42,7 @@ func Run() {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register("OpenIoTHubGateway", "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
