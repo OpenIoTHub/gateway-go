@@ -119,7 +119,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 	}
 	config.Loged = true
 	config.Setting["OpenIoTHubToken"], err = models.GetToken(ConfigMode, 2, 200000000000)
-	err = config.WriteConfigFile(ConfigMode, config.Setting["configFilePath"])
+	err = config.WriteConfigFile(ConfigMode, config.ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 		return &pb.LoginResponse{

@@ -28,7 +28,7 @@ func WriteConfigFile(configMode *models.GatewayConfig, path string) (err error) 
 }
 
 func InitConfigFile(configMode *models.GatewayConfig) {
-	log.Println("没有找到配置文件：", Setting["configFilePath"])
+	log.Println("没有找到配置文件：", ConfigFilePath)
 	log.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 	//	生成配置文件模板
 	port, _ := strconv.Atoi(Setting["gRpcPort"])
@@ -45,13 +45,13 @@ func InitConfigFile(configMode *models.GatewayConfig) {
 	configMode.Server.LoginKey = "HLLdsa544&*S"
 
 	configMode.LastId = uuid.Must(uuid.NewV4()).String()
-	err := os.MkdirAll(filepath.Dir(Setting["configFilePath"]), 0644)
+	err := os.MkdirAll(filepath.Dir(ConfigFilePath), 0644)
 	if err != nil {
 		return
 	}
-	err = WriteConfigFile(configMode, Setting["configFilePath"])
+	err = WriteConfigFile(configMode, ConfigFilePath)
 	if err == nil {
-		log.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", Setting["configFilePath"])
+		log.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", ConfigFilePath)
 		log.Println("你可以手动修改上述配置文件后再运行！")
 		return
 	}
@@ -61,8 +61,8 @@ func InitConfigFile(configMode *models.GatewayConfig) {
 
 func UseConfigFile(configMode *models.GatewayConfig) {
 	//配置文件存在
-	log.Println("使用的配置文件位置：", Setting["configFilePath"])
-	content, err := ioutil.ReadFile(Setting["configFilePath"])
+	log.Println("使用的配置文件位置：", ConfigFilePath)
+	content, err := ioutil.ReadFile(ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -94,7 +94,7 @@ func UseConfigFile(configMode *models.GatewayConfig) {
 		return
 	}
 	log.Println("访问token：\n\n" + Setting["OpenIoTHubToken"] + "\n\n")
-	err = WriteConfigFile(configMode, Setting["configFilePath"])
+	err = WriteConfigFile(configMode, ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 	}

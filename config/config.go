@@ -13,6 +13,7 @@ var Loged = false
 
 var ConfigFileName = "gateway.yaml"
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
+var GatewayLoginToken = ""
 
 func init() {
 	//是否是snapcraft应用，如果是则从snapcraft指定的工作目录保存配置文件
@@ -20,7 +21,6 @@ func init() {
 	if havaAppDataPath {
 		ConfigFilePath = filepath.Join(appDataPath, ConfigFileName)
 	}
-	Setting["configFilePath"] = ConfigFilePath
 	Setting["gRpcAddr"] = "0.0.0.0"
 	Setting["gRpcPort"] = "1082"
 	Setting["GateWayToken"] = ""

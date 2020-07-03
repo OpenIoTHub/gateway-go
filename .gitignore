@@ -1,4 +1,5 @@
 *.aar
 *.jar
+*.exe
 /vendor/github.com/miekg/dns/gomobile.exe
 /dist

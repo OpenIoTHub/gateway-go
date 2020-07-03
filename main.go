@@ -18,18 +18,25 @@ func main() {
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
 		&cli.StringFlag{
-			Name:    "config",
-			Aliases: []string{"c"},
-			Value:   config.Setting["configFilePath"],
-			Usage:   "config file path",
-			EnvVars: []string{"GatewayConfigFilePath"},
+			Name:        "config",
+			Aliases:     []string{"c"},
+			Value:       config.ConfigFilePath,
+			Usage:       "config file path",
+			EnvVars:     []string{"GatewayConfigFilePath"},
+			Destination: &config.ConfigFilePath,
+		},
+		//token 登录
+		&cli.StringFlag{
+			Name:        "token",
+			Aliases:     []string{"t"},
+			Value:       "",
+			Usage:       "login server by gateway token ",
+			EnvVars:     []string{"GatewayLoginToken"},
+			Destination: &config.GatewayLoginToken,
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
-		if c.String("config") != "" {
-			config.Setting["configFilePath"] = c.String("config")
-		}
-		_, err := os.Stat(config.Setting["configFilePath"])
+		_, err := os.Stat(config.ConfigFilePath)
 		if err != nil {
 			config.InitConfigFile(client.ConfigMode)
 		}
