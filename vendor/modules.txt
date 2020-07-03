@@ -80,7 +80,7 @@ github.com/templexxx/xorsimd
 github.com/tjfoc/gmsm/sm4
 # github.com/urfave/cli/v2 v2.2.0
 github.com/urfave/cli/v2
-# github.com/xtaci/kcp-go/v5 v5.5.12
+# github.com/xtaci/kcp-go/v5 v5.5.14
 github.com/xtaci/kcp-go/v5
 # golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 golang.org/x/crypto/blowfish
@@ -125,7 +125,7 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# golang.org/x/tools v0.0.0-20200701041122-1837592efa10
+# golang.org/x/tools v0.0.0-20200702044944-0cc1aa72b347
 golang.org/x/tools/go/gcexportdata
 golang.org/x/tools/go/internal/gcimporter
 golang.org/x/tools/go/internal/packagesdriver
@@ -140,7 +140,7 @@ golang.org/x/tools/internal/typesinternal
 # golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
-# google.golang.org/genproto v0.0.0-20200701001935-0939c5918c31
+# google.golang.org/genproto v0.0.0-20200702021140-07506425bd67
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.30.0
 google.golang.org/grpc
