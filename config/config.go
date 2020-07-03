@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"github.com/OpenIoTHub/utils/models"
+	uuid "github.com/satori/go.uuid"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -14,6 +16,23 @@ var Loged = false
 var ConfigFileName = "gateway.yaml"
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
 var GatewayLoginToken = ""
+var GrpcPort = 1082
+
+var ConfigMode = &models.GatewayConfig{
+	GrpcPort:       GrpcPort,
+	LastId:         uuid.Must(uuid.NewV4()).String(),
+	ConnectionType: "tcp",
+	Server: &models.Srever{
+		ServerHost: "guonei.nat-cloud.com",
+		TcpPort:    34320,
+		KcpPort:    34320,
+		UdpApiPort: 34321,
+		KcpApiPort: 34322,
+		TlsPort:    34321,
+		GrpcPort:   34322,
+		LoginKey:   "HLLdsa544&*S",
+	},
+}
 
 func init() {
 	//是否是snapcraft应用，如果是则从snapcraft指定的工作目录保存配置文件
@@ -22,7 +41,6 @@ func init() {
 		ConfigFilePath = filepath.Join(appDataPath, ConfigFileName)
 	}
 	Setting["gRpcAddr"] = "0.0.0.0"
-	Setting["gRpcPort"] = "1082"
 	Setting["GateWayToken"] = ""
 	Setting["OpenIoTHubToken"] = ""
 	if runtime.GOOS == "android" {

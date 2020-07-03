@@ -29,18 +29,22 @@ func main() {
 		&cli.StringFlag{
 			Name:        "token",
 			Aliases:     []string{"t"},
-			Value:       "",
+			Value:       config.GatewayLoginToken,
 			Usage:       "login server by gateway token ",
 			EnvVars:     []string{"GatewayLoginToken"},
 			Destination: &config.GatewayLoginToken,
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
-		_, err := os.Stat(config.ConfigFilePath)
-		if err != nil {
-			config.InitConfigFile(client.ConfigMode)
+		if config.GatewayLoginToken != "" {
+			config.UseGateWayToken()
+		} else {
+			_, err := os.Stat(config.ConfigFilePath)
+			if err != nil {
+				config.InitConfigFile()
+			}
+			config.UseConfigFile()
 		}
-		config.UseConfigFile(client.ConfigMode)
 		go client.Run()
 		for {
 			time.Sleep(time.Hour)

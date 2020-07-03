@@ -10,12 +10,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 )
 
 //将配置写入指定的路径的文件
-func WriteConfigFile(configMode *models.GatewayConfig, path string) (err error) {
-	configByte, err := yaml.Marshal(configMode)
+func WriteConfigFile(ConfigMode *models.GatewayConfig, path string) (err error) {
+	configByte, err := yaml.Marshal(ConfigMode)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -27,29 +26,15 @@ func WriteConfigFile(configMode *models.GatewayConfig, path string) (err error) 
 	return
 }
 
-func InitConfigFile(configMode *models.GatewayConfig) {
+func InitConfigFile() {
 	log.Println("没有找到配置文件：", ConfigFilePath)
 	log.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 	//	生成配置文件模板
-	port, _ := strconv.Atoi(Setting["gRpcPort"])
-	configMode.GrpcPort = port
-	configMode.ConnectionType = "tcp"
-
-	configMode.Server.ServerHost = "guonei.nat-cloud.com"
-	configMode.Server.TcpPort = 34320
-	configMode.Server.KcpPort = 34320
-	configMode.Server.UdpApiPort = 34321
-	configMode.Server.KcpApiPort = 34322
-	configMode.Server.TlsPort = 34321
-	configMode.Server.GrpcPort = 34322
-	configMode.Server.LoginKey = "HLLdsa544&*S"
-
-	configMode.LastId = uuid.Must(uuid.NewV4()).String()
 	err := os.MkdirAll(filepath.Dir(ConfigFilePath), 0644)
 	if err != nil {
 		return
 	}
-	err = WriteConfigFile(configMode, ConfigFilePath)
+	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err == nil {
 		log.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", ConfigFilePath)
 		log.Println("你可以手动修改上述配置文件后再运行！")
@@ -59,7 +44,7 @@ func InitConfigFile(configMode *models.GatewayConfig) {
 	log.Println(err.Error())
 }
 
-func UseConfigFile(configMode *models.GatewayConfig) {
+func UseConfigFile() {
 	//配置文件存在
 	log.Println("使用的配置文件位置：", ConfigFilePath)
 	content, err := ioutil.ReadFile(ConfigFilePath)
@@ -67,36 +52,48 @@ func UseConfigFile(configMode *models.GatewayConfig) {
 		log.Println(err.Error())
 		return
 	}
-	err = yaml.Unmarshal(content, &configMode)
+	err = yaml.Unmarshal(content, &ConfigMode)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	//找到了配置文件
-	if len(configMode.LastId) < 35 {
-		configMode.LastId = uuid.Must(uuid.NewV4()).String()
+	if len(ConfigMode.LastId) < 35 {
+		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	Setting["GateWayToken"], err = models.GetToken(configMode, 1, 200000000000)
+	Setting["GateWayToken"], err = models.GetToken(ConfigMode, 1, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	err = services.RunNATManager(configMode.Server.LoginKey, Setting["GateWayToken"])
+	err = services.RunNATManager(ConfigMode.Server.LoginKey, Setting["GateWayToken"])
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
 		return
 	}
 	fmt.Printf("登陆成功！\n")
-	Setting["OpenIoTHubToken"], err = models.GetToken(configMode, 2, 200000000000)
+	Setting["OpenIoTHubToken"], err = models.GetToken(ConfigMode, 2, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	log.Println("访问token：\n\n" + Setting["OpenIoTHubToken"] + "\n\n")
-	err = WriteConfigFile(configMode, ConfigFilePath)
+	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 	}
+	Loged = true
+}
+
+func UseGateWayToken() {
+	//使用服务器签发的Token登录
+	err := services.RunNATManager(ConfigMode.Server.LoginKey, GatewayLoginToken)
+	if err != nil {
+		fmt.Printf(err.Error())
+		fmt.Printf("登陆失败！请重新登陆。")
+		return
+	}
+	fmt.Printf("登陆成功！\n")
 	Loged = true
 }

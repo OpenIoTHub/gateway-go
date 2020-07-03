@@ -13,7 +13,6 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"strconv"
 )
 
 var (
@@ -25,15 +24,9 @@ var (
 
 type LoginManager struct{}
 
-var ConfigMode = &models.GatewayConfig{Server: &models.Srever{}}
 var loginManager = &LoginManager{}
 
 func Run() {
-	port, err := strconv.Atoi(config.Setting["gRpcPort"])
-	if err != nil {
-		log.Println(err)
-		return
-	}
 	var Mac = "mac"
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -42,11 +35,11 @@ func Run() {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", config.GrpcPort,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
-			fmt.Sprintf("id=%s", ConfigMode.LastId),
+			fmt.Sprintf("id=%s", config.ConfigMode.LastId),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
@@ -82,11 +75,11 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 	}
 
 	//string ConnectionType = 3;
-	ConfigMode.ConnectionType = in.ConnectionType
+	config.ConfigMode.ConnectionType = in.ConnectionType
 	//string LastId = 4;
-	ConfigMode.LastId = in.LastId
+	config.ConfigMode.LastId = in.LastId
 
-	ConfigMode.Server = &models.Srever{
+	config.ConfigMode.Server = &models.Srever{
 		ServerHost: in.ServerHost,
 		TcpPort:    int(in.TcpPort),
 		KcpPort:    int(in.KcpPort),
@@ -97,11 +90,11 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		LoginKey:   in.LoginKey,
 	}
 
-	if ConfigMode.LastId == "" {
-		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
+	if config.ConfigMode.LastId == "" {
+		config.ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
 
-	GateWayToken, err := models.GetToken(ConfigMode, 1, 200000000000)
+	GateWayToken, err := models.GetToken(config.ConfigMode, 1, 200000000000)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -109,7 +102,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: config.Loged,
 		}, err
 	}
-	err = services.RunNATManager(ConfigMode.Server.LoginKey, GateWayToken)
+	err = services.RunNATManager(config.ConfigMode.Server.LoginKey, GateWayToken)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -118,8 +111,8 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		}, err
 	}
 	config.Loged = true
-	config.Setting["OpenIoTHubToken"], err = models.GetToken(ConfigMode, 2, 200000000000)
-	err = config.WriteConfigFile(ConfigMode, config.ConfigFilePath)
+	config.Setting["OpenIoTHubToken"], err = models.GetToken(config.ConfigMode, 2, 200000000000)
+	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 		return &pb.LoginResponse{
@@ -142,7 +135,7 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 
 //rpc GetOpenIoTHubToken (Empty) returns (Token) {}
 func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	OpenIoTHubToken, err := models.GetToken(ConfigMode, 2, 200000000000)
+	OpenIoTHubToken, err := models.GetToken(config.ConfigMode, 2, 200000000000)
 	if err != nil {
 		return &pb.Token{}, err
 	}
