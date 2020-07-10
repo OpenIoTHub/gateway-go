@@ -10,11 +10,22 @@ import (
 	"time"
 )
 
+var (
+	version = "dev"
+	commit  = ""
+	date    = ""
+	builtBy = ""
+)
+
 func main() {
+	client.Version = version
+	client.Commit = commit
+	client.Date = date
+	client.BuiltBy = builtBy
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
-	myApp.Version = fmt.Sprintf("%s(commit:%s,build on:%s,buildBy:%s)", client.Version, client.Commit, client.Date, client.BuiltBy)
+	myApp.Version = buildVersion(version, commit, date, builtBy)
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
 		&cli.StringFlag{
@@ -54,4 +65,18 @@ func main() {
 	if err != nil {
 		log.Println(err.Error())
 	}
+}
+
+func buildVersion(version, commit, date, builtBy string) string {
+	var result = version
+	if commit != "" {
+		result = fmt.Sprintf("%s\ncommit: %s", result, commit)
+	}
+	if date != "" {
+		result = fmt.Sprintf("%s\nbuilt at: %s", result, date)
+	}
+	if builtBy != "" {
+		result = fmt.Sprintf("%s\nbuilt by: %s", result, builtBy)
+	}
+	return result
 }
