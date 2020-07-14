@@ -47,6 +47,15 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:    "test",
+			Aliases: []string{"t"},
+			Usage:   "test this command",
+			Action: func(c *cli.Context) error {
+				fmt.Println("ok")
+				return nil
+			},
+		},
 	}
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
