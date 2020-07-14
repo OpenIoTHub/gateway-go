@@ -26,6 +26,28 @@ func main() {
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
 	myApp.Version = buildVersion(version, commit, date, builtBy)
+	myApp.Commands = []*cli.Command{
+		{
+			Name:    "init",
+			Aliases: []string{"i"},
+			Usage:   "init config file",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:        "config",
+					Aliases:     []string{"c"},
+					Value:       config.ConfigFilePath,
+					Usage:       "config file path",
+					EnvVars:     []string{"GatewayConfigFilePath"},
+					Destination: &config.ConfigFilePath,
+				},
+			},
+			Action: func(c *cli.Context) error {
+				config.InitConfigFile()
+				fmt.Println("config file init ok!")
+				return nil
+			},
+		},
+	}
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
 		&cli.StringFlag{
