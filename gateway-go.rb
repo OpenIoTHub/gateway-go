@@ -1,6 +1,6 @@
 class GatewayGo < Formula
   desc "🎁GateWay Client for OpenIoTHub[云易连访问内网端口和设备的网关]"
-  homepage "http://github.com/OpenIoTHub"
+  homepage "https://github.com/OpenIoTHub"
   url "https://github.com/OpenIoTHub/gateway-go.git",
       :tag      => "v0.1.79",
       :revision => "e974826206ceff6c7d8fed3e8e290411b0437fd4"
