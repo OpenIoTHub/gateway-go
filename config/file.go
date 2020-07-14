@@ -20,15 +20,12 @@ func WriteConfigFile(ConfigMode *models.GatewayConfig, path string) (err error) 
 		return
 	}
 	if ioutil.WriteFile(path, configByte, 0644) == nil {
-		log.Println("写入配置文件文件成功！")
 		return
 	}
 	return
 }
 
 func InitConfigFile() {
-	log.Println("没有找到配置文件：", ConfigFilePath)
-	log.Println("开始生成默认的空白配置文件，请填写配置文件后重复运行本程序")
 	//	生成配置文件模板
 	err := os.MkdirAll(filepath.Dir(ConfigFilePath), 0644)
 	if err != nil {
@@ -36,8 +33,7 @@ func InitConfigFile() {
 	}
 	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err == nil {
-		log.Println("由于没有找到配置文件，已经为你生成配置文件（模板），位置：", ConfigFilePath)
-		log.Println("你可以手动修改上述配置文件后再运行！")
+		fmt.Println("config created")
 		return
 	}
 	log.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")

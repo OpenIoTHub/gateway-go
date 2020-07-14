@@ -43,7 +43,6 @@ func main() {
 			},
 			Action: func(c *cli.Context) error {
 				config.InitConfigFile()
-				fmt.Println("config file init ok!")
 				return nil
 			},
 		},
