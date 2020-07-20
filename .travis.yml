@@ -3,7 +3,8 @@ cache:
     - $GOPATH/pkg/mod
     - $HOME/.cache/go-build
 language: go
-go: 1.13.x
+go:
+  - master
 env:
   matrix:
   - GO111MODULE=on
@@ -22,6 +23,8 @@ addons:
 services:
 - docker
 after_success:
+- brew update
+- brew install gateway-go
 - docker login -u=openiothub -p="$DOCKER_PASSWORD"
 - snapcraft login --with snap.login
 - rm snap.login
