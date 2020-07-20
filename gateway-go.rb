@@ -1,5 +1,5 @@
 class GatewayGo < Formula
-  desc "🎁GateWay Client for OpenIoTHub[云易连访问内网端口和设备的网关]"
+  desc "GateWay Client for OpenIoTHub"
   homepage "https://github.com/OpenIoTHub"
   url "https://github.com/OpenIoTHub/gateway-go.git",
       :tag      => "v0.1.79",

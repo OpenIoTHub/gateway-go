@@ -8,7 +8,7 @@ Here are the steps for each of them:
 
 ## Install the pre-compiled binary
 
-**homebrew tap** (only on macOS for now):
+**homebrew tap** :
 
 ```sh
 $ brew install OpenIoTHub/tap/gateway-go
@@ -17,7 +17,7 @@ $ brew install OpenIoTHub/tap/gateway-go
 **homebrew** (may not be the latest version):
 
 ```sh
-$ brew install gateway-go（not support yet）
+$ brew install gateway-go
 ```
 
 **snapcraft**:
