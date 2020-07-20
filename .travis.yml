@@ -3,6 +3,7 @@ cache:
     - $GOPATH/pkg/mod
     - $HOME/.cache/go-build
 language: go
+sudo: true
 go:
   - master
 env:
@@ -23,8 +24,10 @@ addons:
 services:
 - docker
 after_success:
+- /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 - brew update
 - brew install gateway-go
+- gateway-go -v
 - docker login -u=openiothub -p="$DOCKER_PASSWORD"
 - snapcraft login --with snap.login
 - rm snap.login
