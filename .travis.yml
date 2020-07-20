@@ -27,6 +27,7 @@ after_success:
 - gateway-go -v
 - gateway-go init -c travis.yaml
 - ls
+- cat travis.yaml
 - docker login -u=openiothub -p="$DOCKER_PASSWORD"
 - snapcraft login --with snap.login
 - rm snap.login
