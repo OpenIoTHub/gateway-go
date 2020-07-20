@@ -21,13 +21,12 @@ addons:
   apt:
     packages:
     - snapcraft
-    - linuxbrew-wrapper
 services:
 - docker
 after_success:
-- brew update
-- brew install gateway-go
 - gateway-go -v
+- gateway-go init
+- ls
 - docker login -u=openiothub -p="$DOCKER_PASSWORD"
 - snapcraft login --with snap.login
 - rm snap.login
