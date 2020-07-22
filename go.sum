@@ -4,8 +4,8 @@ github.com/OpenIoTHub/gateway-grpc-api v1.0.5 h1:Epe9a3aHM6rFJFVbiiyxKhCa53VVM4e
 github.com/OpenIoTHub/gateway-grpc-api v1.0.5/go.mod h1:kcwVCNS2/0dkB3AQzSV6n2WLEZDca9IBEeengUqR9kU=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63 h1:wh5dkYblMJ28m9561X6uvuzkw3czhw43o34itQhhvHg=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63/go.mod h1:SUB860em/OzidIoPEAhG0OpqJYmmBjnX36fb6JeDRO0=
-github.com/OpenIoTHub/utils v0.0.44 h1:NOZ95TilZaiRHK3aX1k2D2iQTWAIE9XKHRQoHVJoc6s=
-github.com/OpenIoTHub/utils v0.0.44/go.mod h1:HiyH55mqDgQg1J9P80RR+hRIx5P9/TttLED1O91MGQM=
+github.com/OpenIoTHub/utils v0.0.46 h1:TMUqociGYfb6hp3fOYophke4lppkPLiTxXLp8DKkdXE=
+github.com/OpenIoTHub/utils v0.0.46/go.mod h1:HiyH55mqDgQg1J9P80RR+hRIx5P9/TttLED1O91MGQM=
 github.com/PuerkitoBio/goquery v1.5.1 h1:PSPBGne8NIUWw+/7vFBV+kG2J/5MOjbzc7154OaKCSE=
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=

@@ -57,24 +57,24 @@ func UseConfigFile() {
 	if len(ConfigMode.LastId) < 35 {
 		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
 	}
-	Setting["GateWayToken"], err = models.GetToken(ConfigMode, 1, 200000000000)
+	GatewayLoginToken, err = models.GetToken(ConfigMode, 1, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	err = services.RunNATManager(ConfigMode.Server.LoginKey, Setting["GateWayToken"])
+	err = services.RunNATManager(ConfigMode.Server.LoginKey, GatewayLoginToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
 		return
 	}
 	fmt.Printf("登陆成功！\n")
-	Setting["OpenIoTHubToken"], err = models.GetToken(ConfigMode, 2, 200000000000)
+	OpenIoTHubToken, err = models.GetToken(ConfigMode, 2, 200000000000)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	log.Println("访问token：\n\n" + Setting["OpenIoTHubToken"] + "\n\n")
+	log.Println("访问token：\n\n" + OpenIoTHubToken + "\n\n")
 	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())

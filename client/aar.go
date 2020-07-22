@@ -20,6 +20,21 @@ type LoginManager struct{}
 var loginManager = &LoginManager{}
 
 func Run() {
+	s := grpc.NewServer()
+	pb.RegisterGatewayLoginManagerServer(s, loginManager)
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.GRpcAddr, config.GrpcPort))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+		return
+	}
+	addr := lis.Addr().(*net.TCPAddr)
+	go regMDNS(addr.Port)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
+
+func regMDNS(port int) {
 	var Mac = "mac"
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -28,7 +43,7 @@ func Run() {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", config.GrpcPort,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
@@ -42,18 +57,6 @@ func Run() {
 		log.Println(err)
 		return
 	}
-	//
-	s := grpc.NewServer()
-	pb.RegisterGatewayLoginManagerServer(s, loginManager)
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", config.Setting["gRpcAddr"], config.Setting["gRpcPort"]))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-		return
-	}
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-
 }
 
 //rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
@@ -104,7 +107,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		}, err
 	}
 	config.Loged = true
-	config.Setting["OpenIoTHubToken"], err = models.GetToken(config.ConfigMode, 2, 200000000000)
+	config.OpenIoTHubToken, err = models.GetToken(config.ConfigMode, 2, 200000000000)
 	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())

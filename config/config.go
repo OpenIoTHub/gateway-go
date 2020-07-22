@@ -6,20 +6,22 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"os"
 	"path/filepath"
-	"runtime"
 )
 
-var Setting = make(map[string]string)
+//var Setting = make(map[string]string)
 
 var Loged = false
 
 var ConfigFileName = "gateway.yaml"
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
+
 var GatewayLoginToken = ""
-var GrpcPort = 1082
+var OpenIoTHubToken = ""
+
+var GRpcAddr = "0.0.0.0"
+var GrpcPort = 0
 
 var ConfigMode = &models.GatewayConfig{
-	GrpcPort:       GrpcPort,
 	LastId:         uuid.Must(uuid.NewV4()).String(),
 	ConnectionType: "tcp",
 	Server: &models.Srever{
@@ -39,13 +41,5 @@ func init() {
 	appDataPath, havaAppDataPath := os.LookupEnv("SNAP_USER_DATA")
 	if havaAppDataPath {
 		ConfigFilePath = filepath.Join(appDataPath, ConfigFileName)
-	}
-	Setting["gRpcAddr"] = "0.0.0.0"
-	Setting["GateWayToken"] = ""
-	Setting["OpenIoTHubToken"] = ""
-	if runtime.GOOS == "android" {
-
-	} else {
-
 	}
 }

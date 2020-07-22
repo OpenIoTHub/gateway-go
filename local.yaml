@@ -1,6 +1,5 @@
 connection_type: ""
 last_id: 06fb1be2-ca5f-4346-843f-f36da1794bc4
-http_api_port: 1082
 server:
   server_host: 192.168.123.3
   tcp_port: 34320
