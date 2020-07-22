@@ -78,8 +78,9 @@ func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
 		return nil, err
 	}
 	loginWorkConn := &models.GatewayWorkConn{
-		RunId:  token.RunId,
-		Secret: "",
+		RunId:   token.RunId,
+		Secret:  "",
+		Version: Version,
 	}
 
 	err = msg.WriteMsg(conn, loginWorkConn)
