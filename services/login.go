@@ -10,7 +10,10 @@ import (
 	"strconv"
 )
 
-var ServerIp string
+var (
+	Version  = "dev"
+	ServerIp string
+)
 
 func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
 	token, err := models.DecodeToken(salt, tokenstr)
@@ -35,9 +38,10 @@ func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, er
 		return nil, true, token, err
 	}
 	login := &models.GatewayLogin{
-		Token: tokenstr,
-		Os:    runtime.GOOS,
-		Arch:  runtime.GOARCH,
+		Token:   tokenstr,
+		Os:      runtime.GOOS,
+		Arch:    runtime.GOARCH,
+		Version: Version,
 	}
 
 	err = msg.WriteMsg(conn, login)

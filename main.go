@@ -4,6 +4,7 @@ import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/client"
 	"github.com/OpenIoTHub/gateway-go/config"
+	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -18,10 +19,7 @@ var (
 )
 
 func main() {
-	client.Version = version
-	client.Commit = commit
-	client.Date = date
-	client.BuiltBy = builtBy
+	services.Version = version
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"

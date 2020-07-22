@@ -3,7 +3,7 @@
 // chn_ip.txt
 // DO NOT EDIT!
 
-package nettool
+package ip
 
 import (
 	"bytes"

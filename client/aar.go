@@ -15,13 +15,6 @@ import (
 	"net"
 )
 
-var (
-	Version = "dev"
-	Commit  = ""
-	Date    = ""
-	BuiltBy = ""
-)
-
 type LoginManager struct{}
 
 var loginManager = &LoginManager{}
@@ -44,7 +37,7 @@ func Run() {
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
 			"firmware-respository=https://github.com/OpenIoTHub/gateway-go",
-			fmt.Sprintf("firmware-version=%s", Version)}, nil)
+			fmt.Sprintf("firmware-version=%s", services.Version)}, nil)
 	if err != nil {
 		log.Println(err)
 		return
