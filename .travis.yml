@@ -32,6 +32,8 @@ after_success:
 - docker login -u=openiothub -p="$DOCKER_PASSWORD"
 - snapcraft login --with snap.login
 - rm snap.login
+- docker ps -a
+- docker images
 deploy:
 - provider: script
   skip_cleanup: true
