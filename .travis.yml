@@ -2,8 +2,8 @@ cache:
   directories:
     - $GOPATH/pkg/mod
     - $HOME/.cache/go-build
+os: osx
 language: go
-sudo: true
 go:
   - master
 env:
@@ -21,6 +21,9 @@ addons:
   apt:
     packages:
     - snapcraft
+  homebrew:
+    packages:
+      - snapcraft
 services:
 - docker
 after_success:
@@ -38,7 +41,6 @@ deploy:
   script: git checkout . && curl -sL https://git.io/goreleaser | bash
   on:
     tags: true
-    condition: "$TRAVIS_OS_NAME = linux"
 before_install:
 - openssl aes-256-cbc -K $encrypted_219439784b94_key -iv $encrypted_219439784b94_iv
   -in snap.login.enc -out snap.login -d
