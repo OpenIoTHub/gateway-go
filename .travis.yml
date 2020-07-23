@@ -18,14 +18,11 @@ notifications:
     - newfarry@126.com
     on_success: always
 addons:
-  apt:
-    packages:
-    - snapcraft
   homebrew:
     packages:
       - snapcraft
-services:
-- docker
+    casks:
+      - docker
 after_success:
 - gateway-go -v
 - gateway-go init -c travis.yaml
