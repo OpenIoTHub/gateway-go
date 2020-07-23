@@ -87,9 +87,9 @@ snapcrafts:
         daemon: simple
 dockers:
   - image_templates:
-      - 'openiothub/gateway:{{ .Tag }}'
-      - 'openiothub/gateway:v{{ .Major }}.{{ .Minor }}'
-      - 'openiothub/gateway:latest'
+      - 'openiothub/gateway-go:{{ .Tag }}'
+      - 'openiothub/gateway-go:v{{ .Major }}.{{ .Minor }}'
+      - 'openiothub/gateway-go:latest'
     dockerfile: Dockerfile
     binaries:
       - gateway-go
