@@ -1,4 +1,4 @@
-package services
+package netservice
 
 import (
 	"github.com/OpenIoTHub/utils/io"
@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func listenMulticastUDP(stream net.Conn, service *models.NewService) error {
+func ListenMulticastUDP(stream net.Conn, service *models.NewService) error {
 	host, port, err := net.SplitHostPort(service.Config)
 	if err != nil {
 		return err

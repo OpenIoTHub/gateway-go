@@ -1,4 +1,4 @@
-package services
+package netservice
 
 import (
 	"github.com/OpenIoTHub/gateway-go/connect/tapTun"
@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-func serviceHdl(stream net.Conn, service *models.NewService) error {
+func ServiceHdl(stream net.Conn, service *models.NewService) error {
 	switch service.Type {
 	case "tap":
 		err := tapTun.NewTap(stream, service)
@@ -15,13 +15,13 @@ func serviceHdl(stream net.Conn, service *models.NewService) error {
 		err := tapTun.NewTun(stream, service)
 		return err
 	case "mDNSFind":
-		err := findAllmDNS(stream, service)
+		err := FindAllmDNS(stream, service)
 		return err
 	case "scanPort":
-		err := scanPort(stream, service)
+		err := ScanPort(stream, service)
 		return err
 	case "ListenMulticastUDP":
-		err := listenMulticastUDP(stream, service)
+		err := ListenMulticastUDP(stream, service)
 		return err
 	default:
 

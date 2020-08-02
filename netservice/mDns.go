@@ -1,4 +1,4 @@
-package services
+package netservice
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func findAllmDNS(stream net.Conn, service *models.NewService) error {
+func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 	//decode json
 	var config *models.FindmDNS
 	var rst []*zeroconf.ServiceEntry

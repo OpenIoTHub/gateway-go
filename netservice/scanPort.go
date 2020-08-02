@@ -1,4 +1,4 @@
-package services
+package netservice
 
 import (
 	"encoding/json"
@@ -31,7 +31,7 @@ func scanner(inport, outport, out chan int, ip net.IP, endport int) {
 	}
 }
 
-func scanPort(stream net.Conn, service *models.NewService) error {
+func ScanPort(stream net.Conn, service *models.NewService) error {
 	//decode json
 	var config *models.ScanPort
 	//var rst *models.ScanPortResult
