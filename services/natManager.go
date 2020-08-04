@@ -129,7 +129,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 				stream.Close()
 				return
 			}
-			go dlSubSession(session, tokenModel)
+			go dlsession(session, tokenModel, false)
 		}
 
 	case *models.RequestNewWorkConn:
@@ -157,7 +157,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
-				dlSubSession(session, tokenModel)
+				dlsession(session, tokenModel, false)
 			}()
 
 		}
@@ -170,7 +170,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
-				dlSubSession(session, tokenModel)
+				dlsession(session, tokenModel, false)
 			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
@@ -205,7 +205,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	}
 }
 
-func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
+func dlsession(session *yamux.Session, tokenModel *models.TokenClaims, needReogin bool) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -213,7 +213,9 @@ func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 				log.Println(err.Error())
 			}
 		}
-		go reLogin()
+		if needReogin {
+			go reLogin()
+		}
 	}()
 	for {
 		// Accept a stream
@@ -225,29 +227,6 @@ func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 		log.Println("获取到一个连接需要处理")
 		go dlstream(stream, tokenModel)
 	}
-}
-
-func dlSubSession(session *yamux.Session, tokenModel *models.TokenClaims) {
-	defer func() {
-		if session != nil {
-			err := session.Close()
-			if err != nil {
-				log.Println(err.Error())
-			}
-		}
-	}()
-	//session的keepalive,需要配合服务器
-	for {
-		// Accept a stream
-		stream, err := session.AcceptStream()
-		if err != nil {
-			fmt.Printf("accpStream:" + err.Error())
-			break
-		}
-		//log.Println("Sub Session获取到一个stream处理")
-		go dlstream(stream, tokenModel)
-	}
-	fmt.Printf("exit sub session")
 }
 
 //新创建的工作连接
@@ -272,7 +251,7 @@ func RunNATManager(salt, token string) (err error) {
 		//log.Println("登录失败：" + err.Error())
 		return err
 	}
-	go dlsession(session, tokenModel)
+	go dlsession(session, tokenModel, true)
 	return nil
 }
 
