@@ -11,8 +11,7 @@ import (
 )
 
 var (
-	Version  = "dev"
-	ServerIp string
+	Version = "dev"
 )
 
 func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
@@ -21,9 +20,8 @@ func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, er
 		fmt.Printf(err.Error())
 		return nil, false, &models.TokenClaims{}, err
 	}
-	ServerIp = token.Host
 	//KCP方式
-	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", ServerIp, token.KcpPort), nil, 10, 3)
+	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
 	//conn.SetStreamMode(true)
 	//conn.SetWriteDelay(false)
 	//conn.SetNoDelay(0, 40, 2, 1)
@@ -61,9 +59,8 @@ func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, er
 }
 
 func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
-	ServerIp = token.Host
 	//KCP方式
-	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", ServerIp, token.KcpPort), nil, 10, 3)
+	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
 	//conn.SetStreamMode(true)
 	//conn.SetWriteDelay(false)
 	//conn.SetNoDelay(0, 40, 2, 1)
@@ -71,9 +68,9 @@ func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
 	//conn.SetMtu(1472)
 	//conn.SetACKNoDelay(true)
 	//Tls
-	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", ServerIp, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
+	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
 	//TCP
-	conn, err := net.Dial("tcp", net.JoinHostPort(ServerIp, strconv.Itoa(token.TcpPort)))
+	conn, err := net.Dial("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)))
 	if err != nil {
 		return nil, err
 	}
