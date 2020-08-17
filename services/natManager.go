@@ -18,7 +18,7 @@ import (
 	"github.com/libp2p/go-yamux"
 )
 
-var lastSalt, lastToken string
+var lastToken string
 
 func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	var err error
@@ -242,11 +242,11 @@ func newWorkConn(tokenModel *models.TokenClaims) {
 }
 
 //登录到服务器
-func RunNATManager(salt, token string) (err error) {
+func RunNATManager(token string) (err error) {
 	var session *yamux.Session
 	var tokenModel *models.TokenClaims
-	lastSalt, lastToken = salt, token
-	session, _, tokenModel, err = Login(salt, token)
+	lastToken = token
+	session, _, tokenModel, err = LoginServer(token)
 	if err != nil {
 		//log.Println("登录失败：" + err.Error())
 		return err
@@ -257,7 +257,7 @@ func RunNATManager(salt, token string) (err error) {
 
 func reLogin() {
 	for {
-		err := RunNATManager(lastSalt, lastToken)
+		err := RunNATManager(lastToken)
 		if err != nil {
 			fmt.Printf("重新登录失败！原因：%s,5秒钟后重试...\n", err.Error())
 			time.Sleep(time.Second * 5)

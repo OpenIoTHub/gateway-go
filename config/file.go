@@ -62,7 +62,7 @@ func UseConfigFile() {
 		log.Println(err.Error())
 		return
 	}
-	err = services.RunNATManager(ConfigMode.Server.LoginKey, GatewayLoginToken)
+	err = services.RunNATManager(GatewayLoginToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")
@@ -84,7 +84,7 @@ func UseConfigFile() {
 
 func UseGateWayToken() {
 	//使用服务器签发的Token登录
-	err := services.RunNATManager(ConfigMode.Server.LoginKey, GatewayLoginToken)
+	err := services.RunNATManager(GatewayLoginToken)
 	if err != nil {
 		fmt.Printf(err.Error())
 		fmt.Printf("登陆失败！请重新登陆。")

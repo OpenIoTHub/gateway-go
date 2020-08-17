@@ -14,8 +14,8 @@ var (
 	Version = "dev"
 )
 
-func Login(salt, tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
-	token, err := models.DecodeToken(salt, tokenstr)
+func LoginServer(tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
+	token, err := models.DecodeUnverifiedToken(tokenstr)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return nil, false, &models.TokenClaims{}, err
