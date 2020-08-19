@@ -14,11 +14,11 @@ var (
 	Version = "dev"
 )
 
-func LoginServer(tokenstr string) (*yamux.Session, bool, *models.TokenClaims, error) { //bool retry? false :dont retry
+func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false :dont retry
 	token, err := models.DecodeUnverifiedToken(tokenstr)
 	if err != nil {
 		fmt.Printf(err.Error())
-		return nil, false, &models.TokenClaims{}, err
+		return nil, err
 	}
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
@@ -33,7 +33,7 @@ func LoginServer(tokenstr string) (*yamux.Session, bool, *models.TokenClaims, er
 	//TCP
 	conn, err := net.Dial("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)))
 	if err != nil {
-		return nil, true, token, err
+		return nil, err
 	}
 	login := &models.GatewayLogin{
 		Token:   tokenstr,
@@ -45,17 +45,17 @@ func LoginServer(tokenstr string) (*yamux.Session, bool, *models.TokenClaims, er
 	err = msg.WriteMsg(conn, login)
 	if err != nil {
 		conn.Close()
-		return nil, true, token, err
+		return nil, err
 	}
 	config := yamux.DefaultConfig()
 	//config.EnableKeepAlive = false
 	session, err := yamux.Server(conn, config)
 	if err != nil {
 		conn.Close()
-		return nil, false, token, err
+		return nil, err
 	}
 	fmt.Printf("login OK!")
-	return session, false, token, nil
+	return session, nil
 }
 
 func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {

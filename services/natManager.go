@@ -12,13 +12,9 @@ import (
 	//"github.com/OpenIoTHub/utils/io"
 	"github.com/jacobsa/go-serial/serial"
 	"net"
-	"time"
-
 	//"github.com/xtaci/smux"
 	"github.com/libp2p/go-yamux"
 )
-
-var lastToken string
 
 func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	var err error
@@ -129,7 +125,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 				stream.Close()
 				return
 			}
-			go dlsession(session, tokenModel, false)
+			go dlsession(session, tokenModel)
 		}
 
 	case *models.RequestNewWorkConn:
@@ -157,7 +153,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
-				dlsession(session, tokenModel, false)
+				dlsession(session, tokenModel)
 			}()
 
 		}
@@ -170,7 +166,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
-				dlsession(session, tokenModel, false)
+				dlsession(session, tokenModel)
 			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
@@ -205,16 +201,13 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	}
 }
 
-func dlsession(session *yamux.Session, tokenModel *models.TokenClaims, needReogin bool) {
+func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
 			if err != nil {
 				log.Println(err.Error())
 			}
-		}
-		if needReogin {
-			go reLogin()
 		}
 	}()
 	for {
@@ -239,30 +232,4 @@ func newWorkConn(tokenModel *models.TokenClaims) {
 	}
 	log.Println("创建一个到服务端的新的工作连接成功！")
 	go dlstream(conn, tokenModel)
-}
-
-//登录到服务器
-func RunNATManager(token string) (err error) {
-	var session *yamux.Session
-	var tokenModel *models.TokenClaims
-	lastToken = token
-	session, _, tokenModel, err = LoginServer(token)
-	if err != nil {
-		//log.Println("登录失败：" + err.Error())
-		return err
-	}
-	go dlsession(session, tokenModel, true)
-	return nil
-}
-
-func reLogin() {
-	for {
-		err := RunNATManager(lastToken)
-		if err != nil {
-			fmt.Printf("重新登录失败！原因：%s,5秒钟后重试...\n", err.Error())
-			time.Sleep(time.Second * 5)
-			continue
-		}
-		break
-	}
 }

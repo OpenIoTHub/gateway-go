@@ -98,7 +98,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: config.Loged,
 		}, err
 	}
-	err = services.RunNATManager(GateWayToken)
+	err = services.GatewayManager.AddServer(GateWayToken)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
