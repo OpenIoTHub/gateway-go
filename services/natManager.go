@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"github.com/OpenIoTHub/gateway-go/connect"
 	"github.com/OpenIoTHub/gateway-go/netservice"
 	"github.com/OpenIoTHub/utils/models"
@@ -29,14 +28,14 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	}()
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
-		fmt.Printf(err.Error() + "从stream读取数据错误")
+		log.Printf(err.Error() + "从stream读取数据错误")
 		return
 	}
-	//fmt.Printf("begin Swc")
+	//log.Printf("begin Swc")
 	switch m := rawMsg.(type) {
 	case *models.ConnectTCP:
 		{
-			fmt.Printf("tcp")
+			log.Printf("tcp")
 			err = connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				log.Println(err.Error())
@@ -45,7 +44,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.ConnectSTCP:
 		{
-			fmt.Printf("stcp")
+			log.Printf("stcp")
 			err = connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				log.Println(err.Error())
@@ -54,7 +53,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.ConnectUDP:
 		{
-			fmt.Printf("udp")
+			log.Printf("udp")
 			err = connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
 			if err != nil {
 				log.Println(err.Error())
@@ -63,7 +62,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.ConnectSerialPort:
 		{
-			fmt.Printf("sertp")
+			log.Printf("sertp")
 			err = connect.JoinSerialPort(stream, serial.OpenOptions(*m))
 			if err != nil {
 				log.Println(err.Error())
@@ -73,7 +72,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 
 	case *models.ConnectWs:
 		{
-			fmt.Printf("wstp")
+			log.Printf("wstp")
 			err = connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
 				log.Println(err.Error())
@@ -83,7 +82,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 
 	case *models.ConnectWss:
 		{
-			fmt.Printf("wsstp")
+			log.Printf("wsstp")
 			err = connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
 			if err != nil {
 				log.Println(err.Error())
@@ -92,7 +91,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.ConnectSSH:
 		{
-			fmt.Printf("ssh")
+			log.Printf("ssh")
 			err = connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
 			if err != nil {
 				log.Println(err.Error())
@@ -101,7 +100,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.NewService:
 		{
-			fmt.Printf("service")
+			log.Printf("service")
 			err = netservice.ServiceHdl(stream, m)
 			if err != nil {
 				log.Println(err.Error())
@@ -111,10 +110,10 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	case *models.NewSubSession:
 		{
 			//:TODO 新创建一个全新的子连接
-			fmt.Printf("newSubSession")
+			log.Printf("newSubSession")
 			//snappyConn, err := modelsSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
 			//if err != nil {
-			//	fmt.Printf(err.Error())
+			//	log.Printf(err.Error())
 			//	stream.Close()
 			//	return
 			//}
@@ -137,7 +136,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 
 	case *models.Ping:
 		{
-			//fmt.Printf("Ping from server")
+			//log.Printf("Ping from server")
 			err = msg.WriteMsg(stream, &models.Pong{})
 			if err != nil {
 				log.Println(err.Error())
@@ -146,7 +145,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 
 	case *models.ReqNewP2PCtrlAsServer:
 		{
-			fmt.Printf("作为listener方式从洞中获取kcp连接")
+			log.Printf("作为listener方式从洞中获取kcp连接")
 			go func() {
 				session, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
 				if err != nil {
@@ -159,7 +158,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 		}
 	case *models.ReqNewP2PCtrlAsClient:
 		{
-			fmt.Printf("作为dial方式从从洞中创建kcp连接")
+			log.Printf("作为dial方式从从洞中创建kcp连接")
 			go func() {
 				session, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
 				if err != nil {
@@ -172,7 +171,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
 		{
-			//log.Println("CheckStatusRequest")
+			log.Println("CheckStatusRequest")
 			switch m.Type {
 			case "tcp", "udp", "tls":
 				{
@@ -197,7 +196,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 			stream.Close()
 		}
 	default:
-		fmt.Printf("type err")
+		log.Printf("type err")
 	}
 }
 
@@ -217,7 +216,7 @@ func dlsession(session *yamux.Session, tokenModel *models.TokenClaims) {
 			log.Println("accpStreamErr：" + err.Error())
 			break
 		}
-		log.Println("获取到一个连接需要处理")
+		//log.Println("获取到一个连接需要处理")
 		go dlstream(stream, tokenModel)
 	}
 }
