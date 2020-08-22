@@ -2,10 +2,11 @@ cache:
   directories:
     - $GOPATH/pkg/mod
     - $HOME/.cache/go-build
+
 language: go
-sudo: true
+
 go:
-  - master
+  - 1.15.x
 env:
   matrix:
     - GO111MODULE=on
