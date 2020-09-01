@@ -58,7 +58,7 @@ func (ss *ServerSession) LoopStream() {
 	}()
 	for {
 		if ss.session == nil {
-			log.Println("ss.session is nil:")
+			log.Println("ss.session is nil")
 			break
 		}
 		// Accept a stream
@@ -77,6 +77,7 @@ func (ss *ServerSession) CheckSessionStatus() {
 		err := ss.LoginServer()
 		if err != nil {
 			log.Println(err)
+			return
 		}
 		ss.LoopStream()
 	}
