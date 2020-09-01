@@ -171,7 +171,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims) {
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
 		{
-			log.Println("CheckStatusRequest")
+			//log.Println("CheckStatusRequest")
 			switch m.Type {
 			case "tcp", "udp", "tls":
 				{
