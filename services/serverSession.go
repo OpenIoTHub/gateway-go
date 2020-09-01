@@ -73,7 +73,7 @@ func (ss *ServerSession) LoopStream() {
 }
 
 func (ss *ServerSession) CheckSessionStatus() {
-	if ss.session != nil && ss.session.IsClosed() {
+	if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
 		err := ss.LoginServer()
 		if err != nil {
 			log.Println(err)
