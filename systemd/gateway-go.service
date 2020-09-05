@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenIoTHub Gateway
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/bin/gateway-go -c /etc/gateway-go/gateway-go.yaml
+
+[Install]
+WantedBy=multi-user.target
