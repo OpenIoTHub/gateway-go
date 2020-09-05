@@ -12,14 +12,15 @@ import (
 
 var Loged = false
 
-var ConfigFileName = "gateway-go.yaml"
+const ConfigFileName = "gateway-go.yaml"
+
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
 
 var GatewayLoginToken = ""
 var OpenIoTHubToken = ""
 
-var GRpcAddr = "0.0.0.0"
-var GrpcPort = 0
+const GRpcAddr = "0.0.0.0"
+const GrpcPort = 0
 
 var ConfigMode = &models.GatewayConfig{
 	LastId:         uuid.Must(uuid.NewV4()).String(),
