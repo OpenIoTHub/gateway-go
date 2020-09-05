@@ -12,7 +12,7 @@ import (
 
 var Loged = false
 
-var ConfigFileName = "gateway.yaml"
+var ConfigFileName = "gateway-go.yaml"
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
 
 var GatewayLoginToken = ""
