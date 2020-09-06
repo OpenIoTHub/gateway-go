@@ -73,6 +73,11 @@ nfpms:
     formats:
       - deb
       - rpm
+    scripts:
+      preinstall: "scripts/preinstall.sh"
+      postinstall: "scripts/postinstall.sh"
+      preremove: "scripts/preremove.sh"
+      postremove: "scripts/postremove.sh"
     files:
       "systemd/**": "/etc/systemd/system"
     config_files:
