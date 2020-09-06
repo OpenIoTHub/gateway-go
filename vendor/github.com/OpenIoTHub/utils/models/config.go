@@ -18,7 +18,8 @@ type Srever struct {
 }
 
 type ServerConfig struct {
-	Common struct {
+	PublicIp string `yaml:"my_public_ip_or_domian"`
+	Common   struct {
 		BindAddr   string `yaml:"bind_addr"`
 		TcpPort    int    `yaml:"tcp_port"`
 		KcpPort    int    `yaml:"kcp_port"`
@@ -35,5 +36,13 @@ type ServerConfig struct {
 		TlsKeyFilePath    string `yaml:"tls_key_file_path"`
 		HttpsCertFilePath string `yaml:"https_cert_file_path"`
 		HttpsKeyFilePath  string `yaml:"https_key_file_path"`
+	}
+	RedisConfig struct {
+		Enabled  bool   `yaml:"enabled"`
+		Network  string `yaml:"network"`
+		Address  string `yaml:"address"`
+		Database int    `yaml:"database"`
+		NeedAuth bool   `yaml:"needAuth"`
+		Password string `yaml:"password"`
 	}
 }
