@@ -94,6 +94,7 @@ snapcrafts:
       gateway-go:
         plugs: ["network", "network-bind"]
         daemon: simple
+        command: gateway-go
 dockers:
   - image_templates:
       - 'openiothub/gateway-go:{{ .Tag }}'

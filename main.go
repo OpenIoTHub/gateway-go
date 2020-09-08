@@ -53,6 +53,8 @@ func main() {
 				return nil
 			},
 		},
+		//	TODO 与当前本机运行的服务进行通信查询一些信息，比如id，token，log等
+		//	TODO 查询本机所在网络所包含的支持的服务
 	}
 	myApp.Flags = []cli.Flag{
 		//TODO 应该设置工作目录，各组件共享
