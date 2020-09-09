@@ -1,6 +1,8 @@
 # gateway-go
 [![Build Status](https://travis-ci.com/OpenIoTHub/gateway-go.svg?branch=master)](https://travis-ci.com/OpenIoTHub/gateway-go)
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gateway-go)
+
 You can install the pre-compiled binary (in several different ways),
 use Docker.
 
