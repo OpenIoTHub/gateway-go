@@ -10,6 +10,12 @@ Here are the steps for each of them:
 
 ## Install the pre-compiled binary
 
+**openwrt/entware/optware (Usually on the router)**:
+```sh
+opkg update
+opkg install gateway-go
+```
+
 **homebrew tap** :
 
 ```sh
