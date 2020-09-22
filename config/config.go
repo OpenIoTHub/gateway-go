@@ -23,17 +23,23 @@ const GRpcAddr = "0.0.0.0"
 const GrpcPort = 0
 
 var ConfigMode = &models.GatewayConfig{
-	LastId:         uuid.Must(uuid.NewV4()).String(),
-	ConnectionType: "tcp",
-	Server: &models.Srever{
-		ServerHost: "guonei.nat-cloud.com",
-		TcpPort:    34320,
-		KcpPort:    34320,
-		UdpApiPort: 34321,
-		KcpApiPort: 34322,
-		TlsPort:    34321,
-		GrpcPort:   34322,
-		LoginKey:   "HLLdsa544&*S",
+	GatewayUUID:        uuid.Must(uuid.NewV4()).String(),
+	LoginWithTokenList: []string{},
+	LoginWithServerConf: []*models.LoginWithServer{
+		{
+			LastId:         uuid.Must(uuid.NewV4()).String(),
+			ConnectionType: "tcp",
+			Server: &models.Srever{
+				ServerHost: "guonei.nat-cloud.com",
+				TcpPort:    34320,
+				KcpPort:    34320,
+				UdpApiPort: 34321,
+				KcpApiPort: 34322,
+				TlsPort:    34321,
+				GrpcPort:   34322,
+				LoginKey:   "HLLdsa544&*S",
+			},
+		},
 	},
 }
 

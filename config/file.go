@@ -54,32 +54,49 @@ func UseConfigFile() {
 		return
 	}
 	//找到了配置文件
-	if len(ConfigMode.LastId) < 35 {
-		ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
+	if len(ConfigMode.GatewayUUID) < 35 {
+		ConfigMode.GatewayUUID = uuid.Must(uuid.NewV4()).String()
+		err = WriteConfigFile(ConfigMode, ConfigFilePath)
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
-	GatewayLoginToken, err = models.GetToken(ConfigMode, 1, 200000000000)
-	if err != nil {
-		log.Println(err.Error())
-		return
+	//解析配置文件
+	for _, v := range ConfigMode.LoginWithServerConf {
+		if len(v.LastId) < 35 {
+			v.LastId = uuid.Must(uuid.NewV4()).String()
+		}
+		GatewayLoginToken, err = models.GetToken(v, 1, 200000000000)
+		if err != nil {
+			log.Println(err.Error())
+			continue
+		}
+		err = services.GatewayManager.AddServer(GatewayLoginToken)
+		if err != nil {
+			fmt.Printf(err.Error())
+			fmt.Printf("登陆失败！请重新登陆。")
+			continue
+		}
+		fmt.Printf("登陆成功！\n")
+		OpenIoTHubToken, err = models.GetToken(v, 2, 200000000000)
+		if err != nil {
+			log.Println(err.Error())
+			continue
+		}
+		log.Println("访问token：\n\n" + OpenIoTHubToken + "\n\n")
+		err = WriteConfigFile(ConfigMode, ConfigFilePath)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		Loged = true
 	}
-	err = services.GatewayManager.AddServer(GatewayLoginToken)
-	if err != nil {
-		fmt.Printf(err.Error())
-		fmt.Printf("登陆失败！请重新登陆。")
-		return
+	for _, v := range ConfigMode.LoginWithTokenList {
+		err = services.GatewayManager.AddServer(v)
+		if err != nil {
+			continue
+		}
+		Loged = true
 	}
-	fmt.Printf("登陆成功！\n")
-	OpenIoTHubToken, err = models.GetToken(ConfigMode, 2, 200000000000)
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-	log.Println("访问token：\n\n" + OpenIoTHubToken + "\n\n")
-	err = WriteConfigFile(ConfigMode, ConfigFilePath)
-	if err != nil {
-		log.Println(err.Error())
-	}
-	Loged = true
 }
 
 func UseGateWayToken() {

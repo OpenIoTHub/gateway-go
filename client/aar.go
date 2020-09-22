@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	_ "github.com/OpenIoTHub/gateway-go/component"
 	"github.com/OpenIoTHub/gateway-go/config"
@@ -43,11 +44,11 @@ func regMDNS(port int) {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.LastId[:7]), "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
-			fmt.Sprintf("id=%s", config.ConfigMode.LastId),
+			fmt.Sprintf("id=%s", config.ConfigMode.GatewayUUID),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
@@ -69,13 +70,13 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: true,
 		}, nil
 	}
-
+	var loginWithServer = new(models.LoginWithServer)
 	//string ConnectionType = 3;
-	config.ConfigMode.ConnectionType = in.ConnectionType
+	loginWithServer.ConnectionType = in.ConnectionType
 	//string LastId = 4;
-	config.ConfigMode.LastId = in.LastId
+	loginWithServer.LastId = in.LastId
 
-	config.ConfigMode.Server = &models.Srever{
+	loginWithServer.Server = &models.Srever{
 		ServerHost: in.ServerHost,
 		TcpPort:    int(in.TcpPort),
 		KcpPort:    int(in.KcpPort),
@@ -86,11 +87,11 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		LoginKey:   in.LoginKey,
 	}
 
-	if config.ConfigMode.LastId == "" {
-		config.ConfigMode.LastId = uuid.Must(uuid.NewV4()).String()
+	if loginWithServer.LastId == "" {
+		loginWithServer.LastId = uuid.Must(uuid.NewV4()).String()
 	}
 
-	GateWayToken, err := models.GetToken(config.ConfigMode, 1, 200000000000)
+	GateWayToken, err := models.GetToken(loginWithServer, 1, 200000000000)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -106,17 +107,8 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: config.Loged,
 		}, err
 	}
+	config.OpenIoTHubToken, err = models.GetToken(loginWithServer, 2, 200000000000)
 	config.Loged = true
-	config.OpenIoTHubToken, err = models.GetToken(config.ConfigMode, 2, 200000000000)
-	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
-	if err != nil {
-		log.Println(err.Error())
-		return &pb.LoginResponse{
-			Code:        1,
-			Message:     err.Error(),
-			LoginStatus: config.Loged,
-		}, err
-	}
 	return &pb.LoginResponse{
 		Code:        0,
 		Message:     "登录成功！",
@@ -131,11 +123,17 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 
 //rpc GetOpenIoTHubToken (Empty) returns (Token) {}
 func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	OpenIoTHubToken, err := models.GetToken(config.ConfigMode, 2, 200000000000)
-	if err != nil {
-		return &pb.Token{}, err
+	if len(config.ConfigMode.LoginWithServerConf) > 0 {
+		OpenIoTHubToken, err := models.GetToken(config.ConfigMode.LoginWithServerConf[0], 2, 200000000000)
+		if err != nil {
+			return &pb.Token{}, err
+		}
+		return &pb.Token{Value: OpenIoTHubToken}, nil
 	}
-	return &pb.Token{Value: OpenIoTHubToken}, nil
+	if config.OpenIoTHubToken != "" {
+		return &pb.Token{Value: config.OpenIoTHubToken}, nil
+	}
+	return &pb.Token{}, errors.New("not found")
 }
 
 //rpc GetGateWayToken (Empty) returns (Token) {}

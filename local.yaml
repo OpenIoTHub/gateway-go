@@ -1,11 +1,14 @@
-connection_type: ""
-last_id: random
-server:
-  server_host: 127.0.0.1
-  tcp_port: 34320
-  kcp_port: 34320
-  udp_p2p_port: 34321
-  kcp_p2p_port: 34322
-  tls_port: 34321
-  grpc_port: 34322
-  login_key: HLLdsa544&*S
+gatewayuuid: random
+loginwithtokenlist: []
+loginwithserverconf:
+- connection_type: tcp
+  last_id: random
+  server:
+    server_host: 127.0.0.1
+    tcp_port: 34320
+    kcp_port: 34320
+    udp_p2p_port: 34321
+    kcp_p2p_port: 34322
+    tls_port: 34321
+    grpc_port: 34322
+    login_key: HLLdsa544&*S

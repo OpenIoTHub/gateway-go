@@ -1,6 +1,13 @@
 package models
 
+//网关的配置文件
 type GatewayConfig struct {
+	GatewayUUID         string
+	LoginWithTokenList  []string
+	LoginWithServerConf []*LoginWithServer
+}
+
+type LoginWithServer struct {
 	ConnectionType string `yaml:"connection_type"`
 	LastId         string `yaml:"last_id"`
 	Server         *Srever
@@ -17,6 +24,7 @@ type Srever struct {
 	LoginKey   string `yaml:"login_key"`
 }
 
+//服务器的配置文件模型
 type ServerConfig struct {
 	PublicIp string `yaml:"my_public_ip_or_domian"`
 	Common   struct {

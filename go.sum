@@ -2,10 +2,12 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/OpenIoTHub/gateway-grpc-api v1.0.5 h1:Epe9a3aHM6rFJFVbiiyxKhCa53VVM4ePPSxk91s1zfo=
 github.com/OpenIoTHub/gateway-grpc-api v1.0.5/go.mod h1:kcwVCNS2/0dkB3AQzSV6n2WLEZDca9IBEeengUqR9kU=
+github.com/OpenIoTHub/getip v0.1.0 h1:W8iB+PcDz15jJHJTxMZmyXVAc8TRjwJTZ1+JsxCYVc4=
+github.com/OpenIoTHub/getip v0.1.0/go.mod h1:MO10UjKzR2d8p2ajplZu//NsvQ0GMiL7pllh1LEnKIM=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63 h1:wh5dkYblMJ28m9561X6uvuzkw3czhw43o34itQhhvHg=
 github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63/go.mod h1:SUB860em/OzidIoPEAhG0OpqJYmmBjnX36fb6JeDRO0=
-github.com/OpenIoTHub/utils v0.0.55 h1:UjXuG7QDdp2YYdZQxIMaQPelxc5ZpdszdeSOwcupe+g=
-github.com/OpenIoTHub/utils v0.0.55/go.mod h1:p8gVIB5cG+N2qAXtZ5cE/ALAhv+AxbuVRdvXBUe83iI=
+github.com/OpenIoTHub/utils v0.0.59 h1:Nf//jfC+FYeDkLT5W1Dt85R5g4Vf18DSOQMSEULqYA8=
+github.com/OpenIoTHub/utils v0.0.59/go.mod h1:y1u/SS0CAgsOI95RnrI6nxMFcXNVAF6NF6sbNDqNDkQ=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
