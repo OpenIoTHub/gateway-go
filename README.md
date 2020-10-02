@@ -27,12 +27,23 @@ $ brew install OpenIoTHub/tap/gateway-go
 ```sh
 $ brew install gateway-go
 ```
+homebrew pr [gateway-go](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gateway-go.rb)
+```text
+*** config file : 
+/usr/local/etc/gateway-go/gateway-go.yaml
+```
+
 
 **snapcraft**:
 
 ```sh
 $ sudo snap install gateway-go
 ```
+```text
+*** config file :
+ /root/snap/gateway-go/current/gateway-go.yaml
+```
+
 
 **scoop**:
 
@@ -45,6 +56,11 @@ $ scoop install gateway-go
 
 Download the `.deb` or `.rpm` from the [releases page][releases] and
 install with `dpkg -i` and `rpm -i` respectively.
+```text
+*** config file :
+ /etc/gateway-go/gateway-go.yaml
+```
+
 
 **Shell script**:
 
