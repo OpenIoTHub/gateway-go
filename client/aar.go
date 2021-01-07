@@ -91,7 +91,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 		loginWithServer.LastId = uuid.Must(uuid.NewV4()).String()
 	}
 
-	GateWayToken, err := models.GetToken(loginWithServer, 1, 200000000000)
+	GateWayToken, err := models.GetToken(loginWithServer, []string{models.PermissionGatewayLogin}, 200000000000)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -107,7 +107,7 @@ func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.Serv
 			LoginStatus: config.Loged,
 		}, err
 	}
-	config.OpenIoTHubToken, err = models.GetToken(loginWithServer, 2, 200000000000)
+	config.OpenIoTHubToken, err = models.GetToken(loginWithServer, []string{models.PermissionOpenIoTHubLogin}, 200000000000)
 	config.Loged = true
 	return &pb.LoginResponse{
 		Code:        0,
@@ -124,7 +124,7 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 //rpc GetOpenIoTHubToken (Empty) returns (Token) {}
 func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
 	if len(config.ConfigMode.LoginWithServerConf) > 0 {
-		OpenIoTHubToken, err := models.GetToken(config.ConfigMode.LoginWithServerConf[0], 2, 200000000000)
+		OpenIoTHubToken, err := models.GetToken(config.ConfigMode.LoginWithServerConf[0], []string{models.PermissionOpenIoTHubLogin}, 200000000000)
 		if err != nil {
 			return &pb.Token{}, err
 		}

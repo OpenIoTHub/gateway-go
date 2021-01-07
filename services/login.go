@@ -58,7 +58,7 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 	return session, nil
 }
 
-func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
+func LoginWorkConn(token *models.TokenClaims, tokenStr string) (net.Conn, error) {
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
 	//conn.SetStreamMode(true)
@@ -76,7 +76,7 @@ func LoginWorkConn(token *models.TokenClaims) (net.Conn, error) {
 	}
 	loginWorkConn := &models.GatewayWorkConn{
 		RunId:   token.RunId,
-		Secret:  "",
+		Secret:  tokenStr,
 		Version: Version,
 	}
 

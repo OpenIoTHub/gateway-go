@@ -68,7 +68,7 @@ func (ss *ServerSession) LoopStream() {
 			break
 		}
 		log.Println("获取到一个连接需要处理")
-		go dlstream(stream, ss.tokenModel)
+		go dlstream(stream, ss.tokenModel, ss.token)
 	}
 }
 

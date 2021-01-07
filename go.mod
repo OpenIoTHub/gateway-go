@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/OpenIoTHub/gateway-grpc-api v1.0.5
 	github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
-	github.com/OpenIoTHub/utils v0.0.59
+	github.com/OpenIoTHub/utils v0.0.60
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/iotdevice/zeroconf v0.1.2

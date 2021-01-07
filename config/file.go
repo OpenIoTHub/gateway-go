@@ -66,7 +66,7 @@ func UseConfigFile() {
 		if len(v.LastId) < 35 {
 			v.LastId = uuid.Must(uuid.NewV4()).String()
 		}
-		GatewayLoginToken, err = models.GetToken(v, 1, 200000000000)
+		GatewayLoginToken, err = models.GetToken(v, []string{models.PermissionGatewayLogin}, 200000000000)
 		if err != nil {
 			log.Println(err.Error())
 			continue
@@ -78,7 +78,7 @@ func UseConfigFile() {
 			continue
 		}
 		fmt.Printf("登陆成功！\n")
-		OpenIoTHubToken, err = models.GetToken(v, 2, 200000000000)
+		OpenIoTHubToken, err = models.GetToken(v, []string{models.PermissionOpenIoTHubLogin}, 200000000000)
 		if err != nil {
 			log.Println(err.Error())
 			continue

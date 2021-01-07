@@ -1,8 +1,8 @@
-gatewayuuid: random
+gatewayuuid: a1f788d4-a788-4880-b708-1ce009451ec7
 loginwithtokenlist: []
 loginwithserverconf:
 - connection_type: tcp
-  last_id: random
+  last_id: 36def323-e321-4843-83bb-44f4c0720255
   server:
     server_host: guonei.nat-cloud.com
     tcp_port: 34320
