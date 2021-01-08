@@ -78,10 +78,12 @@ nfpms:
       postinstall: "scripts/install_remove/postinstall.sh"
       preremove: "scripts/install_remove/preremove.sh"
       postremove: "scripts/install_remove/postremove.sh"
-    files:
-      "systemd/**": "/etc/systemd/system"
-    config_files:
-      "gateway-go.yaml": "/etc/gateway-go/gateway-go.yaml"
+    contents:
+      - src: systemd/**
+        dst: /etc/systemd/system
+      - src: gateway-go.yaml
+        dst: /etc/gateway-go/gateway-go.yaml
+        type: config
 snapcrafts:
   - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
     summary: OpenIoTHub GateWay.
@@ -101,8 +103,7 @@ dockers:
       - 'openiothub/gateway-go:v{{ .Major }}.{{ .Minor }}'
       - 'openiothub/gateway-go:latest'
     dockerfile: Dockerfile
-    binaries:
-      - gateway-go
+    ids: ['gateway-go']
     build_flag_templates:
       - "--pull"
       - "--label=org.opencontainers.image.created={{.Date}}"
