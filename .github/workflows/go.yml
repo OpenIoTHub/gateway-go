@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  goreleaser:
+  gateway-go:
     runs-on: ubuntu-latest
     steps:
       -
