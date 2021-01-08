@@ -21,7 +21,7 @@ jobs:
         with:
           go-version: 1.15
       - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v1
+        uses: samuelmeuli/action-snapcraft@v1.1.3
         with:
           snapcraft_token: ${{ secrets.snapcraft_token }}
           skip_install: true # optional, if already installed in an earlier step
