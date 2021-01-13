@@ -14,7 +14,7 @@ import (
 var (
 	version = "dev"
 	commit  = ""
-	date    = time.Now()
+	date    = time.Now().String()
 	builtBy = ""
 )
 
