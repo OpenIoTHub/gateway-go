@@ -1,8 +1,8 @@
-gatewayuuid: dc02370c-0834-4663-b8ad-5387111d228e
+gatewayuuid: ""
 loginwithtokenlist: []
 loginwithserverconf:
 - connection_type: tcp
-  last_id: 8ce2016c-7ecd-4edf-9cea-83e073cc0c7e
+  last_id: ""
   server:
     server_host: 127.0.0.1
     tcp_port: 34320
