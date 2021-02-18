@@ -9,7 +9,7 @@ import (
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
 	"github.com/OpenIoTHub/utils/models"
-	"github.com/iotdevice/zeroconf"
+	"github.com/grandcat/zeroconf"
 	"github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"log"

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
-	"github.com/iotdevice/zeroconf"
+	"github.com/grandcat/zeroconf"
 	"log"
 	"net"
 	"time"
