@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
@@ -33,7 +34,7 @@ func InitConfigFile() {
 	}
 	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err == nil {
-		log.Println("config created")
+		fmt.Println("config created")
 		return
 	}
 	log.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
