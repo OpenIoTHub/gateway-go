@@ -27,7 +27,7 @@ func init() {
 			log.Println(err.Error())
 		}
 		if exist {
-			fmt.Printf("本网络已经存在了%s组件，不启动\n", model)
+			log.Printf("本网络已经存在了%s组件，不启动\n", model)
 			return
 		}
 		svr := &service.Server{
@@ -44,7 +44,7 @@ func init() {
 		server, err := nettool.RegistermDNSService(txtInfo, port)
 		err = svr.ListenAndServe(mqttaddr)
 		if err != nil {
-			fmt.Printf("surgemq: %v", err)
+			log.Printf("surgemq: %v", err)
 			server.Shutdown()
 			return
 		}

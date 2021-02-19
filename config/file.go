@@ -1,11 +1,11 @@
 package config
 
 import (
-	"fmt"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -33,7 +33,7 @@ func InitConfigFile() {
 	}
 	err = WriteConfigFile(ConfigMode, ConfigFilePath)
 	if err == nil {
-		fmt.Println("config created")
+		log.Println("config created")
 		return
 	}
 	log.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
@@ -61,7 +61,21 @@ func UseConfigFile() {
 			log.Println(err.Error())
 		}
 	}
-	//解析配置文件
+	//解析日志配置
+	writers := []io.Writer{}
+	if ConfigMode.LogConfig.EnableStdout {
+		writers = append(writers, os.Stdout)
+	}
+	if ConfigMode.LogConfig.LogFilePath != "" {
+		f, err := os.OpenFile(ConfigMode.LogConfig.LogFilePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		writers = append(writers, f)
+	}
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	log.SetOutput(fileAndStdoutWriter)
+	//解析配置文件，解析服务器配置文件列表
 	for _, v := range ConfigMode.LoginWithServerConf {
 		if len(v.LastId) < 35 {
 			v.LastId = uuid.Must(uuid.NewV4()).String()
@@ -73,11 +87,11 @@ func UseConfigFile() {
 		}
 		err = services.GatewayManager.AddServer(GatewayLoginToken)
 		if err != nil {
-			fmt.Printf(err.Error())
-			fmt.Printf("登陆失败！请重新登陆。")
+			log.Printf(err.Error())
+			log.Printf("登陆失败！请重新登陆。")
 			continue
 		}
-		fmt.Printf("登陆成功！\n")
+		log.Printf("登陆成功！\n")
 		OpenIoTHubToken, err = models.GetToken(v, []string{models.PermissionOpenIoTHubLogin}, 200000000000)
 		if err != nil {
 			log.Println(err.Error())
@@ -90,6 +104,7 @@ func UseConfigFile() {
 		}
 		Loged = true
 	}
+	//解析登录token列表
 	for _, v := range ConfigMode.LoginWithTokenList {
 		err = services.GatewayManager.AddServer(v)
 		if err != nil {
@@ -103,10 +118,10 @@ func UseGateWayToken() {
 	//使用服务器签发的Token登录
 	err := services.GatewayManager.AddServer(GatewayLoginToken)
 	if err != nil {
-		fmt.Printf(err.Error())
-		fmt.Printf("登陆失败！请重新登陆。")
+		log.Printf(err.Error())
+		log.Printf("登陆失败！请重新登陆。")
 		return
 	}
-	fmt.Printf("登陆成功！\n")
+	log.Printf("登陆成功！\n")
 	Loged = true
 }

@@ -49,7 +49,7 @@ func main() {
 			Aliases: []string{"t"},
 			Usage:   "test this command",
 			Action: func(c *cli.Context) error {
-				fmt.Println("ok")
+				log.Println("ok")
 				return nil
 			},
 		},

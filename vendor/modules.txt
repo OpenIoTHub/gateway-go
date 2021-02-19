@@ -1,12 +1,12 @@
 # github.com/OpenIoTHub/gateway-grpc-api v1.0.5
 ## explicit
 github.com/OpenIoTHub/gateway-grpc-api/pb-go
-# github.com/OpenIoTHub/getip v0.1.0
+# github.com/OpenIoTHub/getip v0.1.2
 github.com/OpenIoTHub/getip/iputils
 # github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 ## explicit
 github.com/OpenIoTHub/surgemq/service
-# github.com/OpenIoTHub/utils v0.0.60
+# github.com/OpenIoTHub/utils v0.0.61
 ## explicit
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models

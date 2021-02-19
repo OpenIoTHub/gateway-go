@@ -1,4 +1,7 @@
 gatewayuuid: ""
+logconfig:
+  enablestdout: true
+  logfilepath: ""
 loginwithtokenlist: []
 loginwithserverconf:
 - connection_type: tcp

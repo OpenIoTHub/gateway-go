@@ -1,10 +1,10 @@
 package services
 
 import (
-	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/libp2p/go-yamux"
+	"log"
 	"net"
 	"runtime"
 	"strconv"
@@ -17,7 +17,7 @@ var (
 func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false :dont retry
 	token, err := models.DecodeUnverifiedToken(tokenstr)
 	if err != nil {
-		fmt.Printf(err.Error())
+		log.Printf(err.Error())
 		return nil, err
 	}
 	//KCP方式
@@ -54,7 +54,7 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 		conn.Close()
 		return nil, err
 	}
-	fmt.Printf("login OK!")
+	log.Printf("login OK!")
 	return session, nil
 }
 

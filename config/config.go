@@ -23,7 +23,11 @@ const GRpcAddr = "0.0.0.0"
 const GrpcPort = 0
 
 var ConfigMode = &models.GatewayConfig{
-	GatewayUUID:        uuid.Must(uuid.NewV4()).String(),
+	GatewayUUID: uuid.Must(uuid.NewV4()).String(),
+	LogConfig: &models.LogConfig{
+		EnableStdout: true,
+		LogFilePath:  "",
+	},
 	LoginWithTokenList: []string{},
 	LoginWithServerConf: []*models.LoginWithServer{
 		{
