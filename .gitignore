@@ -5,3 +5,4 @@
 /dist
 /gateway-go
 /*.log
+/guowai.yaml

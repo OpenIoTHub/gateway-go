@@ -46,6 +46,7 @@ var (
 		Error{},
 
 		JsonResponse{},
+		MDNSResult{},
 	}
 )
 

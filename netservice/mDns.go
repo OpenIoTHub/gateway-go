@@ -14,7 +14,7 @@ import (
 func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 	//decode json
 	var config *models.FindmDNS
-	var rst []*zeroconf.ServiceEntry
+	var rst = make([]*models.MDNSResult, 0)
 	err := json.Unmarshal([]byte(service.Config), &config)
 	if err != nil {
 		return err
@@ -27,9 +27,19 @@ func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 	entries := make(chan *zeroconf.ServiceEntry)
 	go func(results <-chan *zeroconf.ServiceEntry) {
 		for entry := range results {
-			log.Println(entry)
+			log.Println("entry:", entry)
 			//TODO 去掉记录中ip不是本网段的ip
-			rst = append(rst, entry)
+			rst = append(rst, &models.MDNSResult{
+				Instance: entry.Instance,
+				Service:  entry.Service,
+				Domain:   entry.Domain,
+				HostName: entry.HostName,
+				Port:     entry.Port,
+				Text:     entry.Text,
+				TTL:      entry.TTL,
+				AddrIPv4: entry.AddrIPv4,
+				AddrIPv6: entry.AddrIPv6,
+			})
 		}
 	}(entries)
 	timeOut := time.Millisecond * time.Duration(config.Second) * 150
@@ -49,7 +59,7 @@ func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 		log.Println(err.Error())
 		return err
 	}
-	log.Println(string(rstByte))
+	log.Println("mdns rstByte:", string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
 		log.Println("写消息错误：")

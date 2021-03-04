@@ -100,7 +100,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 		}
 	case *models.NewService:
 		{
-			log.Printf("service")
+			log.Printf("case *models.NewService")
 			err = netservice.ServiceHdl(stream, m)
 			if err != nil {
 				log.Println(err.Error())
