@@ -13,22 +13,17 @@ type ServerSession struct {
 	tokenModel *models.TokenClaims
 	session    *yamux.Session
 	heartbeat  *time.Ticker
-	quit       chan bool
+	quit       chan struct{}
 	sync.Mutex
 }
 
 func (ss *ServerSession) stop() {
-	ss.quit <- true
+	ss.quit <- struct{}{}
 }
 
 func (ss *ServerSession) start() (err error) {
-	err = ss.LoginServer()
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	go ss.CheckSessionStatus()
 	ss.heartbeat = time.NewTicker(time.Second * 20)
-	go ss.LoopStream()
 	go ss.Task()
 	return
 }
@@ -74,12 +69,13 @@ func (ss *ServerSession) LoopStream() {
 
 func (ss *ServerSession) CheckSessionStatus() {
 	if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
+		log.Println("开始(重新)连接:", ss.tokenModel.RunId, "@", ss.tokenModel.Host)
 		err := ss.LoginServer()
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		ss.LoopStream()
+		go ss.LoopStream()
 	}
 }
 
