@@ -3,11 +3,10 @@ module github.com/OpenIoTHub/gateway-go
 go 1.15
 
 require (
-	github.com/OpenIoTHub/gateway-grpc-api v1.0.5
+	github.com/OpenIoTHub/gateway-grpc-api v1.0.6
 	github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 	github.com/OpenIoTHub/utils v0.0.64
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/grandcat/zeroconf v1.0.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/libp2p/go-msgio v0.0.6 // indirect
@@ -23,8 +22,7 @@ require (
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
 	golang.org/x/tools v0.0.0-20200904185747-39188db58858 // indirect
-	google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d // indirect
-	google.golang.org/grpc v1.31.1
+	google.golang.org/grpc v1.33.1
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0
 )

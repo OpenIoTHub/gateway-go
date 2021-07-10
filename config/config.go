@@ -2,24 +2,19 @@ package config
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/gateway-go/models"
 	uuid "github.com/satori/go.uuid"
 	"os"
 	"path/filepath"
 )
-
-//var Setting = make(map[string]string)
-
-var Loged = false
 
 const ConfigFileName = "gateway-go.yaml"
 
 var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
 
 var GatewayLoginToken = ""
-var OpenIoTHubToken = ""
 
-const GRpcAddr = "0.0.0.0"
+const GRpcAddr = ""
 const GrpcPort = 0
 
 var ConfigMode = &models.GatewayConfig{
@@ -29,22 +24,6 @@ var ConfigMode = &models.GatewayConfig{
 		LogFilePath:  "",
 	},
 	LoginWithTokenList: []string{},
-	LoginWithServerConf: []*models.LoginWithServer{
-		{
-			LastId:         uuid.Must(uuid.NewV4()).String(),
-			ConnectionType: "tcp",
-			Server: &models.Srever{
-				ServerHost: "guonei.nat-cloud.com",
-				TcpPort:    34320,
-				KcpPort:    34320,
-				UdpApiPort: 34321,
-				KcpApiPort: 34322,
-				TlsPort:    34321,
-				GrpcPort:   34322,
-				LoginKey:   "HLLdsa544&*S",
-			},
-		},
-	},
 }
 
 func init() {

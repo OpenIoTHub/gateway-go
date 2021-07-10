@@ -12,6 +12,13 @@ type GatewayCtl struct {
 	serverSession map[string]*ServerSession
 }
 
+func (gm *GatewayCtl) Loged() bool {
+	if len(gm.serverSession) > 0 {
+		return true
+	}
+	return false
+}
+
 func (gm *GatewayCtl) AddServer(token string) (err error) {
 	tokenModel, err := models.DecodeUnverifiedToken(token)
 	if err != nil {

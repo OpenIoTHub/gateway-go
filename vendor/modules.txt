@@ -1,4 +1,4 @@
-# github.com/OpenIoTHub/gateway-grpc-api v1.0.5
+# github.com/OpenIoTHub/gateway-grpc-api v1.0.6
 ## explicit
 github.com/OpenIoTHub/gateway-grpc-api/pb-go
 # github.com/OpenIoTHub/getip v0.1.2
@@ -23,8 +23,7 @@ github.com/cenkalti/backoff
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/dgrijalva/jwt-go v3.2.0+incompatible
 github.com/dgrijalva/jwt-go
-# github.com/golang/protobuf v1.4.2
-## explicit
+# github.com/golang/protobuf v1.4.3
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
@@ -166,10 +165,9 @@ golang.org/x/tools/internal/typesinternal
 # golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
-# google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d
-## explicit
+# google.golang.org/genproto v0.0.0-20201026171402-d4b8fe4fd877
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.31.1
+# google.golang.org/grpc v1.33.1
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -182,7 +180,6 @@ google.golang.org/grpc/binarylog/grpc_binarylog_v1
 google.golang.org/grpc/codes
 google.golang.org/grpc/connectivity
 google.golang.org/grpc/credentials
-google.golang.org/grpc/credentials/internal
 google.golang.org/grpc/encoding
 google.golang.org/grpc/encoding/proto
 google.golang.org/grpc/grpclog

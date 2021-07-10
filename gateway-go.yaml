@@ -1,17 +1,5 @@
-gatewayuuid: ""
+gatewayuuid:
 logconfig:
   enablestdout: true
   logfilepath: ""
 loginwithtokenlist: []
-loginwithserverconf:
-- connection_type: tcp
-  last_id: ""
-  server:
-    server_host: guonei.nat-cloud.com
-    tcp_port: 34320
-    kcp_port: 34320
-    udp_p2p_port: 34321
-    kcp_p2p_port: 34322
-    tls_port: 34321
-    grpc_port: 34322
-    login_key: HLLdsa544&*S

@@ -2,8 +2,8 @@ package config
 
 import (
 	"fmt"
+	"github.com/OpenIoTHub/gateway-go/models"
 	"github.com/OpenIoTHub/gateway-go/services"
-	"github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io"
@@ -77,41 +77,12 @@ func UseConfigFile() {
 	fileAndStdoutWriter := io.MultiWriter(writers...)
 	log.SetOutput(fileAndStdoutWriter)
 	//解析配置文件，解析服务器配置文件列表
-	for _, v := range ConfigMode.LoginWithServerConf {
-		if len(v.LastId) < 35 {
-			v.LastId = uuid.Must(uuid.NewV4()).String()
-		}
-		GatewayLoginToken, err = models.GetToken(v, []string{models.PermissionGatewayLogin}, 200000000000)
-		if err != nil {
-			log.Println(err.Error())
-			continue
-		}
-		err = services.GatewayManager.AddServer(GatewayLoginToken)
-		if err != nil {
-			log.Printf(err.Error())
-			log.Printf("登陆失败！请重新登陆。")
-			continue
-		}
-		log.Printf("登陆成功！\n")
-		OpenIoTHubToken, err = models.GetToken(v, []string{models.PermissionOpenIoTHubLogin}, 200000000000)
-		if err != nil {
-			log.Println(err.Error())
-			continue
-		}
-		log.Println("访问token：\n\n" + OpenIoTHubToken + "\n\n")
-		err = WriteConfigFile(ConfigMode, ConfigFilePath)
-		if err != nil {
-			log.Println(err.Error())
-		}
-		Loged = true
-	}
 	//解析登录token列表
 	for _, v := range ConfigMode.LoginWithTokenList {
 		err = services.GatewayManager.AddServer(v)
 		if err != nil {
 			continue
 		}
-		Loged = true
 	}
 }
 
@@ -124,5 +95,4 @@ func UseGateWayToken() {
 		return
 	}
 	log.Printf("登陆成功！\n")
-	Loged = true
 }

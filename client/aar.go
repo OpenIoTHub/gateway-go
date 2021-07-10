@@ -2,23 +2,22 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	_ "github.com/OpenIoTHub/gateway-go/component"
 	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
-	"github.com/OpenIoTHub/utils/models"
 	"github.com/grandcat/zeroconf"
-	"github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 )
 
-type LoginManager struct{}
+type LoginManager struct {
+	*pb.UnimplementedGatewayLoginManagerServer
+}
 
-var loginManager = &LoginManager{}
+var loginManager = new(LoginManager)
 
 func Run() {
 	s := grpc.NewServer()
@@ -29,6 +28,7 @@ func Run() {
 		return
 	}
 	addr := lis.Addr().(*net.TCPAddr)
+	fmt.Printf("Grpc 监听端口:%d\n", addr.Port)
 	go regMDNS(addr.Port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
@@ -60,83 +60,43 @@ func regMDNS(port int) {
 	}
 }
 
-//rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
-func (lm *LoginManager) LoginServerByServerInfo(ctx context.Context, in *pb.ServerInfo) (*pb.LoginResponse, error) {
-	var err error
-	if config.Loged {
-		return &pb.LoginResponse{
-			Code:        0,
-			Message:     "已经处于登录状态",
-			LoginStatus: true,
-		}, nil
-	}
-	var loginWithServer = new(models.LoginWithServer)
-	//string ConnectionType = 3;
-	loginWithServer.ConnectionType = in.ConnectionType
-	//string LastId = 4;
-	loginWithServer.LastId = in.LastId
-
-	loginWithServer.Server = &models.Srever{
-		ServerHost: in.ServerHost,
-		TcpPort:    int(in.TcpPort),
-		KcpPort:    int(in.KcpPort),
-		UdpApiPort: int(in.UdpApiPort),
-		KcpApiPort: int(in.KcpApiPort),
-		TlsPort:    int(in.TlsPort),
-		GrpcPort:   int(in.GrpcPort),
-		LoginKey:   in.LoginKey,
-	}
-
-	if loginWithServer.LastId == "" {
-		loginWithServer.LastId = uuid.Must(uuid.NewV4()).String()
-	}
-
-	GateWayToken, err := models.GetToken(loginWithServer, []string{models.PermissionGatewayLogin}, 200000000000)
-	if err != nil {
-		return &pb.LoginResponse{
-			Code:        1,
-			Message:     err.Error(),
-			LoginStatus: config.Loged,
-		}, err
-	}
-	err = services.GatewayManager.AddServer(GateWayToken)
-	if err != nil {
-		return &pb.LoginResponse{
-			Code:        1,
-			Message:     err.Error(),
-			LoginStatus: config.Loged,
-		}, err
-	}
-	config.OpenIoTHubToken, err = models.GetToken(loginWithServer, []string{models.PermissionOpenIoTHubLogin}, 200000000000)
-	config.Loged = true
+//rpc CheckGatewayLoginStatus (Empty) returns (LoginResponse) {}
+func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *pb.Empty) (*pb.LoginResponse, error) {
 	return &pb.LoginResponse{
 		Code:        0,
-		Message:     "登录成功！",
-		LoginStatus: config.Loged,
+		Message:     "网关登录状态",
+		LoginStatus: services.GatewayManager.Loged(),
 	}, nil
 }
 
-//rpc LoginServerByToken (Token) returns (LoginResponse) {}
+//rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
 func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*pb.LoginResponse, error) {
-	return nil, nil
-}
-
-//rpc GetOpenIoTHubToken (Empty) returns (Token) {}
-func (lm *LoginManager) GetOpenIoTHubToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	if len(config.ConfigMode.LoginWithServerConf) > 0 {
-		OpenIoTHubToken, err := models.GetToken(config.ConfigMode.LoginWithServerConf[0], []string{models.PermissionOpenIoTHubLogin}, 200000000000)
-		if err != nil {
-			return &pb.Token{}, err
-		}
-		return &pb.Token{Value: OpenIoTHubToken}, nil
+	//如果已经登录则阻止登录
+	if services.GatewayManager.Loged() {
+		return &pb.LoginResponse{
+			Code:        1,
+			Message:     "网关已经登录服务器",
+			LoginStatus: services.GatewayManager.Loged(),
+		}, nil
 	}
-	if config.OpenIoTHubToken != "" {
-		return &pb.Token{Value: config.OpenIoTHubToken}, nil
+	//使用token登录
+	err := services.GatewayManager.AddServer(in.Value)
+	if err != nil {
+		return &pb.LoginResponse{
+			Code:        1,
+			Message:     err.Error(),
+			LoginStatus: services.GatewayManager.Loged(),
+		}, nil
 	}
-	return &pb.Token{}, errors.New("not found")
-}
-
-//rpc GetGateWayToken (Empty) returns (Token) {}
-func (lm *LoginManager) GetGateWayToken(ctx context.Context, in *pb.Empty) (*pb.Token, error) {
-	return nil, nil
+	config.ConfigMode.LoginWithTokenList = append(config.ConfigMode.LoginWithTokenList, in.Value)
+	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
+	if err != nil {
+		log.Println(err)
+	}
+	//标记为已经登录并返回结果
+	return &pb.LoginResponse{
+		Code:        0,
+		Message:     "登录成功！",
+		LoginStatus: services.GatewayManager.Loged(),
+	}, nil
 }
