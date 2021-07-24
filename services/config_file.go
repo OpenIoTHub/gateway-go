@@ -61,6 +61,9 @@ func UseConfigFile() {
 			log.Println(err.Error())
 		}
 	}
+	if ConfigMode.LoginWithTokenMap == nil {
+		ConfigMode.LoginWithTokenMap = make(map[string]string)
+	}
 	//解析日志配置
 	writers := []io.Writer{}
 	if ConfigMode.LogConfig.EnableStdout {

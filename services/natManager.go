@@ -198,6 +198,8 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 	//由于用户在服务器账户删掉了这个网关，所有网关删掉服务器登录以供新用户绑定
 	case *models.DeleteGatewayJwt:
 		{
+			log.Println("删除配置:", tokenModel.RunId)
+			GatewayManager.DelServer(tokenModel.RunId)
 			delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
 			err = WriteConfigFile(ConfigMode, ConfigFilePath)
 			if err != nil {

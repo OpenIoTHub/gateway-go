@@ -23,7 +23,7 @@ var ConfigMode = &models.GatewayConfig{
 		EnableStdout: true,
 		LogFilePath:  "",
 	},
-	LoginWithTokenMap: map[string]string{},
+	LoginWithTokenMap: make(map[string]string),
 }
 
 func init() {

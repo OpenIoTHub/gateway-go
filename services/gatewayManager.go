@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"github.com/OpenIoTHub/utils/models"
 	"log"
 )
@@ -35,4 +36,14 @@ func (gm *GatewayCtl) AddServer(token string) (err error) {
 	}
 	gm.serverSession[tokenModel.RunId] = serverSession
 	return serverSession.start()
+}
+
+func (gm *GatewayCtl) DelServer(runid string) (err error) {
+	if _, ok := gm.serverSession[runid]; ok {
+		log.Println("找到了runid的serverSession")
+		gm.serverSession[runid].stop()
+		delete(gm.serverSession, runid)
+		return
+	}
+	return errors.New(fmt.Sprintf("gateway uuid:%s not found", runid))
 }

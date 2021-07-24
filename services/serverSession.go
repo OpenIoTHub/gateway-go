@@ -24,6 +24,7 @@ func (ss *ServerSession) stop() {
 func (ss *ServerSession) start() (err error) {
 	go ss.CheckSessionStatus()
 	ss.heartbeat = time.NewTicker(time.Second * 20)
+	ss.quit = make(chan struct{})
 	go ss.Task()
 	return
 }
