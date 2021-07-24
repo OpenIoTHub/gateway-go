@@ -1,4 +1,4 @@
-package config
+package services
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ var ConfigMode = &models.GatewayConfig{
 		EnableStdout: true,
 		LogFilePath:  "",
 	},
-	LoginWithTokenList: []string{},
+	LoginWithTokenMap: map[string]string{},
 }
 
 func init() {

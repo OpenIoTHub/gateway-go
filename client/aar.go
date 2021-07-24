@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	_ "github.com/OpenIoTHub/gateway-go/component"
-	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
+	"github.com/OpenIoTHub/utils/models"
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"
 	"log"
@@ -22,7 +22,7 @@ var loginManager = new(LoginManager)
 func Run() {
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.GRpcAddr, config.GrpcPort))
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", services.GRpcAddr, services.GrpcPort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 		return
@@ -44,11 +44,11 @@ func regMDNS(port int) {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", services.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
-			fmt.Sprintf("id=%s", config.ConfigMode.GatewayUUID),
+			fmt.Sprintf("id=%s", services.ConfigMode.GatewayUUID),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
@@ -79,8 +79,17 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 			LoginStatus: services.GatewayManager.Loged(),
 		}, nil
 	}
+	tokenModel, err := models.DecodeUnverifiedToken(in.Value)
+	if err != nil {
+		log.Printf(err.Error())
+		return &pb.LoginResponse{
+			Code:        1,
+			Message:     "token错误",
+			LoginStatus: services.GatewayManager.Loged(),
+		}, err
+	}
 	//使用token登录
-	err := services.GatewayManager.AddServer(in.Value)
+	err = services.GatewayManager.AddServer(in.Value)
 	if err != nil {
 		return &pb.LoginResponse{
 			Code:        1,
@@ -88,8 +97,8 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 			LoginStatus: services.GatewayManager.Loged(),
 		}, nil
 	}
-	config.ConfigMode.LoginWithTokenList = append(config.ConfigMode.LoginWithTokenList, in.Value)
-	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
+	services.ConfigMode.LoginWithTokenMap[tokenModel.RunId] = in.Value
+	err = services.WriteConfigFile(services.ConfigMode, services.ConfigFilePath)
 	if err != nil {
 		log.Println(err)
 	}

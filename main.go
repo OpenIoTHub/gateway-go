@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/client"
-	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/urfave/cli/v2"
 	"log"
@@ -33,14 +32,14 @@ func main() {
 				&cli.StringFlag{
 					Name:        "config",
 					Aliases:     []string{"c"},
-					Value:       config.ConfigFilePath,
+					Value:       services.ConfigFilePath,
 					Usage:       "config file path",
 					EnvVars:     []string{"GatewayConfigFilePath"},
-					Destination: &config.ConfigFilePath,
+					Destination: &services.ConfigFilePath,
 				},
 			},
 			Action: func(c *cli.Context) error {
-				config.InitConfigFile()
+				services.InitConfigFile()
 				return nil
 			},
 		},
@@ -61,30 +60,30 @@ func main() {
 		&cli.StringFlag{
 			Name:        "config",
 			Aliases:     []string{"c"},
-			Value:       config.ConfigFilePath,
+			Value:       services.ConfigFilePath,
 			Usage:       "config file path",
 			EnvVars:     []string{"GatewayConfigFilePath"},
-			Destination: &config.ConfigFilePath,
+			Destination: &services.ConfigFilePath,
 		},
 		//token 登录
 		&cli.StringFlag{
 			Name:        "token",
 			Aliases:     []string{"t"},
-			Value:       config.GatewayLoginToken,
+			Value:       services.GatewayLoginToken,
 			Usage:       "login server by gateway token ",
 			EnvVars:     []string{"GatewayLoginToken"},
-			Destination: &config.GatewayLoginToken,
+			Destination: &services.GatewayLoginToken,
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
-		if config.GatewayLoginToken != "" {
-			config.UseGateWayToken()
+		if services.GatewayLoginToken != "" {
+			services.UseGateWayToken()
 		} else {
-			_, err := os.Stat(config.ConfigFilePath)
+			_, err := os.Stat(services.ConfigFilePath)
 			if err != nil {
-				config.InitConfigFile()
+				services.InitConfigFile()
 			}
-			config.UseConfigFile()
+			services.UseConfigFile()
 		}
 		go client.Run()
 		for {

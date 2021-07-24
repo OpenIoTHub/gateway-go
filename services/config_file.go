@@ -1,9 +1,8 @@
-package config
+package services
 
 import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/models"
-	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io"
@@ -78,8 +77,8 @@ func UseConfigFile() {
 	log.SetOutput(fileAndStdoutWriter)
 	//解析配置文件，解析服务器配置文件列表
 	//解析登录token列表
-	for _, v := range ConfigMode.LoginWithTokenList {
-		err = services.GatewayManager.AddServer(v)
+	for _, v := range ConfigMode.LoginWithTokenMap {
+		err = GatewayManager.AddServer(v)
 		if err != nil {
 			continue
 		}
@@ -88,7 +87,7 @@ func UseConfigFile() {
 
 func UseGateWayToken() {
 	//使用服务器签发的Token登录
-	err := services.GatewayManager.AddServer(GatewayLoginToken)
+	err := GatewayManager.AddServer(GatewayLoginToken)
 	if err != nil {
 		log.Printf(err.Error())
 		log.Printf("登陆失败！请重新登陆。")

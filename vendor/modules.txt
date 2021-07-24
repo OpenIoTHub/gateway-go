@@ -6,7 +6,7 @@ github.com/OpenIoTHub/getip/iputils
 # github.com/OpenIoTHub/surgemq v0.0.0-20200208110538-19a158b84b63
 ## explicit
 github.com/OpenIoTHub/surgemq/service
-# github.com/OpenIoTHub/utils v0.0.64
+# github.com/OpenIoTHub/utils v0.0.65
 ## explicit
 github.com/OpenIoTHub/utils/io
 github.com/OpenIoTHub/utils/models
