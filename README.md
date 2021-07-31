@@ -11,6 +11,7 @@ Here are the steps for each of them:
 ## Install the pre-compiled binary
 
 **openwrt/entware/optware (Usually on the router)**:
+#### use snapshot branch：https://downloads.openwrt.org/snapshots/
 ```sh
 opkg update
 opkg install gateway-go
@@ -59,13 +60,6 @@ install with `dpkg -i` and `rpm -i` respectively.
 ```text
 *** config file :
  /etc/gateway-go/gateway-go.yaml
-```
-
-
-**Shell script**:
-
-```sh
-$ curl -sfL https://install.goreleaser.com/github.com/OpenIoTHub/gateway-go.sh | sh
 ```
 
 **manually**:
