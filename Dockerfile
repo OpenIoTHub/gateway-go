@@ -1,4 +1,4 @@
-FROM golang:1.13-alpine
+FROM alpine:latest
 
 #默认的http api端口
 EXPOSE 1082
