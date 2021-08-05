@@ -73,7 +73,7 @@ You can also use it within a Docker container. To do that, you'll need to
 execute something more-or-less like the following:
 
 ```sh
-$ docker run openiothub/gateway:latest
+$ docker run -it --net=host openiothub/gateway-go:latest -t <your Token>
 ```
 
 Note that the image will almost always have the last stable Go version.
