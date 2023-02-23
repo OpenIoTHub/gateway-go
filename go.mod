@@ -42,7 +42,7 @@ require (
 	github.com/tjfoc/gmsm v1.3.2 // indirect
 	github.com/xtaci/kcp-go/v5 v5.6.1 // indirect
 	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.3.3 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	google.golang.org/genproto v0.0.0-20201026171402-d4b8fe4fd877 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 )
