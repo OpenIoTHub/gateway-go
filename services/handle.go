@@ -15,7 +15,7 @@ import (
 	"github.com/libp2p/go-yamux"
 )
 
-func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) {
+func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) {
 	var err error
 	defer func() {
 		if err == nil || stream == nil {
@@ -124,7 +124,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 				stream.Close()
 				return
 			}
-			go dlsession(session, tokenModel, tokenStr)
+			go handleSession(session, tokenModel, tokenStr)
 		}
 
 	case *models.RequestNewWorkConn:
@@ -152,7 +152,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
-				dlsession(session, tokenModel, tokenStr)
+				handleSession(session, tokenModel, tokenStr)
 			}()
 
 		}
@@ -165,7 +165,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
-				dlsession(session, tokenModel, tokenStr)
+				handleSession(session, tokenModel, tokenStr)
 			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
@@ -223,7 +223,7 @@ func dlstream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) 
 	}
 }
 
-func dlsession(session *yamux.Session, tokenModel *models.TokenClaims, tokenStr string) {
+func handleSession(session *yamux.Session, tokenModel *models.TokenClaims, tokenStr string) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -240,11 +240,11 @@ func dlsession(session *yamux.Session, tokenModel *models.TokenClaims, tokenStr 
 			break
 		}
 		//log.Println("获取到一个连接需要处理")
-		go dlstream(stream, tokenModel, tokenStr)
+		go handleStream(stream, tokenModel, tokenStr)
 	}
 }
 
-//新创建的工作连接
+// 新创建的工作连接
 func newWorkConn(tokenModel *models.TokenClaims, tokenStr string) {
 	conn, err := LoginWorkConn(tokenModel, tokenStr)
 	if err != nil {
@@ -253,5 +253,5 @@ func newWorkConn(tokenModel *models.TokenClaims, tokenStr string) {
 		return
 	}
 	log.Println("创建一个到服务端的新的工作连接成功！")
-	go dlstream(conn, tokenModel, tokenStr)
+	go handleStream(conn, tokenModel, tokenStr)
 }

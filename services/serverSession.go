@@ -9,12 +9,13 @@ import (
 )
 
 type ServerSession struct {
-	token      string
-	tokenModel *models.TokenClaims
-	session    *yamux.Session
-	heartbeat  *time.Ticker
-	quit       chan struct{}
-	sync.Mutex
+	token          string
+	tokenModel     *models.TokenClaims
+	session        *yamux.Session
+	heartbeat      *time.Ticker
+	quit           chan struct{}
+	loginLock      sync.Mutex
+	loopStreamLock sync.Mutex
 }
 
 func (ss *ServerSession) stop() {
@@ -30,8 +31,8 @@ func (ss *ServerSession) start() (err error) {
 }
 
 func (ss *ServerSession) LoginServer() (err error) {
-	ss.Lock()
-	defer ss.Unlock()
+	ss.loginLock.Lock()
+	defer ss.loginLock.Unlock()
 	if ss.session != nil && !ss.session.IsClosed() {
 		return
 	}
@@ -44,6 +45,8 @@ func (ss *ServerSession) LoginServer() (err error) {
 }
 
 func (ss *ServerSession) LoopStream() {
+	ss.loopStreamLock.Lock()
+	defer ss.loopStreamLock.Unlock()
 	defer func() {
 		if ss.session != nil {
 			err := ss.session.Close()
@@ -64,7 +67,7 @@ func (ss *ServerSession) LoopStream() {
 			break
 		}
 		log.Println("获取到一个连接需要处理")
-		go dlstream(stream, ss.tokenModel, ss.token)
+		go handleStream(stream, ss.tokenModel, ss.token)
 	}
 }
 

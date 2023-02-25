@@ -6,20 +6,19 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 )
 
-//将配置写入指定的路径的文件
+// 将配置写入指定的路径的文件
 func WriteConfigFile(ConfigMode *models.GatewayConfig, path string) (err error) {
 	configByte, err := yaml.Marshal(ConfigMode)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	if ioutil.WriteFile(path, configByte, 0644) == nil {
+	if os.WriteFile(path, configByte, 0644) == nil {
 		return
 	}
 	return
@@ -43,7 +42,7 @@ func InitConfigFile() {
 func UseConfigFile() {
 	//配置文件存在
 	log.Println("使用的配置文件位置：", ConfigFilePath)
-	content, err := ioutil.ReadFile(ConfigFilePath)
+	content, err := os.ReadFile(ConfigFilePath)
 	if err != nil {
 		log.Println(err.Error())
 		return
