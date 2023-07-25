@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	_ "github.com/OpenIoTHub/gateway-go/component"
+	"github.com/OpenIoTHub/gateway-go/login"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
 	"github.com/OpenIoTHub/utils/models"
@@ -53,14 +54,14 @@ func regMDNS(port int) {
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
 			"firmware-respository=https://github.com/OpenIoTHub/gateway-go",
-			fmt.Sprintf("firmware-version=%s", services.Version)}, nil)
+			fmt.Sprintf("firmware-version=%s", login.Version)}, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 }
 
-//rpc CheckGatewayLoginStatus (Empty) returns (LoginResponse) {}
+// rpc CheckGatewayLoginStatus (Empty) returns (LoginResponse) {}
 func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *pb.Empty) (*pb.LoginResponse, error) {
 	return &pb.LoginResponse{
 		Code:        0,
@@ -69,7 +70,7 @@ func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *pb.Empt
 	}, nil
 }
 
-//rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
+// rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
 func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*pb.LoginResponse, error) {
 	//如果已经登录则阻止登录
 	if services.GatewayManager.Loged() {

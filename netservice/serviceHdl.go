@@ -1,7 +1,7 @@
 package netservice
 
 import (
-	"github.com/OpenIoTHub/gateway-go/connect/tapTun"
+	"github.com/OpenIoTHub/gateway-go/netservice/connect/tapTun"
 	"github.com/OpenIoTHub/utils/models"
 	"net"
 )

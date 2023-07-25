@@ -1,4 +1,4 @@
-package services
+package login
 
 import (
 	"github.com/OpenIoTHub/utils/models"
@@ -58,7 +58,12 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 	return session, nil
 }
 
-func LoginWorkConn(token *models.TokenClaims, tokenStr string) (net.Conn, error) {
+func LoginWorkConn(tokenStr string) (net.Conn, error) {
+	token, err := models.DecodeUnverifiedToken(tokenStr)
+	if err != nil {
+		log.Printf(err.Error())
+		return nil, err
+	}
 	//KCP方式
 	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
 	//conn.SetStreamMode(true)

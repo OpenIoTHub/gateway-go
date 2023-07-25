@@ -8,7 +8,7 @@ import (
 	"crypto/tls"
 )
 
-//check
+// check
 func CheckTcpUdpTls(connType, addr string) (int, string) {
 	var c net.Conn = nil
 	var err error

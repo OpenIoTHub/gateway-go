@@ -1,8 +1,9 @@
 package services
 
 import (
-	"github.com/OpenIoTHub/gateway-go/connect"
+	"github.com/OpenIoTHub/gateway-go/login"
 	"github.com/OpenIoTHub/gateway-go/netservice"
+	"github.com/OpenIoTHub/gateway-go/netservice/connect"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/net/p2p/gateway"
@@ -15,8 +16,13 @@ import (
 	"github.com/libp2p/go-yamux"
 )
 
-func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr string) {
+func handleStream(stream net.Conn, tokenStr string) {
 	var err error
+	tokenModel, err := models.DecodeUnverifiedToken(tokenStr)
+	if err != nil {
+		log.Printf(err.Error())
+		return
+	}
 	defer func() {
 		if err == nil || stream == nil {
 			return
@@ -124,14 +130,14 @@ func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr stri
 				stream.Close()
 				return
 			}
-			go handleSession(session, tokenModel, tokenStr)
+			go handleSession(session, tokenStr)
 		}
 
 	case *models.RequestNewWorkConn:
 		{
 			log.Println("server请求一个新的工作连接")
 			stream.Close()
-			go newWorkConn(tokenModel, tokenStr)
+			go newWorkConn(tokenStr)
 		}
 
 	case *models.Ping:
@@ -152,7 +158,7 @@ func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr stri
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
-				handleSession(session, tokenModel, tokenStr)
+				handleSession(session, tokenStr)
 			}()
 
 		}
@@ -165,7 +171,7 @@ func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr stri
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
-				handleSession(session, tokenModel, tokenStr)
+				handleSession(session, tokenStr)
 			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
@@ -223,7 +229,7 @@ func handleStream(stream net.Conn, tokenModel *models.TokenClaims, tokenStr stri
 	}
 }
 
-func handleSession(session *yamux.Session, tokenModel *models.TokenClaims, tokenStr string) {
+func handleSession(session *yamux.Session, tokenStr string) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -240,18 +246,18 @@ func handleSession(session *yamux.Session, tokenModel *models.TokenClaims, token
 			break
 		}
 		//log.Println("获取到一个连接需要处理")
-		go handleStream(stream, tokenModel, tokenStr)
+		go handleStream(stream, tokenStr)
 	}
 }
 
 // 新创建的工作连接
-func newWorkConn(tokenModel *models.TokenClaims, tokenStr string) {
-	conn, err := LoginWorkConn(tokenModel, tokenStr)
+func newWorkConn(tokenStr string) {
+	conn, err := login.LoginWorkConn(tokenStr)
 	if err != nil {
 		log.Println("创建一个到服务端的新的工作连接失败：")
 		log.Println(err.Error())
 		return
 	}
 	log.Println("创建一个到服务端的新的工作连接成功！")
-	go handleStream(conn, tokenModel, tokenStr)
+	go handleStream(conn, tokenStr)
 }

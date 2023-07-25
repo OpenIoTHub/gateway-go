@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/OpenIoTHub/gateway-go/login"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/libp2p/go-yamux"
 	"log"
@@ -36,7 +37,7 @@ func (ss *ServerSession) LoginServer() (err error) {
 	if ss.session != nil && !ss.session.IsClosed() {
 		return
 	}
-	ss.session, err = LoginServer(ss.token)
+	ss.session, err = login.LoginServer(ss.token)
 	if err != nil {
 		log.Println("登录失败：" + err.Error())
 		return err
@@ -67,7 +68,7 @@ func (ss *ServerSession) LoopStream() {
 			break
 		}
 		log.Println("获取到一个连接需要处理")
-		go handleStream(stream, ss.tokenModel, ss.token)
+		go handleStream(stream, ss.token)
 	}
 }
 
