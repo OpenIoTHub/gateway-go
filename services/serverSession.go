@@ -24,7 +24,7 @@ func (ss *ServerSession) stop() {
 }
 
 func (ss *ServerSession) start() (err error) {
-	go ss.CheckSessionStatus()
+	ss.CheckSessionStatus()
 	ss.heartbeat = time.NewTicker(time.Second * 20)
 	ss.quit = make(chan struct{})
 	go ss.Task()
@@ -57,7 +57,7 @@ func (ss *ServerSession) LoopStream() {
 		}
 	}()
 	for {
-		if ss.session == nil {
+		if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
 			log.Println("ss.session is nil")
 			break
 		}
@@ -89,7 +89,7 @@ func (ss *ServerSession) Task() {
 		select {
 		//心跳来了，检测连接的存活状态
 		case <-ss.heartbeat.C:
-			go ss.CheckSessionStatus()
+			ss.CheckSessionStatus()
 		case <-ss.quit:
 			ss.heartbeat.Stop()
 			close(ss.quit)

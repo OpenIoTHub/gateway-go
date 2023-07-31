@@ -43,6 +43,7 @@ func (gm *GatewayCtl) DelServer(runid string) (err error) {
 		log.Println("找到了runid的serverSession")
 		gm.serverSession[runid].stop()
 		delete(gm.serverSession, runid)
+		//TODO 同时删除配置文件的相关配置
 		return
 	}
 	return errors.New(fmt.Sprintf("gateway uuid:%s not found", runid))

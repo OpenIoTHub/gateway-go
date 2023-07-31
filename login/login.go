@@ -8,6 +8,7 @@ import (
 	"net"
 	"runtime"
 	"strconv"
+	"time"
 )
 
 var (
@@ -31,7 +32,7 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 	//Tls
 	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
 	//TCP
-	conn, err := net.Dial("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)))
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)), time.Second*2)
 	if err != nil {
 		return nil, err
 	}
