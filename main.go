@@ -97,7 +97,7 @@ func main() {
 	}
 }
 
-//export run
+//export Run
 func Run() {
 	client.Run()
 }
