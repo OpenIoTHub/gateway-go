@@ -97,6 +97,11 @@ func main() {
 	}
 }
 
+//export run
+func Run() {
+	client.Run()
+}
+
 func buildVersion(version, commit, date, builtBy string) string {
 	var result = version
 	if commit != "" {

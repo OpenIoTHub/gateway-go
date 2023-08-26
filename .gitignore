@@ -6,3 +6,4 @@
 /gateway-go
 /*.log
 /cn-hk.yaml
+/build/
