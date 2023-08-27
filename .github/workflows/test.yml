@@ -37,11 +37,13 @@ jobs:
         with:
           ndk-version: r25c
       - name: Install requirement
-        run: apt-get update && apt-get install gcc-aarch64-linux-gnu -y
+        run: sudo apt-get update && sudo apt-get install gcc-aarch64-linux-gnu binutils-mingw-w64 -y
       - name: Test golang code
         run: go test ./...
       - name: Build linux libs
         run: ./lib/buildso.sh
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build windows libs
         run: ./lib/builddll.sh
 #      - uses: actions/upload-artifact@v2
@@ -60,8 +62,6 @@ jobs:
         with:
           go-version: ^1.20
       - name: Test golang code
-        run: go test ./...
-      - name: Install requirement
         run: go test ./...
       - name: Build libs
         run: ./lib/builddylib.sh
