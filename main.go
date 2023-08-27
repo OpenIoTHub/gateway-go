@@ -101,7 +101,7 @@ func main() {
 
 //export Run
 func Run() {
-	client.Run()
+	go client.Run()
 }
 
 func buildVersion(version, commit, date, builtBy string) string {
