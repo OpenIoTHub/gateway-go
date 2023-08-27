@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  gateway-go:
+  app:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,3 +22,46 @@ jobs:
         run: go test ./...
       - name: Build golang code
         run: go build
+  linux-android-windows-libs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.16
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+      - name: Install requirement
+        run: apt-get update && apt-get install gcc-aarch64-linux-gnu -y
+      - name: Test golang code
+        run: go test ./...
+      - name: Build linux libs
+        run: ./lib/buildso.sh
+      - name: Build windows libs
+        run: ./lib/builddll.sh
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: ipa
+#          path: ./Runner.ipa
+  macos-iOS-libs:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.20
+      - name: Test golang code
+        run: go test ./...
+      - name: Install requirement
+        run: go test ./...
+      - name: Build libs
+        run: ./lib/builddylib.sh
