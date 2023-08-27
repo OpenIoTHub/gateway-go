@@ -17,6 +17,7 @@ export CC=aarch64-linux-gnu-gcc
 #export AR=aarch64-linux-gnu-ar
 go build -tags linux -ldflags=-w -trimpath -o build/linux/gateway_arm64.so -buildmode c-shared main.go
 
+echo $ANDROID_NDK_HOME
 tree $ANDROID_NDK_HOME
 export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:~/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
 #android/app/src/main/jniLibs/armeabi-v7a
