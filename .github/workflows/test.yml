@@ -48,10 +48,18 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build windows libs
         run: ./lib/builddll.sh
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: ipa
-#          path: ./Runner.ipa
+      - name: mkdir
+        run: mkdir artifacts
+      - name: Zip Linux libs
+        run: zip -r ./artifacts/linux-libs-build.zip ./build/linux
+      - name: Zip Android libs
+        run: zip -r ./artifacts/android-libs-build.zip ./build/android
+      - name: Zip Windows libs
+        run: zip -r ./artifacts/windows-libs-build.zip ./build/windows
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux-android-windows-libs-build
+          path: ./artifacts/**/*
   macos-iOS-libs:
     runs-on: macos-latest
     steps:
@@ -67,3 +75,13 @@ jobs:
         run: go test ./...
       - name: Build libs
         run: ./lib/builddylib.sh
+      - name: mkdir
+        run: mkdir artifacts
+      - name: Zip MacOS libs
+        run: zip -r ./artifacts/macos-libs-build.zip ./build/macos
+      - name: Zip iOS libs
+        run: zip -r ./artifacts/ios-libs-build.zip ./build/ios
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux-android-windows-libs-build
+          path: ./artifacts/**/*
