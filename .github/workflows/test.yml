@@ -58,7 +58,7 @@ jobs:
         run: zip -r ./artifacts/windows-libs-build.zip ./build/windows
       - uses: actions/upload-artifact@v2
         with:
-          name: linux-android-windows-libs-build
+          name: linux-android-windows-libs-build.zip
           path: ./artifacts/**/*
   macos-iOS-libs:
     runs-on: macos-latest
@@ -83,5 +83,5 @@ jobs:
         run: zip -r ./artifacts/ios-libs-build.zip ./build/ios
       - uses: actions/upload-artifact@v2
         with:
-          name: linux-android-windows-libs-build
+          name: macos-ios-libs-build.zip
           path: ./artifacts/**/*
