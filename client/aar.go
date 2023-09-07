@@ -21,6 +21,10 @@ type LoginManager struct {
 var loginManager = new(LoginManager)
 
 func Run() {
+	go start()
+}
+
+func start() {
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", services.GRpcAddr, services.GrpcPort))

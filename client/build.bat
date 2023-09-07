@@ -1,2 +1,2 @@
 gomobile bind -target=android
-cp ./client.aar C:\Users\Farry\StudioProjects\GateWay\android\app\libs
+gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator

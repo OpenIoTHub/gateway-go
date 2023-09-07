@@ -8,3 +8,4 @@
 /cn-hk.yaml
 /build/
 *.zip
+/Client.xcframework/
