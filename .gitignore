@@ -9,3 +9,5 @@
 /build/
 *.zip
 /Client.xcframework/
+*.asc
+/target/

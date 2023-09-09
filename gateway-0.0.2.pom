@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--这个groupid要和第一第二步中被审核的id要一致-->
+    <groupId>cloud.iothub</groupId>
+    <!--这个artifacId要为自己创建的issue的名称-->
+    <artifactId>gateway</artifactId>
+    <!--这是每次发布的时候需要改动的版本号-->
+    <version>0.0.2</version>
+    <!--名称自己随便定-->
+    <name>cloud.iothub.gateway</name>
+    <!--描述也是随便定-->
+    <description>gateway-go aar</description>
+    <url>http://github.com/OpenIoTHub</url>
+    <!--这是我用的开源协议, 如果想用别的可以自行替换-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+    <dependencies>
+        <!-- nexus因为漏洞问题所以会一直提示警告, 目前警告也未给出解决方案-->
+        <dependency>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
+                        <configuration>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <releaseProfiles>release</releaseProfiles>
+                            <goals>deploy</goals>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.0</version>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>aar</goal>
+                                </goals>
+                                <!-- java8版本导致javadoc打包编译失败时候，添加-->
+                                <configuration>
+                                    <failOnError>false</failOnError>
+                                    <doclint>none</doclint>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!--url中配自己的项目地址,connection配自己项目地址加git,最后配自己对应账号主页-->
+    <scm>
+        <url>https://github.com/OpenIoTHub/nexus-public</url>
+        <connection>https://github.com/OpenIoTHub/nexus-public.git</connection>
+        <developerConnection>https://github.com/OpenIoTHub</developerConnection>
+    </scm>
+
+    <!--开发者信息-->
+    <developers>
+        <developer>
+            <name>FangYu</name>
+            <email>yu@iotserv.com</email>
+            <url>https://github.com/OpenIoTHub</url>
+        </developer>
+    </developers>
+
+</project>
