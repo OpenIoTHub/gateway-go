@@ -9,5 +9,8 @@
 /build/
 *.zip
 /Client.xcframework/
+/*.xcframework/
 *.asc
 /target/
+gateway-*
+client-*
