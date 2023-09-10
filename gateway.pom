@@ -7,7 +7,7 @@
     <!--这个artifacId要为自己创建的issue的名称-->
     <artifactId>gateway</artifactId>
     <!--这是每次发布的时候需要改动的版本号-->
-    <version>0.0.2</version>
+    <version>0.0.4</version>
     <!--名称自己随便定-->
     <name>cloud.iothub.gateway</name>
     <!--描述也是随便定-->
@@ -21,7 +21,10 @@
         </license>
     </licenses>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>12</java.version>
+        <android.classifier>android</android.classifier>
+        <maven.source.classifier>${android.classifier}-sources</maven.source.classifier>
+        <maven.javadoc.classifier>${android.classifier}-javadoc</maven.javadoc.classifier>
     </properties>
     <dependencies>
         <!-- nexus因为漏洞问题所以会一直提示警告, 目前警告也未给出解决方案-->
