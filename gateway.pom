@@ -7,12 +7,12 @@
     <!--这个artifacId要为自己创建的issue的名称-->
     <artifactId>gateway</artifactId>
     <!--这是每次发布的时候需要改动的版本号-->
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>aar</packaging>
     <!--名称自己随便定-->
     <name>cloud.iothub.gateway</name>
     <!--描述也是随便定-->
-    <description>gateway-go aar</description>
+    <description>OpenIoTHub gateway aar</description>
     <url>http://github.com/OpenIoTHub</url>
     <!--这是我用的开源协议, 如果想用别的可以自行替换-->
     <licenses>
@@ -22,18 +22,8 @@
         </license>
     </licenses>
     <properties>
-        <java.version>12</java.version>
-        <android.classifier>android</android.classifier>
-        <maven.source.classifier>${android.classifier}-sources</maven.source.classifier>
-        <maven.javadoc.classifier>${android.classifier}-javadoc</maven.javadoc.classifier>
     </properties>
     <dependencies>
-        <!-- nexus因为漏洞问题所以会一直提示警告, 目前警告也未给出解决方案-->
-        <dependency>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.13</version>
-        </dependency>
     </dependencies>
     <distributionManagement>
         <repository>
