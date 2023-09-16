@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"runtime"
 )
 
 type LoginManager struct {
@@ -28,18 +27,19 @@ func Run() {
 func start() {
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
-	port := services.GrpcPort
-	if runtime.GOOS == "android" {
-		port = 55443
-	}
+	//port := services.GrpcPort
+	//if runtime.GOOS == "android" {
+	//	port = 55443
+	//}
+	port := 55443
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", services.GRpcAddr, port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 		return
 	}
-	addr := lis.Addr().(*net.TCPAddr)
-	fmt.Printf("Grpc 监听端口:%d\n", addr.Port)
-	go regMDNS(addr.Port)
+	//addr := lis.Addr().(*net.TCPAddr)
+	log.Printf("Grpc 监听端口:%d\n", port)
+	go regMDNS(port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
