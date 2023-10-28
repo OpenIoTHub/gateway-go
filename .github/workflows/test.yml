@@ -100,7 +100,7 @@ jobs:
       - uses: nttld/setup-ndk@v1
         with:
           ndk-version: r26b
-      - run: ls Library/Android/sdk/ndk
+      - run: ls ~/Library/Android/sdk/ndk
       - run: echo $ANDROID_NDK_HOME
       - name: Test golang code
         run: go test ./...
