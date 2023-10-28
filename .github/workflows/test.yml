@@ -98,8 +98,10 @@ jobs:
         with:
           java-version: '12.x'
       - uses: nttld/setup-ndk@v1
+        id: setup-ndk
         with:
           ndk-version: r26b
+          add-to-path: false
       - run: ls ~/Library/Android/sdk/ndk
       - run: echo $ANDROID_NDK_HOME
       - name: Test golang code
@@ -113,7 +115,7 @@ jobs:
           gomobile clean
         env:
           GO111MODULE: on
-          ANDROID_NDK_HOME: ~/Library/Android/sdk/ndk/26.0.10792818
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
       - uses: actions/upload-artifact@v3
@@ -123,7 +125,7 @@ jobs:
       - name: build android aar
         run: gomobile bind -target=android  -o gateway.aar ./client
         env:
-          ANDROID_NDK_HOME: ~/Library/Android/sdk/ndk/26.0.10792818
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - uses: actions/upload-artifact@v3
         with:
           name: android-aar-libs
