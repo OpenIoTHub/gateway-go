@@ -99,7 +99,7 @@ jobs:
           java-version: '12.x'
       - uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r32a
+          ndk-version: r25c
       - name: Test golang code
         run: go test ./...
       - name: install and setup gomobile
