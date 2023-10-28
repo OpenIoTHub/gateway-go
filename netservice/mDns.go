@@ -65,5 +65,7 @@ func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 		log.Println("写消息错误：")
 		log.Println(err.Error())
 	}
+	content, _ := json.Marshal(&models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
+	log.Println("content:", string(content))
 	return err
 }
