@@ -113,15 +113,18 @@ jobs:
           gomobile clean
         env:
           GO111MODULE: on
+          ANDROID_NDK_HOME: ~/Library/Android/sdk/ndk/26.0.10792818
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
-      - name: build android aar
-        run: gomobile bind -target=android  -o gateway.aar ./client
-      - uses: actions/upload-artifact@v3
-        with:
-          name: android-aar-libs
-          path: gateway.aar
       - uses: actions/upload-artifact@v3
         with:
           name: ios-macos-xcframework-libs
           path: OpenIoTHubGateway.xcframework
+      - name: build android aar
+        run: gomobile bind -target=android  -o gateway.aar ./client
+        env:
+          ANDROID_NDK_HOME: ~/Library/Android/sdk/ndk/26.0.10792818
+      - uses: actions/upload-artifact@v3
+        with:
+          name: android-aar-libs
+          path: gateway.aar
