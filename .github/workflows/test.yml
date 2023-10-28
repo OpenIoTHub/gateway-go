@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
-          go-version: ^1.16
+          go-version: ^1.20
       - name: Test golang code
         run: go test ./...
       - name: Build golang code
@@ -26,13 +26,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
-          go-version: ^1.16
+          go-version: ^1.20
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
@@ -52,10 +52,10 @@ jobs:
         with:
           name: linux-libs
           path: build/linux
-      - uses: actions/upload-artifact@v3
-        with:
-          name: android-libs
-          path: build/android
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: android-libs
+#          path: build/android
       - uses: actions/upload-artifact@v3
         with:
           name: windows-libs
@@ -64,11 +64,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.20
       - name: Test golang code
@@ -83,3 +83,43 @@ jobs:
         with:
           name: ios-libs
           path: build/ios
+  gomobile-libs:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.20
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25b
+      - name: Test golang code
+        run: go test ./...
+      - name: install and setup gomobile
+        run: |
+          go get golang.org/x/mobile/cmd/gobind
+          go get golang.org/x/mobile/cmd/gomobile
+          gomobile init
+          gomobile version
+          gomobile clean
+        env:
+          GO111MODULE: on
+      - name: build android aar
+        run: gomobile bind -target=android  -o gateway.aar ./client
+      - name: build ios xcframework
+        run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
+      - uses: actions/upload-artifact@v3
+        with:
+          name: android-aar-libs
+          path: gateway.aar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ios-macos-xcframework-libs
+          path: OpenIoTHubGateway.xcframework
