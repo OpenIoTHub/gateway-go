@@ -99,7 +99,7 @@ jobs:
           java-version: '12.x'
       - uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r32
+          ndk-version: r32a
       - name: Test golang code
         run: go test ./...
       - name: install and setup gomobile
@@ -111,10 +111,10 @@ jobs:
           gomobile clean
         env:
           GO111MODULE: on
-      - name: build android aar
-        run: gomobile bind -target=android  -o gateway.aar ./client
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
+      - name: build android aar
+        run: gomobile bind -target=android  -o gateway.aar ./client
       - uses: actions/upload-artifact@v3
         with:
           name: android-aar-libs
