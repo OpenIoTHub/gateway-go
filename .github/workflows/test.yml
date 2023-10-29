@@ -156,3 +156,8 @@ jobs:
         with:
           version: latest
           args: release --clean --snapshot
+      - name: Upload assets
+        uses: actions/upload-artifact@v3
+        with:
+          name: goreleaser-dist
+          path: dist/*
