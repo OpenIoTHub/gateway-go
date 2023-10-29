@@ -119,10 +119,11 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
+      - run: zip -r OpenIoTHubGateway.xcframework.zip OpenIoTHubGateway.xcframework
       - uses: actions/upload-artifact@v3
         with:
           name: ios-macos-xcframework-libs
-          path: OpenIoTHubGateway.xcframework
+          path: OpenIoTHubGateway.xcframework.zip
       - name: build android aar
         run: gomobile bind -target=android  -o gateway.aar ./client
         env:
