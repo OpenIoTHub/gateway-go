@@ -1,7 +1,5 @@
 package main
 
-import "C"
-
 import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/client"

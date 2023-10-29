@@ -82,19 +82,19 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
-      - name: Upload the installer as an artifact
-        uses: actions/upload-artifact@v3
-        if: ${{ github.event_name != 'pull_request' }}
+      - name: Release windows setup
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: OpenIoTHubGateway.xcframework
-          path: OpenIoTHubGateway.xcframework
+          files: |
+            OpenIoTHubGateway.xcframework
       - name: build android aar
         run: gomobile bind -target=android  -o gateway.aar ./client
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-      - name: Upload the installer as an artifact
-        uses: actions/upload-artifact@v3
-        if: ${{ github.event_name != 'pull_request' }}
+      - name: Release windows setup
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: gateway.aar
-          path: gateway.aar
+          files: |
+            gateway.aar
