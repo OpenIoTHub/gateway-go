@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/OpenIoTHub/gateway-go/login"
+	"github.com/OpenIoTHub/gateway-go/netservice/login"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/libp2p/go-yamux"
 	"log"

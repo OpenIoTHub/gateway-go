@@ -3,8 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
-	_ "github.com/OpenIoTHub/gateway-go/component"
-	"github.com/OpenIoTHub/gateway-go/login"
+	"github.com/OpenIoTHub/gateway-go/netservice/login"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
 	"github.com/OpenIoTHub/utils/models"

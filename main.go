@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/client"
-	"github.com/OpenIoTHub/gateway-go/login"
+	"github.com/OpenIoTHub/gateway-go/netservice/login"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/urfave/cli/v2"
 	"log"
