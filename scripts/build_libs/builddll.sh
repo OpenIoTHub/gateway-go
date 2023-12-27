@@ -7,4 +7,4 @@ export CGO_ENABLED=1
 export CC=x86_64-w64-mingw32-gcc
 export CXX=x86_64-w64-mingw32-g++
 export GOOS=windows GOARCH=amd64
-go build -tags windows -ldflags=-w -trimpath -o ./build/windows/gateway_amd64.dll -buildmode=c-shared lib/lib.go
+go build -tags windows -ldflags=-w -trimpath -o ./build/windows/gateway_amd64.dll -buildmode=c-shared main.go

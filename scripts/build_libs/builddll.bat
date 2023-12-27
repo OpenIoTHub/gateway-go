@@ -9,4 +9,4 @@ SET CC=x86_64-w64-mingw32-gcc
 SET CXX=x86_64-w64-mingw32-g++
 SET GOOS=windows
 SET GOARCH=amd64
-go build -tags windows -ldflags=-w -trimpath -o ./build/windows/gateway_amd64.dll -buildmode=c-shared lib/lib.go
+go build -tags windows -ldflags=-w -trimpath -o ./build/windows/gateway_amd64.dll -buildmode=c-shared main.go
