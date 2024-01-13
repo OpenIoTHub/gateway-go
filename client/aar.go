@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/netservice/login"
 	"github.com/OpenIoTHub/gateway-go/services"
-	"github.com/OpenIoTHub/gateway-grpc-api/pb-go"
+	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"
