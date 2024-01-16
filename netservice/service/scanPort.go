@@ -1,4 +1,4 @@
-package netservice
+package service
 
 import (
 	"encoding/json"

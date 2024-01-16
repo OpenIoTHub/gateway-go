@@ -1,4 +1,4 @@
-package netservice
+package service
 
 import (
 	"github.com/OpenIoTHub/gateway-go/netservice/connect/tapTun"

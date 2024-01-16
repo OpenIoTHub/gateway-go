@@ -1,5 +1,0 @@
-gatewayuuid:
-logconfig:
-  enablestdout: true
-  logfilepath: ""
-loginwithtokenmap:

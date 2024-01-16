@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/OpenIoTHub/gateway-go/netservice"
 	"github.com/OpenIoTHub/gateway-go/netservice/connect"
 	"github.com/OpenIoTHub/gateway-go/netservice/login"
+	"github.com/OpenIoTHub/gateway-go/netservice/service"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/net/p2p/gateway"
@@ -107,7 +107,7 @@ func handleStream(stream net.Conn, tokenStr string) {
 	case *models.NewService:
 		{
 			log.Printf("case *models.NewService")
-			err = netservice.ServiceHdl(stream, m)
+			err = service.ServiceHdl(stream, m)
 			if err != nil {
 				log.Println(err.Error())
 				return
