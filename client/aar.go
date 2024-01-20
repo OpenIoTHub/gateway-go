@@ -9,6 +9,7 @@ import (
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 )
@@ -38,6 +39,7 @@ func start() {
 	}
 	//addr := lis.Addr().(*net.TCPAddr)
 	log.Printf("Grpc 监听端口:%d\n", port)
+	reflection.Register(s)
 	go regMDNS(port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
