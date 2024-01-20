@@ -14,10 +14,7 @@ type GatewayCtl struct {
 }
 
 func (gm *GatewayCtl) Loged() bool {
-	if len(gm.serverSession) > 0 {
-		return true
-	}
-	return false
+	return len(gm.serverSession) > 0
 }
 
 func (gm *GatewayCtl) AddServer(token string) (err error) {
