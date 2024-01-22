@@ -74,6 +74,7 @@ jobs:
         run: |
           go install golang.org/x/mobile/cmd/gobind@latest
           go install golang.org/x/mobile/cmd/gomobile@latest
+          go get -u golang.org/x/mobile/...
           gomobile init
           gomobile version
           gomobile clean
