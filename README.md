@@ -29,10 +29,10 @@ $ brew install OpenIoTHub/tap/gateway-go
 $ brew install gateway-go
 ```
 homebrew pr [gateway-go](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gateway-go.rb)
-```text
-*** config file : 
-/usr/local/etc/gateway-go/gateway-go.yaml
-```
+>config file :
+>```text
+> /usr/local/etc/gateway-go/gateway-go.yaml
+>```
 
 
 **snapcraft**:
@@ -40,10 +40,10 @@ homebrew pr [gateway-go](https://github.com/Homebrew/homebrew-core/blob/master/F
 ```sh
 $ sudo snap install gateway-go
 ```
-```text
-*** config file :
- /root/snap/gateway-go/current/gateway-go.yaml
-```
+>config file :
+>```text
+> /root/snap/gateway-go/current/gateway-go.yaml
+>```
 
 
 **scoop**:
