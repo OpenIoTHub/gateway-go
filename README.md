@@ -56,11 +56,11 @@ $ scoop install gateway-go
 **deb/rpm**:
 
 Download the `.deb` or `.rpm` from the [releases page][releases] and
-install with `dpkg -i` and `rpm -i` respectively.
-```text
-*** config file :
- /etc/gateway-go/gateway-go.yaml
-```
+install with `dpkg -i` and `rpm -i` respectively.  
+>config file :
+>```text
+> /etc/gateway-go/gateway-go.yaml
+>```
 
 **manually**:
 
