@@ -10,6 +10,7 @@ import (
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	"net"
 )
@@ -72,7 +73,7 @@ func regMDNS(port int) {
 }
 
 // rpc CheckGatewayLoginStatus (Empty) returns (LoginResponse) {}
-func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *pb.Empty) (*pb.LoginResponse, error) {
+func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *emptypb.Empty) (*pb.LoginResponse, error) {
 	return &pb.LoginResponse{
 		Code:        0,
 		Message:     "网关登录状态",
