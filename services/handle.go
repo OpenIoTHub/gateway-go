@@ -153,12 +153,15 @@ func handleStream(stream net.Conn, tokenStr string) {
 		{
 			log.Printf("作为listener方式从洞中获取kcp连接")
 			go func() {
-				session, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
+				session, listener, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
 				if err != nil {
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
 				handleSession(session, tokenStr)
+				if listener != nil {
+					listener.Close()
+				}
 			}()
 
 		}
@@ -166,12 +169,15 @@ func handleStream(stream net.Conn, tokenStr string) {
 		{
 			log.Printf("作为dial方式从从洞中创建kcp连接")
 			go func() {
-				session, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
+				session, listener, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
 				if err != nil {
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
 				handleSession(session, tokenStr)
+				if listener != nil {
+					listener.Close()
+				}
 			}()
 		}
 	//	获取检查TCP或者UDP端口状态的请求
