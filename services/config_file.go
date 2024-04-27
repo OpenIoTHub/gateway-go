@@ -95,7 +95,6 @@ func UseConfigFile() {
 		// 通过gateway jwt(UUID)展示二维码
 		tokenModel, err := utils_models.DecodeUnverifiedToken(v)
 		if err != nil {
-			log.Printf("DecodeUnverifiedToken:", err.Error())
 			return
 		}
 		err = displayQRCodeById(tokenModel.RunId)
