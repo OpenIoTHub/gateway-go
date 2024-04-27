@@ -15,6 +15,8 @@ import (
 	"net"
 )
 
+var IsLibrary = true
+
 type LoginManager struct {
 	*pb.UnimplementedGatewayLoginManagerServer
 }
@@ -84,7 +86,7 @@ func (lm *LoginManager) CheckGatewayLoginStatus(ctx context.Context, in *emptypb
 // rpc LoginServerByServerInfo (ServerInfo) returns (LoginResponse) {}
 func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*pb.LoginResponse, error) {
 	//如果已经登录则阻止登录
-	if services.GatewayManager.Loged() {
+	if services.GatewayManager.Loged() && !IsLibrary {
 		return &pb.LoginResponse{
 			Code:        1,
 			Message:     "网关已经登录服务器",

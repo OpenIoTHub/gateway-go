@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/models"
+	utils_models "github.com/OpenIoTHub/utils/models"
 	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 	"io"
@@ -79,8 +80,25 @@ func UseConfigFile() {
 	log.SetOutput(fileAndStdoutWriter)
 	//解析配置文件，解析服务器配置文件列表
 	//解析登录token列表
+	//如果CLI模式尚未登录自动登陆服务器并创建一个二维码
+	if len(ConfigMode.LoginWithTokenMap) == 0 {
+		err = autoLoginAndDisplayQRCode()
+		if err != nil {
+			log.Println(err)
+		}
+	}
 	for _, v := range ConfigMode.LoginWithTokenMap {
 		err = GatewayManager.AddServer(v)
+		if err != nil {
+			continue
+		}
+		// 通过gateway jwt(UUID)展示二维码
+		tokenModel, err := utils_models.DecodeUnverifiedToken(v)
+		if err != nil {
+			log.Printf("DecodeUnverifiedToken:", err.Error())
+			return
+		}
+		err = displayQRCodeById(tokenModel.RunId)
 		if err != nil {
 			continue
 		}

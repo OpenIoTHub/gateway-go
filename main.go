@@ -8,7 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
-	"time"
+	"sync"
 )
 
 var (
@@ -20,6 +20,7 @@ var (
 
 func main() {
 	login.Version = version
+	client.IsLibrary = false
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
@@ -87,9 +88,10 @@ func main() {
 			services.UseConfigFile()
 		}
 		go client.Run()
-		for {
-			time.Sleep(time.Hour)
-		}
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+		wg.Wait()
+		return nil
 	}
 	err := myApp.Run(os.Args)
 	if err != nil {
