@@ -83,8 +83,8 @@ jobs:
         with:
           name: ios-libs
           path: build/ios
-  gomobile-libs:
-    runs-on: macos-latest
+  gomobile-android-libs:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -118,13 +118,6 @@ jobs:
         env:
           GO111MODULE: on
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-      - name: build ios xcframework
-        run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
-      - run: zip -r OpenIoTHubGateway.xcframework.zip OpenIoTHubGateway.xcframework
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ios-macos-xcframework-libs
-          path: OpenIoTHubGateway.xcframework.zip
       - name: build android aar
         run: gomobile bind -target=android  -o gateway.aar ./client
         env:
@@ -133,6 +126,36 @@ jobs:
         with:
           name: android-aar-libs
           path: gateway.aar
+  gomobile-apple-libs:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.20
+      - name: Test golang code
+        run: go test ./...
+      - name: install and setup gomobile
+        run: |
+          go get -u golang.org/x/mobile
+          go install golang.org/x/mobile/cmd/gobind@latest
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          gomobile init
+          gomobile version
+          gomobile clean
+        env:
+          GO111MODULE: on
+      - name: build ios xcframework
+        run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
+      - run: zip -r OpenIoTHubGateway.xcframework.zip OpenIoTHubGateway.xcframework
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ios-macos-xcframework-libs
+          path: OpenIoTHubGateway.xcframework.zip
   goreleaser:
     runs-on: ubuntu-latest
     steps:
