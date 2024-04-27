@@ -66,8 +66,6 @@ jobs:
         with:
           ndk-version: r21e
           add-to-path: false
-      - run: ls ~/Library/Android/sdk/ndk
-      - run: echo $ANDROID_NDK_HOME
       - name: Test golang code
         run: go test ./...
       - name: install and setup gomobile
