@@ -40,6 +40,9 @@ require (
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 // indirect
 	github.com/xtaci/kcp-go/v5 v5.6.8 // indirect
+	golang.org/x/exp/shiny v0.0.0-20240416160154-fe59bbe5cc7f // indirect
+	golang.org/x/image v0.15.0 // indirect
+	golang.org/x/mobile v0.0.0-20240404231514-09dbf07665ed // indirect
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
