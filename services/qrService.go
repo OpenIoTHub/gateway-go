@@ -2,24 +2,27 @@ package services
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	pb "github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/manager"
 	qrcode "github.com/skip2/go-qrcode"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	"net/url"
 )
 
-const IoTManagerAddr = "api.iot-manager.iothub.cloud:8881"
+const IoTManagerAddr = "api.iot-manager.iothub.cloud:50051"
 
 // 自动创建jwt并登陆，并展示二维码
 func autoLoginAndDisplayQRCode() (err error) {
-	conn, err := grpc.Dial(IoTManagerAddr, grpc.WithInsecure())
+	tlsConfig := grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{}))
+	conn, err := grpc.NewClient(IoTManagerAddr, tlsConfig)
 	if err != nil {
-		log.Println("grpc.Dial:", err)
+		log.Println("grpc.NewClient:", err)
 		return
 	}
 	defer conn.Close()
