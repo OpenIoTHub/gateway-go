@@ -48,15 +48,15 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build windows libs
         run: ./scripts/build_libs/builddll.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-libs
           path: build/linux
-#      - uses: actions/upload-artifact@v3
+#      - uses: actions/upload-artifact@v4
 #        with:
 #          name: android-libs
 #          path: build/android
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-libs
           path: build/windows
@@ -75,11 +75,11 @@ jobs:
         run: go test ./...
       - name: Build libs
         run: ./scripts/build_libs/builddylib.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: macos-libs
           path: build/macos
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ios-libs
           path: build/ios
@@ -120,7 +120,7 @@ jobs:
         run: gomobile bind -target=android  -o gateway.aar ./client
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: android-aar-libs
           path: gateway.aar
@@ -150,7 +150,7 @@ jobs:
       - name: build ios xcframework
         run: gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossimulator -o OpenIoTHubGateway.xcframework ./client
       - run: zip -r OpenIoTHubGateway.xcframework.zip OpenIoTHubGateway.xcframework
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ios-macos-xcframework-libs
           path: OpenIoTHubGateway.xcframework.zip
@@ -180,7 +180,7 @@ jobs:
           version: latest
           args: release --clean --snapshot
       - name: Upload assets
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: goreleaser-dist
           path: dist/*
