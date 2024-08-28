@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	github.com/OpenIoTHub/openiothub_grpc_api v1.1.8
 	github.com/OpenIoTHub/utils v0.0.73
-	github.com/OpenIoTHub/water v0.0.2
+	github.com/OpenIoTHub/water v0.0.3
 	github.com/grandcat/zeroconf v1.0.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/libp2p/go-yamux v1.4.1

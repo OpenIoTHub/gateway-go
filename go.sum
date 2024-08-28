@@ -6,8 +6,8 @@ github.com/OpenIoTHub/openiothub_grpc_api v1.1.8 h1:4xN46oNeEXzXNwOnaBQxDCzs3C/U
 github.com/OpenIoTHub/openiothub_grpc_api v1.1.8/go.mod h1:bymMX9cUPOYwmVRRXVy2V2sj0YVY+UJa5uFTIc5sRls=
 github.com/OpenIoTHub/utils v0.0.73 h1:se/x/ZIhm4p5pC9CFDdpi6zDc86be/7bJluVe3ppXEk=
 github.com/OpenIoTHub/utils v0.0.73/go.mod h1:FQqcNy2M937N94qMWr+1x7Z/ke2Hssmm7xGLtpFMfyc=
-github.com/OpenIoTHub/water v0.0.2 h1:OUxsp3/6cu/plsBggMOsAJgKXgv12623QhGGubj/pGg=
-github.com/OpenIoTHub/water v0.0.2/go.mod h1:zY+k4u4Tc8vCGoAHJxydcuoow/U+oGW5ptfwom/ZM6M=
+github.com/OpenIoTHub/water v0.0.3 h1:9r6IWHNJEw69x84Wf5fC0F5rUu7RAeenCOzmmiTMc0E=
+github.com/OpenIoTHub/water v0.0.3/go.mod h1:zY+k4u4Tc8vCGoAHJxydcuoow/U+oGW5ptfwom/ZM6M=
 github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da/go.mod h1:eHEWzANqSiWQsof+nXEI9bUVUyV6F53Fp89EuCh2EAA=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
