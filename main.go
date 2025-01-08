@@ -3,28 +3,33 @@ package main
 import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/client"
-	"github.com/OpenIoTHub/gateway-go/netservice/login"
+	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
+	"github.com/OpenIoTHub/gateway-go/utils/qr"
+	"github.com/OpenIoTHub/gateway-go/utils/str"
+	utils_models "github.com/OpenIoTHub/utils/models"
+	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"
+	"gopkg.in/yaml.v3"
+	"io"
 	"log"
 	"os"
 	"sync"
 )
 
 var (
-	version = "dev"
+	version = ""
 	commit  = ""
-	date    = "time"
+	date    = ""
 	builtBy = ""
 )
 
 func main() {
-	login.Version = version
 	client.IsLibrary = false
 	myApp := cli.NewApp()
 	myApp.Name = "gateway-go"
 	myApp.Usage = "-c [config file path]"
-	myApp.Version = buildVersion(version, commit, date, builtBy)
+	myApp.Version = str.BuildVersion(version, commit, date, builtBy)
 	myApp.Commands = []*cli.Command{
 		{
 			Name:    "init",
@@ -34,14 +39,14 @@ func main() {
 				&cli.StringFlag{
 					Name:        "config",
 					Aliases:     []string{"c"},
-					Value:       services.ConfigFilePath,
+					Value:       config.ConfigFilePath,
 					Usage:       "config file path",
 					EnvVars:     []string{"GatewayConfigFilePath"},
-					Destination: &services.ConfigFilePath,
+					Destination: &config.ConfigFilePath,
 				},
 			},
 			Action: func(c *cli.Context) error {
-				services.InitConfigFile()
+				config.InitConfigFile()
 				return nil
 			},
 		},
@@ -62,30 +67,30 @@ func main() {
 		&cli.StringFlag{
 			Name:        "config",
 			Aliases:     []string{"c"},
-			Value:       services.ConfigFilePath,
+			Value:       config.ConfigFilePath,
 			Usage:       "config file path",
 			EnvVars:     []string{"GatewayConfigFilePath"},
-			Destination: &services.ConfigFilePath,
+			Destination: &config.ConfigFilePath,
 		},
 		//token 登录
 		&cli.StringFlag{
 			Name:        "token",
 			Aliases:     []string{"t"},
-			Value:       services.GatewayLoginToken,
+			Value:       config.GatewayLoginToken,
 			Usage:       "login server by gateway token ",
 			EnvVars:     []string{"GatewayLoginToken"},
-			Destination: &services.GatewayLoginToken,
+			Destination: &config.GatewayLoginToken,
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
-		if services.GatewayLoginToken != "" {
-			services.UseGateWayToken()
+		if config.GatewayLoginToken != "" {
+			UseGateWayToken()
 		} else {
-			_, err := os.Stat(services.ConfigFilePath)
+			_, err := os.Stat(config.ConfigFilePath)
 			if err != nil {
-				services.InitConfigFile()
+				config.InitConfigFile()
 			}
-			services.UseConfigFile()
+			UseConfigFile()
 		}
 		go client.Run()
 		wg := sync.WaitGroup{}
@@ -104,16 +109,77 @@ func Run() {
 	go client.Run()
 }
 
-func buildVersion(version, commit, date, builtBy string) string {
-	var result = version
-	if commit != "" {
-		result = fmt.Sprintf("%s\ncommit: %s", result, commit)
+func UseGateWayToken() {
+	//使用服务器签发的Token登录
+	err := services.GatewayManager.AddServer(config.GatewayLoginToken)
+	if err != nil {
+		log.Printf(err.Error())
+		log.Printf("登陆失败！请重新登陆。")
+		return
 	}
-	if date != "" {
-		result = fmt.Sprintf("%s\nbuilt at: %s", result, date)
+	log.Printf("登陆成功！\n")
+}
+
+func UseConfigFile() {
+	//配置文件存在
+	log.Println("使用的配置文件位置：", config.ConfigFilePath)
+	content, err := os.ReadFile(config.ConfigFilePath)
+	if err != nil {
+		log.Println(err.Error())
+		return
 	}
-	if builtBy != "" {
-		result = fmt.Sprintf("%s\nbuilt by: %s", result, builtBy)
+	err = yaml.Unmarshal(content, &config.ConfigMode)
+	if err != nil {
+		log.Println(err.Error())
+		return
 	}
-	return result
+	//找到了配置文件
+	if len(config.ConfigMode.GatewayUUID) < 35 {
+		config.ConfigMode.GatewayUUID = uuid.Must(uuid.NewV4()).String()
+		err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}
+	if config.ConfigMode.LoginWithTokenMap == nil {
+		config.ConfigMode.LoginWithTokenMap = make(map[string]string)
+	}
+	//解析日志配置
+	writers := []io.Writer{}
+	if config.ConfigMode.LogConfig.EnableStdout {
+		writers = append(writers, os.Stdout)
+	}
+	if config.ConfigMode.LogConfig.LogFilePath != "" {
+		f, err := os.OpenFile(config.ConfigMode.LogConfig.LogFilePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		writers = append(writers, f)
+	}
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	log.SetOutput(fileAndStdoutWriter)
+	//解析配置文件，解析服务器配置文件列表
+	//解析登录token列表
+	//如果CLI模式尚未登录自动登陆服务器并创建一个二维码
+	if len(config.ConfigMode.LoginWithTokenMap) == 0 {
+		err = qr.AutoLoginAndDisplayQRCode()
+		if err != nil {
+			log.Println(err)
+		}
+	}
+	for _, v := range config.ConfigMode.LoginWithTokenMap {
+		err = services.GatewayManager.AddServer(v)
+		if err != nil {
+			continue
+		}
+		// 通过gateway jwt(UUID)展示二维码
+		tokenModel, err := utils_models.DecodeUnverifiedToken(v)
+		if err != nil {
+			return
+		}
+		err = qr.DisplayQRCodeById(tokenModel.RunId)
+		if err != nil {
+			continue
+		}
+	}
 }

@@ -1,10 +1,12 @@
-package services
+package qr
 
 import (
 	"context"
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"github.com/OpenIoTHub/gateway-go/config"
+	"github.com/OpenIoTHub/gateway-go/services"
 	pb "github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/manager"
 	qrcode "github.com/skip2/go-qrcode"
 	"google.golang.org/grpc"
@@ -18,7 +20,7 @@ import (
 const IoTManagerAddr = "api.iot-manager.iothub.cloud:50051"
 
 // 自动创建jwt并登陆，并展示二维码
-func autoLoginAndDisplayQRCode() (err error) {
+func AutoLoginAndDisplayQRCode() (err error) {
 	tlsConfig := grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{}))
 	conn, err := grpc.NewClient(IoTManagerAddr, tlsConfig)
 	if err != nil {
@@ -34,7 +36,7 @@ func autoLoginAndDisplayQRCode() (err error) {
 		log.Println(err)
 		return
 	}
-	err = GatewayManager.AddServer(rst.GatewayJwt)
+	err = services.GatewayManager.AddServer(rst.GatewayJwt)
 	if err != nil {
 		log.Println(err)
 		return
@@ -49,16 +51,16 @@ func autoLoginAndDisplayQRCode() (err error) {
 		err = errors.New("url id is empty in QRCodeForMobileAdd")
 		return
 	}
-	ConfigMode.LoginWithTokenMap[runId] = rst.GatewayJwt
-	err = WriteConfigFile(ConfigMode, ConfigFilePath)
+	config.ConfigMode.LoginWithTokenMap[runId] = rst.GatewayJwt
+	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
 	if err != nil {
 		log.Println(err)
 	}
-	return displayQRCodeById(runId)
+	return DisplayQRCodeById(runId)
 }
 
 // 通过jwt展示二维码
-func displayQRCodeById(id string) (err error) {
+func DisplayQRCodeById(id string) (err error) {
 	qrContent := fmt.Sprintf("https://iothub.cloud/a/g?id=%s", id)
 	qrCode, err := qrcode.New(qrContent, qrcode.Low)
 	if err != nil {

@@ -3,7 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/OpenIoTHub/gateway-go/netservice/login"
+	"github.com/OpenIoTHub/gateway-go/config"
+	"github.com/OpenIoTHub/gateway-go/info"
 	"github.com/OpenIoTHub/gateway-go/services"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/models"
@@ -35,7 +36,7 @@ func start() {
 	//	port = 55443
 	//}
 	port := 55443
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", services.GRpcAddr, port))
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.GRpcAddr, port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 		return
@@ -58,16 +59,16 @@ func regMDNS(port int) {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", services.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
-			fmt.Sprintf("id=%s", services.ConfigMode.GatewayUUID),
+			fmt.Sprintf("id=%s", config.ConfigMode.GatewayUUID),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
 			"firmware-respository=https://github.com/OpenIoTHub/gateway-go",
-			fmt.Sprintf("firmware-version=%s", login.Version)}, nil)
+			fmt.Sprintf("firmware-version=%s", info.Version)}, nil)
 	if err != nil {
 		log.Println(err)
 		return
@@ -111,8 +112,8 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 			LoginStatus: services.GatewayManager.Loged(),
 		}, nil
 	}
-	services.ConfigMode.LoginWithTokenMap[tokenModel.RunId] = in.Value
-	err = services.WriteConfigFile(services.ConfigMode, services.ConfigFilePath)
+	config.ConfigMode.LoginWithTokenMap[tokenModel.RunId] = in.Value
+	err = config.WriteConfigFile(config.ConfigMode, config.ConfigFilePath)
 	if err != nil {
 		log.Println(err)
 	}

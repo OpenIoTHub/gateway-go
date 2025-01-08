@@ -1,9 +1,9 @@
-package services
+package handle
 
 import (
-	"github.com/OpenIoTHub/gateway-go/netservice/connect"
-	"github.com/OpenIoTHub/gateway-go/netservice/login"
-	"github.com/OpenIoTHub/gateway-go/netservice/service"
+	connect "github.com/OpenIoTHub/gateway-go/netservice/services/connect/conn"
+	"github.com/OpenIoTHub/gateway-go/netservice/services/connect/service"
+	"github.com/OpenIoTHub/gateway-go/netservice/services/login"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/net/p2p/gateway"
@@ -16,7 +16,7 @@ import (
 	"github.com/libp2p/go-yamux"
 )
 
-func handleStream(stream net.Conn, tokenStr string) {
+func HandleStream(stream net.Conn, tokenStr string) {
 	var err error
 	tokenModel, err := models.DecodeUnverifiedToken(tokenStr)
 	if err != nil {
@@ -24,10 +24,10 @@ func handleStream(stream net.Conn, tokenStr string) {
 		return
 	}
 	defer func() {
-		if err == nil || stream == nil {
+		if stream != nil {
+			err = stream.Close()
 			return
 		}
-		err = stream.Close()
 		if err != nil {
 			log.Println(err.Error())
 		}
@@ -130,7 +130,7 @@ func handleStream(stream net.Conn, tokenStr string) {
 				stream.Close()
 				return
 			}
-			go handleSession(session, tokenStr)
+			go HandleSession(session, tokenStr)
 		}
 
 	case *models.RequestNewWorkConn:
@@ -158,7 +158,7 @@ func handleStream(stream net.Conn, tokenStr string) {
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
-				handleSession(session, tokenStr)
+				HandleSession(session, tokenStr)
 				if listener != nil {
 					listener.Close()
 				}
@@ -174,7 +174,7 @@ func handleStream(stream net.Conn, tokenStr string) {
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
-				handleSession(session, tokenStr)
+				HandleSession(session, tokenStr)
 				if listener != nil {
 					listener.Close()
 				}
@@ -187,7 +187,7 @@ func handleStream(stream net.Conn, tokenStr string) {
 			switch m.Type {
 			case "tcp", "udp", "tls":
 				{
-					code, message := connect.CheckTcpUdpTls(m.Type, m.Addr)
+					code, message := service.CheckTcpUdpTls(m.Type, m.Addr)
 					err := msg.WriteMsg(stream, &models.CheckStatusResponse{
 						Code:    code,
 						Message: message,
@@ -209,33 +209,33 @@ func handleStream(stream net.Conn, tokenStr string) {
 		}
 	//由于用户在服务器账户删掉了这个网关，所有网关删掉服务器登录以供新用户绑定
 	case *models.DeleteGatewayJwt:
-		{
-			log.Println("删除配置:", tokenModel.RunId)
-			GatewayManager.DelServer(tokenModel.RunId)
-			delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
-			err = WriteConfigFile(ConfigMode, ConfigFilePath)
-			if err != nil {
-				log.Println(err)
-				err = msg.WriteMsg(stream, &models.Error{
-					Code:    1,
-					Message: err.Error(),
-				})
-				if err != nil {
-					log.Println(err.Error())
-				}
-				return
-			}
-			err = msg.WriteMsg(stream, &models.OK{})
-			if err != nil {
-				log.Println(err.Error())
-			}
-		}
+		//{
+		//	log.Println("删除配置:", tokenModel.RunId)
+		//	GatewayManager.DelServer(tokenModel.RunId)
+		//	delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
+		//	err = WriteConfigFile(ConfigMode, ConfigFilePath)
+		//	if err != nil {
+		//		log.Println(err)
+		//		err = msg.WriteMsg(stream, &models.Error{
+		//			Code:    1,
+		//			Message: err.Error(),
+		//		})
+		//		if err != nil {
+		//			log.Println(err.Error())
+		//		}
+		//		return
+		//	}
+		//	err = msg.WriteMsg(stream, &models.OK{})
+		//	if err != nil {
+		//		log.Println(err.Error())
+		//	}
+		//}
 	default:
 		log.Printf("type err")
 	}
 }
 
-func handleSession(session *yamux.Session, tokenStr string) {
+func HandleSession(session *yamux.Session, tokenStr string) {
 	defer func() {
 		if session != nil {
 			err := session.Close()
@@ -249,10 +249,13 @@ func handleSession(session *yamux.Session, tokenStr string) {
 		stream, err := session.AcceptStream()
 		if err != nil {
 			log.Println("accpStreamErr：" + err.Error())
+			if stream != nil {
+				stream.Close()
+			}
 			break
 		}
 		//log.Println("获取到一个连接需要处理")
-		go handleStream(stream, tokenStr)
+		go HandleStream(stream, tokenStr)
 	}
 }
 
@@ -262,8 +265,11 @@ func newWorkConn(tokenStr string) {
 	if err != nil {
 		log.Println("创建一个到服务端的新的工作连接失败：")
 		log.Println(err.Error())
+		if conn != nil {
+			conn.Close()
+		}
 		return
 	}
 	log.Println("创建一个到服务端的新的工作连接成功！")
-	go handleStream(conn, tokenStr)
+	go HandleStream(conn, tokenStr)
 }

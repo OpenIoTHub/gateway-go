@@ -1,7 +1,8 @@
 package services
 
 import (
-	"github.com/OpenIoTHub/gateway-go/netservice/login"
+	"github.com/OpenIoTHub/gateway-go/netservice/handle"
+	"github.com/OpenIoTHub/gateway-go/netservice/services/login"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/libp2p/go-yamux"
 	"log"
@@ -68,7 +69,7 @@ func (ss *ServerSession) LoopStream() {
 			break
 		}
 		log.Println("获取到一个连接需要处理")
-		go handleStream(stream, ss.token)
+		go handle.HandleStream(stream, ss.token)
 	}
 }
 

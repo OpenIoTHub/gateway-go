@@ -1,4 +1,4 @@
-package connect
+package conn
 
 import (
 	"github.com/OpenIoTHub/utils/io"

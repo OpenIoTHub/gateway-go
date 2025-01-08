@@ -1,6 +1,7 @@
 package login
 
 import (
+	"github.com/OpenIoTHub/gateway-go/info"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/libp2p/go-yamux"
@@ -9,10 +10,6 @@ import (
 	"runtime"
 	"strconv"
 	"time"
-)
-
-var (
-	Version = "dev"
 )
 
 func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false :dont retry
@@ -40,7 +37,7 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 		Token:   tokenstr,
 		Os:      runtime.GOOS,
 		Arch:    runtime.GOARCH,
-		Version: Version,
+		Version: info.Version,
 	}
 
 	err = msg.WriteMsg(conn, login)
@@ -83,11 +80,12 @@ func LoginWorkConn(tokenStr string) (net.Conn, error) {
 	loginWorkConn := &models.GatewayWorkConn{
 		RunId:   token.RunId,
 		Secret:  tokenStr,
-		Version: Version,
+		Version: info.Version,
 	}
 
 	err = msg.WriteMsg(conn, loginWorkConn)
 	if err != nil {
+		conn.Close()
 		return nil, err
 	}
 	return conn, nil

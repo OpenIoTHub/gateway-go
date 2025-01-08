@@ -1,4 +1,4 @@
-package connect
+package conn
 
 import (
 	"golang.org/x/crypto/ssh"
