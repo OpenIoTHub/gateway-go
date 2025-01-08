@@ -9,8 +9,6 @@ import (
 	"github.com/OpenIoTHub/utils/net/p2p/gateway"
 	"log"
 
-	//"github.com/OpenIoTHub/utils/io"
-	"github.com/jacobsa/go-serial/serial"
 	"net"
 	//"github.com/xtaci/smux"
 	"github.com/libp2p/go-yamux"
@@ -69,7 +67,7 @@ func HandleStream(stream net.Conn, tokenStr string) {
 	case *models.ConnectSerialPort:
 		{
 			log.Printf("sertp")
-			err = connect.JoinSerialPort(stream, serial.OpenOptions(*m))
+			err = connect.JoinSerialPort(stream, m)
 			if err != nil {
 				log.Println(err.Error())
 				return
