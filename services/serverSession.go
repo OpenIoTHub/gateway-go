@@ -11,8 +11,10 @@ import (
 )
 
 type ServerSession struct {
-	token          string
-	tokenModel     *models.TokenClaims
+	//基础信息
+	token      string
+	tokenModel *models.TokenClaims
+	//内部存储
 	session        *yamux.Session
 	heartbeat      *time.Ticker
 	quit           chan struct{}
@@ -25,14 +27,15 @@ func (ss *ServerSession) stop() {
 }
 
 func (ss *ServerSession) start() (err error) {
-	ss.CheckSessionStatus()
+	//防止多次调用
+	ss.checkSessionStatus()
 	ss.heartbeat = time.NewTicker(time.Second * 20)
 	ss.quit = make(chan struct{})
-	go ss.Task()
+	go ss.task()
 	return
 }
 
-func (ss *ServerSession) LoginServer() (err error) {
+func (ss *ServerSession) loginServer() (err error) {
 	ss.loginLock.Lock()
 	defer ss.loginLock.Unlock()
 	if ss.session != nil && !ss.session.IsClosed() {
@@ -46,17 +49,18 @@ func (ss *ServerSession) LoginServer() (err error) {
 	return
 }
 
-func (ss *ServerSession) LoopStream() {
+func (ss *ServerSession) loopStream() {
 	ss.loopStreamLock.Lock()
 	defer ss.loopStreamLock.Unlock()
-	defer func() {
-		if ss.session != nil {
-			err := ss.session.Close()
-			if err != nil {
-				log.Println(err.Error())
-			}
-		}
-	}()
+	//防止影响新创建的会话，不关闭会话
+	//defer func() {
+	//	if ss.session != nil {
+	//		err := ss.session.Close()
+	//		if err != nil {
+	//			log.Println(err.Error())
+	//		}
+	//	}
+	//}()
 	for {
 		if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
 			log.Println("ss.session is nil")
@@ -73,24 +77,24 @@ func (ss *ServerSession) LoopStream() {
 	}
 }
 
-func (ss *ServerSession) CheckSessionStatus() {
+func (ss *ServerSession) checkSessionStatus() {
 	if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
 		log.Println("开始(重新)连接:", ss.tokenModel.RunId, "@", ss.tokenModel.Host)
-		err := ss.LoginServer()
+		err := ss.loginServer()
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		go ss.LoopStream()
+		go ss.loopStream()
 	}
 }
 
-func (ss *ServerSession) Task() {
+func (ss *ServerSession) task() {
 	for {
 		select {
 		//心跳来了，检测连接的存活状态
 		case <-ss.heartbeat.C:
-			ss.CheckSessionStatus()
+			ss.checkSessionStatus()
 		case <-ss.quit:
 			ss.heartbeat.Stop()
 			close(ss.quit)

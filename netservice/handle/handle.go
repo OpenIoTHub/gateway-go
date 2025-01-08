@@ -246,7 +246,7 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 		// Accept a stream
 		stream, err := session.AcceptStream()
 		if err != nil {
-			log.Println("accpStreamErr：" + err.Error())
+			log.Println("accept stream form session got err：" + err.Error())
 			if stream != nil {
 				stream.Close()
 			}

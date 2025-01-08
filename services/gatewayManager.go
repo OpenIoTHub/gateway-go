@@ -17,6 +17,7 @@ func (gm *GatewayCtl) Loged() bool {
 	return len(gm.serverSession) > 0
 }
 
+// AddServer 添加网关实例，登录一个id
 func (gm *GatewayCtl) AddServer(token string) (err error) {
 	tokenModel, err := models.DecodeUnverifiedToken(token)
 	if err != nil {
@@ -35,6 +36,7 @@ func (gm *GatewayCtl) AddServer(token string) (err error) {
 	return serverSession.start()
 }
 
+// DelServer 删除网关实例，删除一个id
 func (gm *GatewayCtl) DelServer(runid string) (err error) {
 	if _, ok := gm.serverSession[runid]; ok {
 		log.Println("找到了runid的serverSession")
