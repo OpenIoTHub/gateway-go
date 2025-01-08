@@ -3,7 +3,7 @@ module github.com/OpenIoTHub/gateway-go
 go 1.22.3
 
 require (
-	github.com/OpenIoTHub/openiothub_grpc_api v1.1.8
+	github.com/OpenIoTHub/openiothub_grpc_api v1.2.0
 	github.com/OpenIoTHub/utils v0.0.73
 	github.com/OpenIoTHub/water v0.0.3
 	github.com/grandcat/zeroconf v1.0.0
@@ -39,7 +39,6 @@ require (
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/xtaci/kcp-go/v5 v5.6.18 // indirect
-	golang.org/x/mobile v0.0.0-20250106192035-c31d5b91ecc3 // indirect
 	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
