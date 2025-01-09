@@ -19,7 +19,7 @@ import (
 var IsLibrary = true
 
 type LoginManager struct {
-	*pb.UnimplementedGatewayLoginManagerServer
+	pb.UnimplementedGatewayLoginManagerServer
 }
 
 var loginManager = new(LoginManager)
@@ -123,4 +123,7 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 		Message:     "登录成功！",
 		LoginStatus: services.GatewayManager.Loged(),
 	}, nil
+}
+
+func (lm *LoginManager) testEmbeddedByValue() {
 }
