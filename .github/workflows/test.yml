@@ -170,7 +170,10 @@ jobs:
 #      - name: Install Snapcraft
 #        uses: samuelmeuli/action-snapcraft@v3
       - name: Install Snapcraft
-        run: sudo snap install snapcraft --classic
+        run:
+          sudo snap install snapcraft --classic
+          mkdir -p $HOME/.cache/snapcraft/download
+          mkdir -p $HOME/.cache/snapcraft/stage-packages
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:

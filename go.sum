@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/OpenIoTHub/getip v0.1.4 h1:HsoTZBd2T4T+LJWUx8p1ziZwHUoeOKo+VBt3fzEwpSI=
 github.com/OpenIoTHub/getip v0.1.4/go.mod h1:yEnLPtVS4JBoEU720mO6FmxLwCICKLyOcOEKRD6w0cY=
-github.com/OpenIoTHub/openiothub_grpc_api v1.2.0 h1:qsCmwooGZqHdTRdg57oId3YLHakx9U3S+j4rB3789nI=
-github.com/OpenIoTHub/openiothub_grpc_api v1.2.0/go.mod h1:ysCZFcVbBWtnQGK6vo62ofe3hg6FqBevFRaMnaD/1Xc=
+github.com/OpenIoTHub/openiothub_grpc_api v1.2.1 h1:/0OfwF/ZDb/0FG7r2bdZlEJ3+1kFiKB0xZzCNK1cHH0=
+github.com/OpenIoTHub/openiothub_grpc_api v1.2.1/go.mod h1:91Ho5V39Wdjq4/Dr+fcz6UPgP/jVVA0S/l7o0IWr2HE=
 github.com/OpenIoTHub/utils v0.0.73 h1:se/x/ZIhm4p5pC9CFDdpi6zDc86be/7bJluVe3ppXEk=
 github.com/OpenIoTHub/utils v0.0.73/go.mod h1:FQqcNy2M937N94qMWr+1x7Z/ke2Hssmm7xGLtpFMfyc=
 github.com/OpenIoTHub/water v0.0.3 h1:9r6IWHNJEw69x84Wf5fC0F5rUu7RAeenCOzmmiTMc0E=
@@ -153,6 +153,8 @@ golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
 golang.org/x/lint v0.0.0-20190227174305-5b3e6a55c961/go.mod h1:wehouNa3lNwaWXcvxsM5YxQ5yQlVC4a0KAMCusXpPoU=
 golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3/go.mod h1:6SW0HCj/g11FgYtHlgUYUwCkIfeOF89ocIRzGO/8vkc=
+golang.org/x/mobile v0.0.0-20250106192035-c31d5b91ecc3 h1:8LrYkH99trX3onYF3dT9frUSRDXokkceG+9tHBaDAFQ=
+golang.org/x/mobile v0.0.0-20250106192035-c31d5b91ecc3/go.mod h1:sY92m3V/rTEa4JCJ1FkKHK978K6wxOSX1PStMYo+6wI=
 golang.org/x/mod v0.1.1-0.20191105210325-c90efee705ee/go.mod h1:QqPTAvyqsEbceGzBzNggFXnrqF1CaUcvgkdR5Ot7KZg=
 golang.org/x/mod v0.2.0/go.mod h1:s0Qsj1ACt9ePp/hMypM3fl4fZqREWJwdYDEqhRiZZUA=
 golang.org/x/mod v0.3.0/go.mod h1:s0Qsj1ACt9ePp/hMypM3fl4fZqREWJwdYDEqhRiZZUA=
