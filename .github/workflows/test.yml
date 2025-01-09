@@ -170,7 +170,7 @@ jobs:
 #      - name: Install Snapcraft
 #        uses: samuelmeuli/action-snapcraft@v3
       - name: Install Snapcraft
-        run:
+        run: |
           sudo snap install snapcraft --classic
           mkdir -p $HOME/.cache/snapcraft/download
           mkdir -p $HOME/.cache/snapcraft/stage-packages
