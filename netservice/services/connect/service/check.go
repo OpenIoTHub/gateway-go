@@ -8,7 +8,7 @@ import (
 	"crypto/tls"
 )
 
-// check
+// CheckTcpUdpTls 检查端口状态，如果端口可连接则状态为0，如果不可连接则状态为其他
 func CheckTcpUdpTls(connType, addr string) (int, string) {
 	var c net.Conn = nil
 	var err error

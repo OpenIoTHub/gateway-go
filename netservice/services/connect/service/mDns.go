@@ -59,13 +59,14 @@ func FindAllmDNS(stream net.Conn, service *models.NewService) error {
 		log.Println(err.Error())
 		return err
 	}
-	log.Println("mdns rstByte:", string(rstByte))
+	//log.Println("mdns rstByte:", string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
 		log.Println("写消息错误：")
 		log.Println(err.Error())
 	}
-	content, _ := json.Marshal(&models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
-	log.Println("content:", string(content))
+	//content, _ := json.Marshal(&models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
+	//log.Println("content:", string(content))
+	//stream.Close()
 	return err
 }

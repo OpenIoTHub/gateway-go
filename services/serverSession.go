@@ -15,11 +15,13 @@ type ServerSession struct {
 	token      string
 	tokenModel *models.TokenClaims
 	//内部存储
-	session        *yamux.Session
-	heartbeat      *time.Ticker
-	quit           chan struct{}
-	loginLock      sync.Mutex
-	loopStreamLock sync.Mutex
+	session   *yamux.Session
+	heartbeat *time.Ticker
+	quit      chan struct{}
+
+	checkSessionStatusLock sync.Mutex
+	loginLock              sync.Mutex
+	loopStreamLock         sync.Mutex
 }
 
 func (ss *ServerSession) stop() {
@@ -78,6 +80,8 @@ func (ss *ServerSession) loopStream() {
 }
 
 func (ss *ServerSession) checkSessionStatus() {
+	ss.checkSessionStatusLock.Lock()
+	defer ss.checkSessionStatusLock.Unlock()
 	if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
 		log.Println("开始(重新)连接:", ss.tokenModel.RunId, "@", ss.tokenModel.Host)
 		err := ss.loginServer()

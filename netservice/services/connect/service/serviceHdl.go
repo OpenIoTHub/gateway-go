@@ -16,15 +16,17 @@ func ServiceHdl(stream net.Conn, service *models.NewService) error {
 		return err
 	case "mDNSFind":
 		err := FindAllmDNS(stream, service)
+		//stream.Close()
 		return err
 	case "scanPort":
 		err := ScanPort(stream, service)
+		//stream.Close()
 		return err
 	case "ListenMulticastUDP":
 		err := ListenMulticastUDP(stream, service)
 		return err
 	default:
-
+		stream.Close()
 	}
 	return nil
 }

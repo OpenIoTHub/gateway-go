@@ -1,6 +1,5 @@
 gatewayuuid: 62ded68f-5bf6-4d97-9c2e-ced2d5fd215f
 logconfig:
-  enablestdout: true
-  logfilepath: ""
-loginwithtokenmap:
-  ee756a19-812e-4eb8-b4cd-425845858716: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSdW5JZCI6ImVlNzU2YTE5LTgxMmUtNGViOC1iNGNkLTQyNTg0NTg1ODcxNiIsIkhvc3QiOiJndW9uZWkubmF0LWNsb3VkLmNvbSIsIlRjcFBvcnQiOjM0MzIwLCJLY3BQb3J0IjozNDMyMCwiVGxzUG9ydCI6MzQzMjEsIkdycGNQb3J0IjozNDMyMiwiVURQQXBpUG9ydCI6MzQzMjEsIktDUEFwaVBvcnQiOjM0MzIyLCJQZXJtaXNzaW9uIjpbImdhdGV3YXkiXSwiVHh0cyI6e30sImV4cCI6MjAxNzMxNjYxODY5LCJuYmYiOjE3MzE2MzMwNjl9.BWb42t00vs2IJCDAD5P-ZQiKkrqNtAJyd1767W3x20E
+    enablestdout: true
+    logfilepath: ""
+loginwithtokenmap: {}

@@ -21,18 +21,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 		log.Printf(err.Error())
 		return
 	}
-	defer func() {
-		if stream != nil {
-			err = stream.Close()
-			return
-		}
-		if err != nil {
-			log.Println(err.Error())
-		}
-	}()
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
 		log.Printf(err.Error() + "从stream读取数据错误")
+		stream.Close()
 		return
 	}
 	//log.Printf("begin Swc")
@@ -145,6 +137,8 @@ func HandleStream(stream net.Conn, tokenStr string) {
 			if err != nil {
 				log.Println(err.Error())
 			}
+			//TODO 防止未关闭的连接，取决于请求方是否关闭
+			//stream.Close()
 		}
 
 	case *models.ReqNewP2PCtrlAsServer:
@@ -153,6 +147,9 @@ func HandleStream(stream net.Conn, tokenStr string) {
 			go func() {
 				session, listener, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
 				if err != nil {
+					if listener != nil {
+						listener.Close()
+					}
 					log.Println("gateway.MakeP2PSessionAsServer:", err)
 					return
 				}
@@ -169,6 +166,9 @@ func HandleStream(stream net.Conn, tokenStr string) {
 			go func() {
 				session, listener, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
 				if err != nil {
+					if listener != nil {
+						listener.Close()
+					}
 					log.Println("gateway.MakeP2PSessionAsClient:", err)
 					return
 				}
@@ -203,33 +203,36 @@ func HandleStream(stream net.Conn, tokenStr string) {
 					log.Println(err.Error())
 				}
 			}
+			//TODO 是否关闭
 			stream.Close()
 		}
 	//由于用户在服务器账户删掉了这个网关，所有网关删掉服务器登录以供新用户绑定
 	case *models.DeleteGatewayJwt:
-		//{
-		//	log.Println("删除配置:", tokenModel.RunId)
-		//	GatewayManager.DelServer(tokenModel.RunId)
-		//	delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
-		//	err = WriteConfigFile(ConfigMode, ConfigFilePath)
-		//	if err != nil {
-		//		log.Println(err)
-		//		err = msg.WriteMsg(stream, &models.Error{
-		//			Code:    1,
-		//			Message: err.Error(),
-		//		})
-		//		if err != nil {
-		//			log.Println(err.Error())
-		//		}
-		//		return
-		//	}
-		//	err = msg.WriteMsg(stream, &models.OK{})
-		//	if err != nil {
-		//		log.Println(err.Error())
-		//	}
-		//}
+		{
+			//	log.Println("删除配置:", tokenModel.RunId)
+			//	GatewayManager.DelServer(tokenModel.RunId)
+			//	delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
+			//	err = WriteConfigFile(ConfigMode, ConfigFilePath)
+			//	if err != nil {
+			//		log.Println(err)
+			//		err = msg.WriteMsg(stream, &models.Error{
+			//			Code:    1,
+			//			Message: err.Error(),
+			//		})
+			//		if err != nil {
+			//			log.Println(err.Error())
+			//		}
+			//		return
+			//	}
+			//	err = msg.WriteMsg(stream, &models.OK{})
+			//	if err != nil {
+			//		log.Println(err.Error())
+			//	}
+			stream.Close()
+		}
 	default:
 		log.Printf("type err")
+		stream.Close()
 	}
 }
 
