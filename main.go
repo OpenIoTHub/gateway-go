@@ -83,6 +83,7 @@ func main() {
 		},
 	}
 	myApp.Action = func(c *cli.Context) error {
+		str.PrintOpenIoTHubLogo()
 		if config.GatewayLoginToken != "" {
 			UseGateWayToken()
 		} else {
