@@ -4,6 +4,7 @@ FROM alpine:latest
 EXPOSE 1082
 #mdns端口
 EXPOSE 5353/udp
+EXPOSE 34323/tcp
 
 RUN apk add --no-cache bash
 
