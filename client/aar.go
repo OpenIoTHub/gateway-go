@@ -34,6 +34,7 @@ func start() {
 	go func() {
 		http.HandleFunc("/", services.GatewayManager.IndexHandler)
 		http.HandleFunc("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)
+		//不同的系统打印不一样
 		log.Printf("Http 监听端口: %d\n", config.ConfigMode.HttpServicePort)
 		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.ConfigMode.HttpServicePort), nil); err != nil {
 			log.Printf("Failed to start server: %s\n", err)
