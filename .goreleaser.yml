@@ -2,44 +2,75 @@
 # Make sure to check the documentation at http://goreleaser.com
 before:
   hooks:
-    # you may remove this if you don't use vgo
-#    - go mod tidy
-#    - go mod vendor
+    # You may remove this if you don't use go modules.
+    - go mod download
+    # you may remove this if you don't need go generate
+    - go generate ./...
 builds:
-- env:
-    - CGO_ENABLED=0
-    - GO111MODULE=on
-  ldflags:
-    - -s -w -X info.Version={{.Version}} -X info.Commit={{.Commit}} -X info.Date={{ .CommitDate }} -X info.BuiltBy=goreleaser
-  goos:
-    - linux
-    - darwin
-    - windows
-  goarch:
-    - 386
-    - amd64
-    - arm
-    - arm64
-    - mips64
-    - mips64le
-    - mips
-    - mipsle
-  gomips:
-    - hardfloat
-    - softfloat
-  ignore:
-    - goos: darwin
-      goarch: 386
+  - env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    goos:
+      - android
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - '386'
+      - amd64
+      - arm
+      - arm64
+      - mips
+      - mipsle
+      - mips64
+      - mips64le
+    goarm:
+      - '5'
+      - '6'
+      - '7'
+    gomips:
+      - hardfloat
+      - softfloat
+    ignore:
+      # we only need the arm64 build on android
+      - goos: android
+        goarch: arm
+      - goos: android
+        goarch: '386'
+      - goos: android
+        goarch: amd64
+    ldflags:
+      - -s -w -X info.Version={{.Version}} -X info.Commit={{.Commit}} -X info.Date={{ .CommitDate }} -X info.BuiltBy=goreleaser
+
+archives:
+  # use zip for windows archives
+  - format_overrides:
+      - goos: windows
+        format: zip
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Mips }}_{{ .Mips }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ incpatch .Version }}-devel"
 changelog:
   sort: asc
   filters:
     exclude:
-    - '^docs:'
-    - '^test:'
+      - '^docs:'
+      - '^test:'
+
 brews:
   - tap:
       owner: OpenIoTHub
