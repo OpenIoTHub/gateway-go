@@ -93,19 +93,62 @@ snapcrafts:
         command: gateway-go
 dockers:
   - image_templates:
-      - 'openiothub/gateway-go:{{ .Tag }}'
-      - 'openiothub/gateway-go:v{{ .Major }}.{{ .Minor }}'
-      - 'openiothub/gateway-go:latest'
-    dockerfile: Dockerfile
-    ids: ['gateway-go']
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
+    use: buildx
     build_flag_templates:
-      - "--pull"
+      - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.source={{.GitURL}}"
-      - "--label=com.github.actions.name={{.ProjectName}}"
 
-    extra_files:
-      - scripts/entrypoint.sh
+  - image_templates:
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-arm64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    goarch: arm64
+
+  - image_templates:
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-armv7"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-armv7"
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/arm/v7"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    goarch: arm
+    goarm: 7
+
+docker_manifests:
+  - name_template: "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}"
+    image_templates:
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-arm64"
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-armv7"
+
+  - name_template: "{{ .Env.DOCKER_USERNAME }}/gateway-go:latest"
+    image_templates:
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-arm64"
+      - "{{ .Env.DOCKER_USERNAME }}/gateway-go:{{ .Tag }}-armv7"
+
+  - name_template: "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-armv7"
+
+  - name_template: "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:latest"
+    image_templates:
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-armv7"

@@ -1,17 +1,15 @@
-FROM alpine:latest
+FROM alpine
+LABEL name=gateway-go
+LABEL url=https://github.com/OpenIoTHub/OpenIoTHub
+RUN apk add --no-cache bash
 
+WORKDIR /app
+COPY gateway-go /app/
+ENV TZ=Asia/Shanghai
 #默认的http api端口
 EXPOSE 1082
 #mdns端口
 EXPOSE 5353/udp
 EXPOSE 34323/tcp
-
-RUN apk add --no-cache bash
-
-ENTRYPOINT ["/entrypoint.sh"]
-CMD [ "-h" ]
-
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-COPY gateway-go /bin/gateway-go
+ENTRYPOINT ["/app/gateway-go"]
+CMD ["-c", "/app/config.yaml"]
