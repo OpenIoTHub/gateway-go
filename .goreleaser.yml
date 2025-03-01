@@ -73,22 +73,22 @@ changelog:
       - '^docs:'
       - '^test:'
 
-brews:
-  - tap:
-      owner: OpenIoTHub
-      name: homebrew-tap
-    folder: Formula
-    homepage:  http://github.com/OpenIoTHub
-    description: OpenIoTHub GateWay
-    test: |
-      system "#{bin}/gateway-go -v"
-scoop:
-  bucket:
-    owner: OpenIoTHub
-    name: scoop-bucket
-  homepage:  http://github.com/OpenIoTHub
-  description: OpenIoTHub GateWay
-  license: MIT
+#brews:
+#  - tap:
+#      owner: OpenIoTHub
+#      name: homebrew-tap
+#    folder: Formula
+#    homepage:  http://github.com/OpenIoTHub
+#    description: OpenIoTHub GateWay
+#    test: |
+#      system "#{bin}/gateway-go -v"
+#scoop:
+#  bucket:
+#    owner: OpenIoTHub
+#    name: scoop-bucket
+#  homepage:  http://github.com/OpenIoTHub
+#  description: OpenIoTHub GateWay
+#  license: MIT
 nfpms:
   - file_name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
     homepage:  http://github.com/OpenIoTHub
