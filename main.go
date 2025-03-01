@@ -5,6 +5,7 @@ import (
 	client "github.com/OpenIoTHub/gateway-go/client"
 	"github.com/OpenIoTHub/gateway-go/config"
 	"github.com/OpenIoTHub/gateway-go/services"
+	"github.com/OpenIoTHub/gateway-go/utils/login_utils"
 	"github.com/OpenIoTHub/gateway-go/utils/qr"
 	"github.com/OpenIoTHub/gateway-go/utils/str"
 	utils_models "github.com/OpenIoTHub/utils/models"
@@ -163,7 +164,7 @@ func UseConfigFile() {
 	//解析登录token列表
 	//如果CLI模式尚未登录自动登陆服务器并创建一个二维码
 	if len(config.ConfigMode.LoginWithTokenMap) == 0 {
-		err = qr.AutoLoginAndDisplayQRCode()
+		err = login_utils.AutoLoginAndDisplayQRCode()
 		if err != nil {
 			log.Println(err)
 		}

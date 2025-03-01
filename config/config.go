@@ -23,6 +23,7 @@ var ConfigMode = &models.GatewayConfig{
 		EnableStdout: true,
 		LogFilePath:  "",
 	},
+	HttpServicePort:   34323,
 	LoginWithTokenMap: make(map[string]string),
 }
 

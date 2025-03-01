@@ -14,6 +14,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	"net"
+	"net/http"
 )
 
 var IsLibrary = true
@@ -29,6 +30,16 @@ func Run() {
 }
 
 func start() {
+	//启动http服务
+	go func() {
+		http.HandleFunc("/", services.GatewayManager.IndexHandler)
+		http.HandleFunc("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)
+		log.Printf("Http 监听端口: %d\n", config.ConfigMode.HttpServicePort)
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.ConfigMode.HttpServicePort), nil); err != nil {
+			log.Printf("Failed to start server: %s\n", err)
+		}
+	}()
+	//启动grpc服务
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
 	//port := services.GrpcPort
