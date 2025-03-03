@@ -10,6 +10,6 @@ ENV TZ=Asia/Shanghai
 EXPOSE 1082
 #mdns端口
 EXPOSE 5353/udp
-EXPOSE 34323/tcp
+EXPOSE 34323
 ENTRYPOINT ["/app/gateway-go"]
-CMD ["-c", "/app/config.yaml"]
+CMD ["-c", "/root/config.yaml"]
