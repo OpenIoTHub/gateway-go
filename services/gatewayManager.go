@@ -83,7 +83,7 @@ func (gm *GatewayCtl) IndexHandler(w http.ResponseWriter, r *http.Request) {
 </head>
 <body>
     <img src="/DisplayQrHandler" alt="扫码添加二维码">
-    <div class="tip">使用<a href="https://m.malink.cn/s/RNzqia">云亿连</a>(拷贝本链接在移动端打开从应用市场下载)扫描上述二维码添加本网关，然后添加主机，主机下面添加端口就可以访问目标端口了！</div>
+    <div class="tip">使用<a href="https://m.malink.cn/s/RNzqia">云亿连</a>(从应用市场搜索下载或拷贝本链接在移动端打开)扫描上述二维码添加本网关，然后添加主机，主机下面添加端口就可以访问目标端口了！<a href="https://www.bilibili.com/video/BV1Tw9pYJE4B">使用教程🌐</a></div>
     <div class="tip">Use <a href="https://github.com/OpenIoTHub/OpenIoTHub">OpenIoTHub</a> to scan the following QR code and add a gateway,then add host,add host's port,finally, enjoy remote control</div>
 </body>
 </html>
