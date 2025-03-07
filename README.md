@@ -23,30 +23,18 @@ Currently, you can [install it using Docker](#running-with-docker)
 Currently, you can [install it using Docker](#running-with-docker)
 ## Router Install
 
-#### [openwrt](https://openwrt.org/)
+#### [openwrt/entware/optware](https://openwrt.org/)
 ```sh
 opkg update
 opkg install gateway-go
 ```
+#### use snapshot branch：https://downloads.openwrt.org/snapshots/ to get the latest version
 
 ## Install the pre-compiled binary
 
 **one script** :
 ```sh
 curl -fsSL https://get.iothub.cloud | sudo bash
-```
-
-**openwrt/entware/optware (Usually on the router)**:
-#### use snapshot branch：https://downloads.openwrt.org/snapshots/ to get the latest version
-```sh
-opkg update
-opkg install gateway-go
-```
-
-**homebrew tap** :
-
-```sh
-$ brew install OpenIoTHub/tap/gateway-go
 ```
 
 **homebrew** (may not be the latest version):
