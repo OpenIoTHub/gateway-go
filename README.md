@@ -7,11 +7,37 @@ You can install the pre-compiled binary (in several different ways),
 use Docker.
 
 Here are the steps for each of them:
+## NAS Install
+
+#### [synology](https://www.synology.com)
+Currently, you can [install it using Docker](https://www.bilibili.com/video/BV1of4y1G7Jb)
+#### [CasaOS](https://www.casaos.io)、[ZimaOS](https://www.zimaspace.com)
+Download directly from the app market [gateway-go](https://github.com/IceWhaleTech/CasaOS-AppStore/tree/main/Apps/Gateway-go)
+#### [fnos](https://www.fnnas.com)
+Currently, you can [install it using Docker](#running-with-docker)
+#### [unRaid](https://unraid.net)
+Currently, you can [install it using Docker](https://www.bilibili.com/video/BV1EzWFeSEGC)
+#### [QNAP](https://www.qnap.com.cn/zh-cn)
+Currently, you can [install it using Docker](#running-with-docker)
+#### [ugnas](https://www.ugnas.com)
+Currently, you can [install it using Docker](#running-with-docker)
+## Router Install
+
+#### [openwrt](https://openwrt.org/)
+```sh
+opkg update
+opkg install gateway-go
+```
 
 ## Install the pre-compiled binary
 
+**one script** :
+```sh
+curl -fsSL https://get.iothub.cloud | sudo bash
+```
+
 **openwrt/entware/optware (Usually on the router)**:
-#### use snapshot branch：https://downloads.openwrt.org/snapshots/
+#### use snapshot branch：https://downloads.openwrt.org/snapshots/ to get the latest version
 ```sh
 opkg update
 opkg install gateway-go
