@@ -3,6 +3,8 @@
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gateway-go)
 
+[中文文档](https://docs.iothub.cloud/gateway/index.html)
+
 You can install the pre-compiled binary (in several different ways),
 use Docker.
 
@@ -20,6 +22,8 @@ Currently, you can [install it using Docker](https://www.bilibili.com/video/BV1E
 #### [QNAP](https://www.qnap.com.cn/zh-cn)
 Currently, you can [install it using Docker](#running-with-docker)
 #### [ugnas](https://www.ugnas.com)
+Currently, you can [install it using Docker](#running-with-docker)
+#### [zspace](https://www.zspace.cn)
 Currently, you can [install it using Docker](#running-with-docker)
 ## Router Install
 
