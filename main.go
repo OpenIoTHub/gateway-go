@@ -179,7 +179,7 @@ func UseConfigFile() {
 		if err != nil {
 			return
 		}
-		err = qr.DisplayQRCodeById(tokenModel.RunId)
+		err = qr.DisplayQRCodeById(tokenModel.RunId, tokenModel.Host)
 		if err != nil {
 			continue
 		}

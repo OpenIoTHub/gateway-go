@@ -47,6 +47,7 @@ func AutoLoginAndDisplayQRCode() (err error) {
 		log.Println(err)
 		return
 	}
+	host := qrs.Query().Get("host")
 	runId := qrs.Query().Get("id")
 	if runId == "" {
 		err = errors.New("url id is empty in QRCodeForMobileAdd")
@@ -57,5 +58,5 @@ func AutoLoginAndDisplayQRCode() (err error) {
 	if err != nil {
 		log.Println(err)
 	}
-	return qr.DisplayQRCodeById(runId)
+	return qr.DisplayQRCodeById(runId, host)
 }
