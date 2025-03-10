@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/utils/qr"
 	"github.com/OpenIoTHub/utils/models"
+	"github.com/skip2/go-qrcode"
 	"log"
 	"net/http"
 )
@@ -93,6 +94,7 @@ func (gm *GatewayCtl) IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 // DisplayQrHandler 返回二维码
 func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
 	//显示添加的二维码
 	if len(gm.serverSession) == 0 {
 		w.Header().Set("Content-Type", "text/plain")
@@ -100,16 +102,23 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	gatewayUUID := ""
-	for key, _ := range gm.serverSession {
+	serverHost := ""
+	for key, sess := range gm.serverSession {
 		gatewayUUID = key
+		serverHost = sess.tokenModel.Host
 	}
 
-	qr, err := qr.GetQrById(gatewayUUID)
+	var qrCode *qrcode.QRCode
+	if serverHost == "" || serverHost == qr.STDHost {
+		qrCode, err = qr.GetQrById(gatewayUUID)
+	} else {
+		qrCode, err = qr.GetQrByIdAndHost(gatewayUUID, serverHost)
+	}
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
 		fmt.Fprintf(w, err.Error())
 		return
 	}
 	w.Header().Set("ContentType", "image/png")
-	qr.Write(300, w)
+	qrCode.Write(300, w)
 }

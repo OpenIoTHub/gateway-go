@@ -41,3 +41,8 @@ func GetQrById(id string) (qr *qrcode.QRCode, err error) {
 	qrStr := fmt.Sprintf(GatewayQRByIdForAddTemplate, id)
 	return qrcode.New(qrStr, qrcode.Low)
 }
+
+func GetQrByIdAndHost(id, host string) (qr *qrcode.QRCode, err error) {
+	qrStr := fmt.Sprintf(GatewayQRByIdAndHostForAddTemplate, id, host)
+	return qrcode.New(qrStr, qrcode.Low)
+}
