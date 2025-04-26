@@ -79,8 +79,8 @@ func regMDNS(port int) {
 			fmt.Sprintf("mac=%s", Mac),
 			fmt.Sprintf("id=%s", config.ConfigMode.GatewayUUID),
 			//提供网关添加信息
-			fmt.Sprintf("RunId=%s", gatewayUUID),
-			fmt.Sprintf("ServerHost=%s", serverHost),
+			fmt.Sprintf("run_id=%s", gatewayUUID),
+			fmt.Sprintf("server_host=%s", serverHost),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
