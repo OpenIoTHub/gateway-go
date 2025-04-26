@@ -70,12 +70,17 @@ func regMDNS(port int) {
 	} else if len(interfaces) > 0 {
 		Mac = interfaces[0].HardwareAddr.String()
 	}
+	gatewayUUID, serverHost, err := services.GatewayManager.GetLoginInfo()
+	//qrStr, err := qr.GetQrByIdAndHost(gatewayUUID, serverHost)
 	//mDNS注册服务
 	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
 			fmt.Sprintf("id=%s", config.ConfigMode.GatewayUUID),
+			//提供网关添加信息
+			fmt.Sprintf("RunId=%s", gatewayUUID),
+			fmt.Sprintf("ServerHost=%s", serverHost),
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",

@@ -101,11 +101,11 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "no gateway login")
 		return
 	}
-	gatewayUUID := ""
-	serverHost := ""
-	for key, sess := range gm.serverSession {
-		gatewayUUID = key
-		serverHost = sess.tokenModel.Host
+	gatewayUUID, serverHost, err := gm.GetLoginInfo()
+	if err != nil {
+		w.Header().Set("Content-Type", "text/plain")
+		fmt.Fprintf(w, err.Error())
+		return
 	}
 
 	var qrCode *qrcode.QRCode
@@ -121,4 +121,16 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("ContentType", "image/png")
 	qrCode.Write(300, w)
+}
+
+// DisplayQrHandler 返回二维码
+func (gm *GatewayCtl) GetLoginInfo() (gatewayUUID, serverHost string, err error) {
+	for key, sess := range gm.serverSession {
+		gatewayUUID = key
+		serverHost = sess.tokenModel.Host
+	}
+	if gatewayUUID == "" && serverHost == "" {
+		err = errors.New("Not Logged In")
+	}
+	return
 }
