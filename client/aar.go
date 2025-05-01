@@ -85,6 +85,7 @@ func regMDNS(port int) {
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
 			"firmware-respository=https://github.com/OpenIoTHub/gateway-go",
+			//TODO 编译成库没有版本号
 			fmt.Sprintf("firmware-version=%s", info.Version)}, nil)
 	if err != nil {
 		log.Println(err)

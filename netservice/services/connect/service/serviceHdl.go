@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/OpenIoTHub/gateway-go/netservice/services/connect/tapTun"
 	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/msg"
 	"net"
 )
 
@@ -25,7 +26,11 @@ func ServiceHdl(stream net.Conn, service *models.NewService) error {
 	case "ListenMulticastUDP":
 		err := ListenMulticastUDP(stream, service)
 		return err
+	case "GetSystemStatus":
+		err := GetSystemStatus(stream, service)
+		return err
 	default:
+		msg.WriteMsg(stream, &models.JsonResponse{Code: 1, Msg: "Failed", Result: "Unknown service type"})
 		stream.Close()
 	}
 	return nil
