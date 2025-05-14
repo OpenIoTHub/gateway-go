@@ -27,7 +27,7 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 	entries := make(chan *zeroconf.ServiceEntry)
 	go func(results <-chan *zeroconf.ServiceEntry) {
 		for entry := range results {
-			log.Println("entry:", entry)
+			//log.Println("entry:", entry)
 			//TODO 去掉记录中ip不是本网段的ip
 			rst = append(rst, &models.MDNSResult{
 				Instance: entry.Instance,
