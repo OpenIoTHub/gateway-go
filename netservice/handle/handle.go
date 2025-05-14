@@ -96,7 +96,7 @@ func HandleStream(stream net.Conn, tokenStr string) {
 		}
 	case *models.NewService:
 		{
-			log.Printf("case *models.NewService")
+			//log.Printf("case *models.NewService")
 			err = service.ServiceHdl(stream, m)
 			if err != nil {
 				log.Println(err.Error())
