@@ -4,8 +4,8 @@ github.com/OpenIoTHub/getip v0.1.4 h1:HsoTZBd2T4T+LJWUx8p1ziZwHUoeOKo+VBt3fzEwpS
 github.com/OpenIoTHub/getip v0.1.4/go.mod h1:yEnLPtVS4JBoEU720mO6FmxLwCICKLyOcOEKRD6w0cY=
 github.com/OpenIoTHub/openiothub_grpc_api v1.2.2 h1:GMc86TJ88Nl7gE0wwgkpC0xNwm6oQ3QuYQ7tO1/nZRs=
 github.com/OpenIoTHub/openiothub_grpc_api v1.2.2/go.mod h1:1lYU8qHaec044bNhMs1yVj/3Bgs5B7+JJNGwLCvisFo=
-github.com/OpenIoTHub/utils v0.0.75 h1:0Y6nVbOr14Z7BKcc7UH5w/u84ce3X3Y4WfYNdjEcO78=
-github.com/OpenIoTHub/utils v0.0.75/go.mod h1:IyI4s015HvO2urG07Zjs8gtIS08myDnVs+R0Pbvx6xc=
+github.com/OpenIoTHub/utils v0.0.76 h1:1uQXbCg+8tVfoLkybPKrJVD5JT2zvTEmQUuRgQT3vhM=
+github.com/OpenIoTHub/utils v0.0.76/go.mod h1:IyI4s015HvO2urG07Zjs8gtIS08myDnVs+R0Pbvx6xc=
 github.com/OpenIoTHub/water v0.0.3 h1:9r6IWHNJEw69x84Wf5fC0F5rUu7RAeenCOzmmiTMc0E=
 github.com/OpenIoTHub/water v0.0.3/go.mod h1:zY+k4u4Tc8vCGoAHJxydcuoow/U+oGW5ptfwom/ZM6M=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=

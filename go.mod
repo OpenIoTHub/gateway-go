@@ -6,7 +6,7 @@ toolchain go1.24.2
 
 require (
 	github.com/OpenIoTHub/openiothub_grpc_api v1.2.2
-	github.com/OpenIoTHub/utils v0.0.75
+	github.com/OpenIoTHub/utils v0.0.76
 	github.com/OpenIoTHub/water v0.0.3
 	github.com/grandcat/zeroconf v1.0.0
 	github.com/hashicorp/mdns v1.0.5

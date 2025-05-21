@@ -17,7 +17,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - name: Test golang code
         run: go test ./...
       - name: Build golang code
@@ -32,7 +32,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
@@ -70,7 +70,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - name: Test golang code
         run: go test ./...
       - name: Build libs
@@ -93,7 +93,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -134,7 +134,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - name: Test golang code
         run: go test ./...
       - name: install and setup gomobile
@@ -164,7 +164,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.20
+          go-version: ^1.24
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
