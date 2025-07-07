@@ -2,6 +2,4 @@ gatewayuuid: 62ded68f-5bf6-4d97-9c2e-ced2d5fd215f
 logconfig:
     enablestdout: true
     logfilepath: ""
-http_service_port: 34323
-loginwithtokenmap:
-    4aa30077-d538-4e17-90ca-4c6657a90531: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSdW5JZCI6IjRhYTMwMDc3LWQ1MzgtNGUxNy05MGNhLTRjNjY1N2E5MDUzMSIsIkhvc3QiOiJndW9uZWkuc2VydmVycy5pb3RodWIuY2xvdWQiLCJUY3BQb3J0IjozNDMyMCwiS2NwUG9ydCI6MzQzMjAsIlRsc1BvcnQiOjM0MzIxLCJHcnBjUG9ydCI6MzQzMjIsIlVEUEFwaVBvcnQiOjM0MzIxLCJLQ1BBcGlQb3J0IjozNDMyMiwiUGVybWlzc2lvbiI6WyJnYXRld2F5Il0sIlR4dHMiOnt9LCJleHAiOjIwMTc1MTg1NDg5NiwibmJmIjoxNzUxODI2MDk2fQ.9fVtxa5mDdVV9NUeNMUVSoBVK4z3OtGFlo5L4JMqYoU
+loginwithtokenmap: {}
