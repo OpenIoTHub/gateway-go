@@ -8,13 +8,13 @@ import (
 	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/models"
+	"github.com/gin-gonic/gin"
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	"net"
-	"net/http"
 )
 
 var IsLibrary = true
@@ -32,13 +32,11 @@ func Run() {
 func start() {
 	//启动http服务
 	go func() {
-		http.HandleFunc("/", services.GatewayManager.IndexHandler)
-		http.HandleFunc("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)
-		//不同的系统打印不一样
+		r := gin.Default()
+		r.GET("/", services.GatewayManager.IndexHandler)
+		r.GET("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)
 		log.Printf("Http 监听端口: %d\n", config.ConfigMode.HttpServicePort)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.ConfigMode.HttpServicePort), nil); err != nil {
-			log.Printf("Failed to start server: %s\n", err)
-		}
+		r.Run(fmt.Sprintf(":%d", config.ConfigMode.HttpServicePort))
 	}()
 	//启动grpc服务
 	s := grpc.NewServer()

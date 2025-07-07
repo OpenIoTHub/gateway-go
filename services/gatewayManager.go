@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
 	"github.com/OpenIoTHub/utils/models"
+	"github.com/gin-gonic/gin"
 	"github.com/skip2/go-qrcode"
 	"log"
-	"net/http"
 )
 
 var GatewayManager = &GatewayCtl{serverSession: make(map[string]*ServerSession)}
@@ -52,9 +52,8 @@ func (gm *GatewayCtl) DelServer(runid string) (err error) {
 }
 
 // IndexHandler http服务首页
-func (gm *GatewayCtl) IndexHandler(w http.ResponseWriter, r *http.Request) {
+func (gm *GatewayCtl) IndexHandler(c *gin.Context) {
 	//显示添加的二维码
-	w.Header().Set("Content-Type", "text/html")
 	htmlContent := `
 <!DOCTYPE html>
 <html lang="zh">
@@ -89,22 +88,20 @@ func (gm *GatewayCtl) IndexHandler(w http.ResponseWriter, r *http.Request) {
 </body>
 </html>
 `
-	fmt.Fprint(w, htmlContent)
+	c.Data(200, "text/html", []byte(htmlContent))
 }
 
 // DisplayQrHandler 返回二维码
-func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
+func (gm *GatewayCtl) DisplayQrHandler(c *gin.Context) {
 	var err error
 	//显示添加的二维码
 	if len(gm.serverSession) == 0 {
-		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprintf(w, "no gateway login")
+		c.Data(200, "text/plain", []byte("no gateway login"))
 		return
 	}
 	gatewayUUID, serverHost, err := gm.GetLoginInfo()
 	if err != nil {
-		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprint(w, err.Error())
+		c.Data(200, "text/plain", []byte(err.Error()))
 		return
 	}
 
@@ -115,12 +112,11 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 		qrCode, err = qr.GetQrByIdAndHost(gatewayUUID, serverHost)
 	}
 	if err != nil {
-		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprint(w, err.Error())
+		c.Data(200, "text/plain", []byte(err.Error()))
 		return
 	}
-	w.Header().Set("ContentType", "image/png")
-	qrCode.Write(300, w)
+	c.Header("ContentType", "image/png")
+	qrCode.Write(300, c.Writer)
 }
 
 // DisplayQrHandler 返回二维码
