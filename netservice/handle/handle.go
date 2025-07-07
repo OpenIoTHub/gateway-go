@@ -18,12 +18,12 @@ func HandleStream(stream net.Conn, tokenStr string) {
 	var err error
 	tokenModel, err := models.DecodeUnverifiedToken(tokenStr)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
-		log.Printf(err.Error() + "从stream读取数据错误")
+		log.Println(err.Error() + "从stream读取数据错误")
 		stream.Close()
 		return
 	}

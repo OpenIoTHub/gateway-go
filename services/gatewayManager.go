@@ -24,7 +24,7 @@ func (gm *GatewayCtl) Loged() bool {
 func (gm *GatewayCtl) AddServer(token string) (err error) {
 	tokenModel, err := models.DecodeUnverifiedToken(token)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	if _, ok := gm.serverSession[tokenModel.RunId]; ok {
@@ -89,7 +89,7 @@ func (gm *GatewayCtl) IndexHandler(w http.ResponseWriter, r *http.Request) {
 </body>
 </html>
 `
-	fmt.Fprintf(w, htmlContent)
+	fmt.Fprint(w, htmlContent)
 }
 
 // DisplayQrHandler 返回二维码
@@ -104,7 +104,7 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 	gatewayUUID, serverHost, err := gm.GetLoginInfo()
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprintf(w, err.Error())
+		fmt.Fprint(w, err.Error())
 		return
 	}
 
@@ -116,7 +116,7 @@ func (gm *GatewayCtl) DisplayQrHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprintf(w, err.Error())
+		fmt.Fprint(w, err.Error())
 		return
 	}
 	w.Header().Set("ContentType", "image/png")

@@ -114,7 +114,7 @@ func (lm *LoginManager) LoginServerByToken(ctx context.Context, in *pb.Token) (*
 	}
 	tokenModel, err := models.DecodeUnverifiedToken(in.Value)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		return &pb.LoginResponse{
 			Code:        1,
 			Message:     "token错误",

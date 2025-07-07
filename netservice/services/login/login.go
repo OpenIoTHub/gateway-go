@@ -15,7 +15,7 @@ import (
 func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false :dont retry
 	token, err := models.DecodeUnverifiedToken(tokenstr)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 	//KCP方式
@@ -59,7 +59,7 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 func LoginWorkConn(tokenStr string) (net.Conn, error) {
 	token, err := models.DecodeUnverifiedToken(tokenStr)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 	//KCP方式

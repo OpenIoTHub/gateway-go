@@ -115,7 +115,7 @@ func UseGateWayToken() {
 	//使用服务器签发的Token登录
 	err := services.GatewayManager.AddServer(config.GatewayLoginToken)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 		log.Printf("登陆失败！请重新登陆。")
 		return
 	}

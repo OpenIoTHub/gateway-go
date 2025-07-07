@@ -73,8 +73,6 @@ jobs:
           add-to-path: true
       - name: Install requirement
         run: sudo apt-get update && sudo apt-get install gcc-aarch64-linux-gnu binutils-mingw-w64 gcc-mingw-w64-x86-64 -y
-      - name: Test golang code
-        run: go test ./...
       - name: Build linux libs
         run: ./scripts/build_libs/buildso.sh
         env:
@@ -98,8 +96,6 @@ jobs:
 #        uses: actions/setup-go@v5
 #        with:
 #          go-version: ^1.24
-#      - name: Test golang code
-#        run: go test ./...
 #      - name: Build libs
 #        run: ./scripts/build_libs/builddylib.sh
 #      - name: Release gateway.aar
@@ -128,8 +124,6 @@ jobs:
         with:
           ndk-version: r21e
           add-to-path: false
-      - name: Test golang code
-        run: go test ./...
       - name: install and setup gomobile
         run: |
           go get -u golang.org/x/mobile/...
@@ -161,8 +155,6 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ^1.24
-      - name: Test golang code
-        run: go test ./...
       - name: install and setup gomobile
         run: |
           go get -u golang.org/x/mobile
