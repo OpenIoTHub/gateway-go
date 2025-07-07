@@ -157,7 +157,7 @@ jobs:
           go-version: ^1.24
       - name: install and setup gomobile
         run: |
-          go get -u golang.org/x/mobile
+          go get -u golang.org/x/mobile/...
           go install golang.org/x/mobile/cmd/gobind@latest
           go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
