@@ -1,4 +1,4 @@
-gatewayuuid: 62ded68f-5bf6-4d97-9c2e-ced2d5fd215f
+gatewayuuid:
 logconfig:
     enablestdout: true
     logfilepath: ""

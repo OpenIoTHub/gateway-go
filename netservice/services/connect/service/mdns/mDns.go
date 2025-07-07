@@ -3,6 +3,7 @@ package mdns
 import (
 	"context"
 	"encoding/json"
+	"github.com/OpenIoTHub/gateway-go/v2/register"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/grandcat/zeroconf"
@@ -55,6 +56,20 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 	//if len(rst) > 0 {
 	//	log.Println(rst[0])
 	//}
+	registeredServices := register.GetRegisteredServices()
+	for _, registeredService := range registeredServices {
+		rst = append(rst, &models.MDNSResult{
+			Instance: registeredService.Instance,
+			Service:  registeredService.Service,
+			Domain:   registeredService.Domain,
+			HostName: registeredService.HostName,
+			Port:     registeredService.Port,
+			Text:     registeredService.Text,
+			TTL:      registeredService.TTL,
+			AddrIPv4: registeredService.AddrIPv4,
+			AddrIPv6: registeredService.AddrIPv6,
+		})
+	}
 	rstByte, err := json.Marshal(&rst)
 	if err != nil {
 		log.Println(err.Error())
