@@ -1,9 +1,9 @@
 package handle
 
 import (
-	connect "github.com/OpenIoTHub/gateway-go/netservice/services/connect/conn"
-	"github.com/OpenIoTHub/gateway-go/netservice/services/connect/service"
-	"github.com/OpenIoTHub/gateway-go/netservice/services/login"
+	connect "github.com/OpenIoTHub/gateway-go/v1/netservice/services/connect/conn"
+	"github.com/OpenIoTHub/gateway-go/v1/netservice/services/connect/service"
+	"github.com/OpenIoTHub/gateway-go/v1/netservice/services/login"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/OpenIoTHub/utils/net/p2p/gateway"

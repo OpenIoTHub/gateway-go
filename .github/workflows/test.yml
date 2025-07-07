@@ -51,15 +51,15 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux-libs
-          path: build/linux
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: android-libs
-#          path: build/android
+          path: build/linux/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-libs
+          path: build/android
       - uses: actions/upload-artifact@v4
         with:
           name: windows-libs
-          path: build/windows
+          path: build/windows/*
   macos-iOS-libs:
     runs-on: macos-latest
     steps:
@@ -78,11 +78,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: macos-libs
-          path: build/macos
+          path: build/macos/*
       - uses: actions/upload-artifact@v4
         with:
           name: ios-libs
-          path: build/ios
+          path: build/ios/*
   gomobile-android-libs:
     runs-on: ubuntu-latest
     steps:

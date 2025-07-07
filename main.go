@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	client "github.com/OpenIoTHub/gateway-go/client"
-	"github.com/OpenIoTHub/gateway-go/config"
-	"github.com/OpenIoTHub/gateway-go/services"
-	"github.com/OpenIoTHub/gateway-go/utils/login_utils"
-	"github.com/OpenIoTHub/gateway-go/utils/qr"
-	"github.com/OpenIoTHub/gateway-go/utils/str"
+	client "github.com/OpenIoTHub/gateway-go/v1/client"
+	"github.com/OpenIoTHub/gateway-go/v1/config"
+	"github.com/OpenIoTHub/gateway-go/v1/services"
+	"github.com/OpenIoTHub/gateway-go/v1/utils/login_utils"
+	"github.com/OpenIoTHub/gateway-go/v1/utils/qr"
+	"github.com/OpenIoTHub/gateway-go/v1/utils/str"
 	utils_models "github.com/OpenIoTHub/utils/models"
 	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"

@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/gateway-go/models"
+	"github.com/OpenIoTHub/gateway-go/v1/models"
 	"gopkg.in/yaml.v3"
 	"log"
 	"os"

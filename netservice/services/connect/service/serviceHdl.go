@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/OpenIoTHub/gateway-go/netservice/services/connect/service/mdns"
-	"github.com/OpenIoTHub/gateway-go/netservice/services/connect/tapTun"
+	"github.com/OpenIoTHub/gateway-go/v1/netservice/services/connect/service/mdns"
+	"github.com/OpenIoTHub/gateway-go/v1/netservice/services/connect/tapTun"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"net"

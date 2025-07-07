@@ -44,7 +44,7 @@ builds:
       - goos: android
         goarch: amd64
     ldflags:
-      - -s -w -X github.com/OpenIoTHub/gateway-go/info.Version={{.Version}} -X github.com/OpenIoTHub/gateway-go/info.Commit={{.Commit}} -X github.com/OpenIoTHub/gateway-go/info.Date={{ .CommitDate }} -X github.com/OpenIoTHub/gateway-go/info.BuiltBy=goreleaser
+      - -s -w -X github.com/OpenIoTHub/gateway-go/v1/info.Version={{.Version}} -X github.com/OpenIoTHub/gateway-go/v1/info.Commit={{.Commit}} -X github.com/OpenIoTHub/gateway-go/v1/info.Date={{ .CommitDate }} -X github.com/OpenIoTHub/gateway-go/v1/info.BuiltBy=goreleaser
 
 archives:
   # use zip for windows archives
