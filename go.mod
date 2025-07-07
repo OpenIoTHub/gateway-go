@@ -1,8 +1,6 @@
 module github.com/OpenIoTHub/gateway-go/v1
 
-go 1.23.0
-
-toolchain go1.24.2
+go 1.23.4
 
 require (
 	github.com/OpenIoTHub/openiothub_grpc_api v1.2.2
