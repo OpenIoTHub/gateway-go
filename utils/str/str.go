@@ -2,7 +2,7 @@ package str
 
 import (
 	"fmt"
-	version2 "github.com/OpenIoTHub/gateway-go/v1/info"
+	version2 "github.com/OpenIoTHub/gateway-go/v2/info"
 )
 
 func BuildVersion(version, commit, date, builtBy string) string {

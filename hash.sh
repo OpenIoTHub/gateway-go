@@ -1,6 +1,6 @@
 #提交openwrt版获取hash
 PKG_VERSION=0.1.92
-URL=https://codeload.github.com/OpenIoTHub/gateway-go/v1/tar.gz/v${PKG_VERSION}
+URL=https://codeload.github.com/OpenIoTHub/gateway-go/v2/tar.gz/v${PKG_VERSION}
 wget ${URL}
 openssl sha256 v${PKG_VERSION}
 rm v${PKG_VERSION}

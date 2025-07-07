@@ -1,7 +1,7 @@
 package login
 
 import (
-	"github.com/OpenIoTHub/gateway-go/v1/info"
+	"github.com/OpenIoTHub/gateway-go/v2/info"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/OpenIoTHub/utils/msg"
 	"github.com/libp2p/go-yamux"

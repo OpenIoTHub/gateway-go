@@ -17,5 +17,5 @@ func PrintOpenIoTHubLogo() {
 	fmt.Println("|  | |  || .-. || .-. :|      \\|  || .-. |  |  |   |  .--.  ||  ||  || .-. ' ")
 	fmt.Println("'  '-'  '| '-' '\\   --.|  ||  ||  |' '-' '  |  |   |  |  |  |'  ''  '| `-' | ")
 	fmt.Println(" `-----' |  |-'  `----'`--''--'`--' `---'   `--'   `--'  `--' `----'  `---'   ")
-	fmt.Println("         `--'               form https://github.com/OpenIoTHub/gateway-go/v1     ")
+	fmt.Println("         `--'               form https://github.com/OpenIoTHub/gateway-go/v2     ")
 }

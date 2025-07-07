@@ -96,7 +96,7 @@ $ docker run -it --net=host openiothub/gateway-go:latest -t <your Token>
 
 Note that the image will almost always have the last stable Go version.
 
-[releases]: https://github.com/OpenIoTHub/gateway-go/v1/releases
+[releases]: https://github.com/OpenIoTHub/gateway-go/v2/releases
 ## Build dynamic/static Library
 ```shell
 #build and push mobile lib
@@ -117,7 +117,7 @@ gomobile bind -ldflags '-w -s -extldflags "-lresolve"' --target=ios,macos,iossim
 #pod trunk push ./OpenIoTHubGateway.podspec --skip-import-validation --allow-warnings
 #
 mvn gpg:sign-and-deploy-file -DrepositoryId=ossrh -Dfile=gateway.aar -DpomFile=gateway.pom -Durl=https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-mvn deploy:deploy-file -Dfile=client.aar -DgroupId=cloud.iothub -DartifactId=gateway -Dversion=0.0.1 -Dpackaging=aar -DrepositoryId=github -Durl=https://maven.pkg.github.com/OpenIoTHub/gateway-go/v1
+mvn deploy:deploy-file -Dfile=client.aar -DgroupId=cloud.iothub -DartifactId=gateway -Dversion=0.0.1 -Dpackaging=aar -DrepositoryId=github -Durl=https://maven.pkg.github.com/OpenIoTHub/gateway-go/v2
 ```
 ```shell
 #for build windows dll

@@ -5,11 +5,7 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
-  packages: write
-  attestations: write
-  id-token: write
+permissions: write-all
 
 jobs:
   gateway-go:

@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/OpenIoTHub/gateway-go/v1/config"
-	"github.com/OpenIoTHub/gateway-go/v1/info"
-	"github.com/OpenIoTHub/gateway-go/v1/services"
+	"github.com/OpenIoTHub/gateway-go/v2/config"
+	"github.com/OpenIoTHub/gateway-go/v2/info"
+	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/models"
 	"github.com/grandcat/zeroconf"
@@ -84,7 +84,7 @@ func regMDNS(port int) {
 			"author=Farry",
 			"email=newfarry@126.com",
 			"home-page=https://github.com/OpenIoTHub",
-			"firmware-respository=https://github.com/OpenIoTHub/gateway-go/v1",
+			"firmware-respository=https://github.com/OpenIoTHub/gateway-go/v2",
 			//TODO 编译成库没有版本号
 			fmt.Sprintf("firmware-version=%s", info.Version)}, nil)
 	if err != nil {
