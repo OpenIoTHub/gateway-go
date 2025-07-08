@@ -56,19 +56,39 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 	//if len(rst) > 0 {
 	//	log.Println(rst[0])
 	//}
-	registeredServices := register.GetRegisteredServices()
-	for _, registeredService := range registeredServices {
-		rst = append(rst, &models.MDNSResult{
-			Instance: registeredService.Instance,
-			Service:  registeredService.Service,
-			Domain:   registeredService.Domain,
-			HostName: registeredService.HostName,
-			Port:     registeredService.Port,
-			Text:     registeredService.Text,
-			TTL:      registeredService.TTL,
-			AddrIPv4: registeredService.AddrIPv4,
-			AddrIPv6: registeredService.AddrIPv6,
-		})
+	//发现_services._dns-sd._udp类型的时候添加所有手动注册的类型
+	if config.Service == "_services._dns-sd._udp" {
+		registeredServices := register.GetRegisteredServices()
+		registeredType := make([]string, 0)
+	Loop1:
+		for _, registeredService := range registeredServices {
+			for _, item := range registeredType {
+				if item == registeredService.Service {
+					continue Loop1
+				}
+			}
+			rst = append(rst, &models.MDNSResult{
+				Instance: registeredService.Service + ".local",
+				Service:  "_services._dns-sd._udp",
+				Domain:   "local",
+			})
+			registeredType = append(registeredType, registeredService.Service)
+		}
+	} else {
+		registeredServices := register.GetRegisteredServices()
+		for _, registeredService := range registeredServices {
+			rst = append(rst, &models.MDNSResult{
+				Instance: registeredService.Instance,
+				Service:  registeredService.Service,
+				Domain:   registeredService.Domain,
+				HostName: registeredService.HostName,
+				Port:     registeredService.Port,
+				Text:     registeredService.Text,
+				TTL:      registeredService.TTL,
+				AddrIPv4: registeredService.AddrIPv4,
+				AddrIPv6: registeredService.AddrIPv6,
+			})
+		}
 	}
 	rstByte, err := json.Marshal(&rst)
 	if err != nil {
