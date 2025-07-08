@@ -18,40 +18,43 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 	var rst = make([]*models.MDNSResult, 0)
 	err := json.Unmarshal([]byte(service.Config), &config)
 	if err != nil {
-		return err
-	}
-	resolver, err := zeroconf.NewResolver(nil)
-	if err != nil {
+		log.Println("json.Unmarshal([]byte(service.Config), &config):" + err.Error())
 		return err
 	}
 
-	entries := make(chan *zeroconf.ServiceEntry)
-	go func(results <-chan *zeroconf.ServiceEntry) {
-		for entry := range results {
-			//log.Println("entry:", entry)
-			//TODO 去掉记录中ip不是本网段的ip
-			rst = append(rst, &models.MDNSResult{
-				Instance: entry.Instance,
-				Service:  entry.Service,
-				Domain:   entry.Domain,
-				HostName: entry.HostName,
-				Port:     entry.Port,
-				Text:     entry.Text,
-				TTL:      entry.TTL,
-				AddrIPv4: entry.AddrIPv4,
-				AddrIPv6: entry.AddrIPv6,
-			})
+	resolver, err := zeroconf.NewResolver(nil)
+	if err == nil {
+		entries := make(chan *zeroconf.ServiceEntry)
+		go func(results <-chan *zeroconf.ServiceEntry) {
+			for entry := range results {
+				//log.Println("entry:", entry)
+				//TODO 去掉记录中ip不是本网段的ip
+				rst = append(rst, &models.MDNSResult{
+					Instance: entry.Instance,
+					Service:  entry.Service,
+					Domain:   entry.Domain,
+					HostName: entry.HostName,
+					Port:     entry.Port,
+					Text:     entry.Text,
+					TTL:      entry.TTL,
+					AddrIPv4: entry.AddrIPv4,
+					AddrIPv6: entry.AddrIPv6,
+				})
+			}
+		}(entries)
+		//TODO 发现时间
+		timeOut := time.Millisecond * time.Duration(config.Second) * 250
+		ctx, cancel := context.WithTimeout(context.Background(), timeOut)
+		defer cancel()
+		err = resolver.Browse(ctx, config.Service, config.Domain, entries)
+		if err != nil {
+			log.Println("resolver.Browse:" + err.Error())
+			return err
 		}
-	}(entries)
-	//TODO 发现时间
-	timeOut := time.Millisecond * time.Duration(config.Second) * 250
-	ctx, cancel := context.WithTimeout(context.Background(), timeOut)
-	defer cancel()
-	err = resolver.Browse(ctx, config.Service, config.Domain, entries)
-	if err != nil {
-		return err
+		<-ctx.Done()
+	} else {
+		log.Println("zeroconf.NewResolver:" + err.Error())
 	}
-	<-ctx.Done()
 	//log.Println("获取完成：")
 	//if len(rst) > 0 {
 	//	log.Println(rst[0])
@@ -67,6 +70,7 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 					continue Loop1
 				}
 			}
+			log.Println("ADD Registered service: ", registeredService.Service)
 			rst = append(rst, &models.MDNSResult{
 				Instance: registeredService.Service + ".local",
 				Service:  "_services._dns-sd._udp",
