@@ -70,7 +70,7 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 					continue Loop1
 				}
 			}
-			log.Println("ADD Registered service: ", registeredService.Service)
+			//log.Println("ADD Registered service: ", registeredService.Service)
 			rst = append(rst, &models.MDNSResult{
 				Instance: registeredService.Service + ".local",
 				Service:  "_services._dns-sd._udp",
