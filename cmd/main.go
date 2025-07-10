@@ -13,7 +13,7 @@ func main() {
 		"_http._tcp",
 		"local",
 		"localhost",
-		34323,
+		client.HttpPort,
 		[]string{"name=gateway-go", "home-page=https://github.com/OpenIoTHub/gateway-go"},
 		0,
 		[]net.IP{net.ParseIP("127.0.0.1")},
