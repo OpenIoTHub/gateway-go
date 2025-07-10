@@ -17,7 +17,11 @@ import (
 	"net"
 )
 
-var IsLibrary = true
+var (
+	IsLibrary = true
+	GRpcPort  = 55443
+	HttpPort  = 0
+)
 
 type LoginManager struct {
 	pb.UnimplementedGatewayLoginManagerServer
@@ -32,35 +36,38 @@ func Run() {
 func start() {
 	//启动http服务
 	go func() {
+		if HttpPort == 0 {
+			HttpPort = config.ConfigMode.HttpServicePort
+		}
 		r := gin.Default()
 		r.GET("/", services.GatewayManager.IndexHandler)
 		r.GET("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)
-		log.Printf("Http 监听端口: %d\n", config.ConfigMode.HttpServicePort)
-		r.Run(fmt.Sprintf(":%d", config.ConfigMode.HttpServicePort))
+		log.Printf("Http 监听端口: %d\n", HttpPort)
+		r.Run(fmt.Sprintf(":%d", HttpPort))
 	}()
 	//启动grpc服务
 	s := grpc.NewServer()
 	pb.RegisterGatewayLoginManagerServer(s, loginManager)
-	//port := services.GrpcPort
+	//GRpcPort := services.GrpcPort
 	//if runtime.GOOS == "android" {
-	//	port = 55443
+	//	GRpcPort = 55443
 	//}
-	port := 55443
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.GRpcAddr, port))
+
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.GRpcAddr, GRpcPort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 		return
 	}
 	//addr := lis.Addr().(*net.TCPAddr)
-	log.Printf("Grpc 监听端口:%d\n", port)
+	log.Printf("Grpc 监听端口:%d\n", GRpcPort)
 	reflection.Register(s)
-	go regMDNS(port)
+	go regMDNS(GRpcPort)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
-func regMDNS(port int) {
+func regMDNS(gRpcPort int) {
 	var Mac = "mac"
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -71,7 +78,7 @@ func regMDNS(port int) {
 	gatewayUUID, serverHost, err := services.GatewayManager.GetLoginInfo()
 	//qrStr, err := qr.GetQrByIdAndHost(gatewayUUID, serverHost)
 	//mDNS注册服务
-	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", port,
+	_, err = zeroconf.Register(fmt.Sprintf("OpenIoTHubGateway-%s", config.ConfigMode.GatewayUUID), "_openiothub-gateway._tcp", "local.", gRpcPort,
 		[]string{"name=网关",
 			"model=com.iotserv.services.gateway",
 			fmt.Sprintf("mac=%s", Mac),
