@@ -1,7 +1,7 @@
 package conn
 
 import (
-	"github.com/OpenIoTHub/utils/io"
+	"github.com/OpenIoTHub/utils/v2/io"
 	"golang.org/x/net/websocket"
 	"net"
 )

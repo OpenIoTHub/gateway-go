@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/grandcat/zeroconf"
 	mdns "github.com/hashicorp/mdns"
 	"log"

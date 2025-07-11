@@ -2,8 +2,8 @@ package tapTun
 
 import (
 	"fmt"
-	"github.com/OpenIoTHub/utils/io"
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/v2/io"
+	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/OpenIoTHub/water"
 	"net"
 	"os/exec"

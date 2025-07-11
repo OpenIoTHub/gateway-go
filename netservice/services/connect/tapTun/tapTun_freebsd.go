@@ -1,7 +1,7 @@
 package tapTun
 
 import (
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/v2/models"
 	"net"
 )
 

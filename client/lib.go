@@ -7,7 +7,7 @@ import (
 	"github.com/OpenIoTHub/gateway-go/v2/info"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/gin-gonic/gin"
 	"github.com/grandcat/zeroconf"
 	"google.golang.org/grpc"

@@ -2,8 +2,8 @@ package service
 
 import (
 	"encoding/json"
-	"github.com/OpenIoTHub/utils/models"
-	"github.com/OpenIoTHub/utils/msg"
+	"github.com/OpenIoTHub/utils/v2/models"
+	"github.com/OpenIoTHub/utils/v2/msg"
 	"log"
 	"net"
 )

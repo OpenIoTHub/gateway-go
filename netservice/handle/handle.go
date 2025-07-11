@@ -4,9 +4,9 @@ import (
 	connect "github.com/OpenIoTHub/gateway-go/v2/netservice/services/connect/conn"
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/services/connect/service"
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/services/login"
-	"github.com/OpenIoTHub/utils/models"
-	"github.com/OpenIoTHub/utils/msg"
-	"github.com/OpenIoTHub/utils/net/p2p/gateway"
+	"github.com/OpenIoTHub/utils/v2/models"
+	"github.com/OpenIoTHub/utils/v2/msg"
+	"github.com/OpenIoTHub/utils/v2/net/p2p/gateway"
 	"log"
 
 	"net"

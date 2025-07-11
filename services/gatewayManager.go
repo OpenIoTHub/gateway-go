@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
-	"github.com/OpenIoTHub/utils/models"
+	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/gin-gonic/gin"
 	"github.com/skip2/go-qrcode"
 	"log"

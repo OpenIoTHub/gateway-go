@@ -9,7 +9,7 @@ import (
 	"github.com/OpenIoTHub/gateway-go/v2/utils/login_utils"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/str"
-	utils_models "github.com/OpenIoTHub/utils/models"
+	utils_models "github.com/OpenIoTHub/utils/v2/models"
 	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v3"

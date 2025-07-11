@@ -3,8 +3,8 @@ package service
 import (
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/services/connect/service/mdns"
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/services/connect/tapTun"
-	"github.com/OpenIoTHub/utils/models"
-	"github.com/OpenIoTHub/utils/msg"
+	"github.com/OpenIoTHub/utils/v2/models"
+	"github.com/OpenIoTHub/utils/v2/msg"
 	"net"
 )
 
@@ -22,6 +22,8 @@ func ServiceHdl(stream net.Conn, service *models.NewService) error {
 		return ListenMulticastUDP(stream, service)
 	case "GetSystemStatus":
 		return GetSystemStatus(stream, service)
+	case "GetIPv6Addr":
+		return GetIPv6Addr(stream, service)
 	default:
 		err := msg.WriteMsg(stream, &models.JsonResponse{Code: 1, Msg: "Failed", Result: "Unknown service type"})
 		if err != nil {
