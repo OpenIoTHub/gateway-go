@@ -6,6 +6,7 @@ import (
 	"github.com/OpenIoTHub/gateway-go/v2/config"
 	"github.com/OpenIoTHub/gateway-go/v2/info"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
+	"github.com/OpenIoTHub/gateway-go/v2/tasks"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/gin-gonic/gin"
@@ -34,6 +35,7 @@ func Run() {
 }
 
 func start() {
+	tasks.RunTasks()
 	//启动http服务
 	go func() {
 		if HttpPort == 0 {
