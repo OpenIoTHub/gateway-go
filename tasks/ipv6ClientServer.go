@@ -86,5 +86,10 @@ func ipv6ClientHandle(conn net.Conn) {
 	// TODO 验证token,RunId
 	_ = rawMsg
 	// Token为空
-	handle.HandleStream(conn, "")
+	session, err := yamux.Server(conn, yamux.DefaultConfig())
+	if err != nil {
+		conn.Close()
+		return
+	}
+	go handle.HandleSession(session, "")
 }
