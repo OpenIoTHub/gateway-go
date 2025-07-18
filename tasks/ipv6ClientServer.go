@@ -21,24 +21,25 @@ func RunTasks() {
 func ipv6ClientTask() {
 	//	主动连接访问者的APP
 	for remoteIpv6Server := range chans.ClientTaskChan {
+		log.Println("====获取到任务")
 		ip := remoteIpv6Server.Ipv6AddrIp
 		port := remoteIpv6Server.Ipv6AddrPort
-		runId := remoteIpv6Server.RunId
+		//runId := remoteIpv6Server.RunId
 		//	使用配置创建连接，并且发送带RunId的凭证给访问者
 		ipv6conn, err := net.DialTCP("tcp", nil, &net.TCPAddr{
 			IP:   net.ParseIP(ip),
 			Port: port,
 		})
 		if err != nil {
+			log.Println("ipv6 net.DialTCP" + err.Error())
 			continue
 		}
+		log.Println("ipv6 net.DialTCP connected:" + remoteIpv6Server.Ipv6AddrIp)
 		//TODO 发送凭证
-		runIdMsg := &models.Msg{
-			MsgType:    "RunId",
-			MsgContent: runId,
-		}
+		runIdMsg := &models.JsonResponse{}
 		err = msg.WriteMsg(ipv6conn, runIdMsg)
 		if err != nil {
+			log.Println("ipv6 msg.WriteMsg" + err.Error())
 			ipv6conn.Close()
 			return
 		}
@@ -50,7 +51,7 @@ func ipv6ClientTask() {
 			ipv6conn.Close()
 			return
 		}
-		log.Printf("ipv6 p2p client login OK!")
+		log.Printf("ipv6 p2p client HandleSession")
 		go handle.HandleSession(session, "")
 	}
 }
@@ -71,6 +72,7 @@ func ipv6ServerTask() {
 			time.Sleep(100 * time.Millisecond)
 			continue
 		}
+		log.Println("ipv6 server handle conn", conn.RemoteAddr().String())
 		//	验证token，回复
 		go ipv6ClientHandle(conn)
 	}
@@ -91,5 +93,7 @@ func ipv6ClientHandle(conn net.Conn) {
 		conn.Close()
 		return
 	}
+	log.Println("ipv6 server handle session", conn.RemoteAddr().String())
+	//TODO token!!!!
 	go handle.HandleSession(session, "")
 }

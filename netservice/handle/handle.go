@@ -16,10 +16,13 @@ import (
 
 func HandleStream(stream net.Conn, tokenStr string) {
 	var err error
-	tokenModel, err := models.DecodeUnverifiedToken(tokenStr)
-	if err != nil {
-		log.Println(err.Error())
-		return
+	var tokenModel *models.TokenClaims
+	if tokenStr != "" {
+		tokenModel, err = models.DecodeUnverifiedToken(tokenStr)
+		if err != nil {
+			log.Println(err.Error())
+			//return
+		}
 	}
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
@@ -105,6 +108,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 		}
 	case *models.NewSubSession:
 		{
+			if tokenStr == "" {
+				stream.Close()
+				return
+			}
 			//:TODO 新创建一个全新的子连接
 			log.Printf("newSubSession")
 			//snappyConn, err := modelsSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
@@ -125,6 +132,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 
 	case *models.RequestNewWorkConn:
 		{
+			if tokenStr == "" {
+				stream.Close()
+				return
+			}
 			log.Println("server请求一个新的工作连接")
 			stream.Close()
 			go newWorkConn(tokenStr)
@@ -144,6 +155,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 	case *models.ReqNewP2PCtrlAsServer:
 		{
 			log.Printf("作为listener方式从洞中获取kcp连接")
+			if tokenModel == nil {
+				stream.Close()
+				return
+			}
 			go func() {
 				session, listener, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
 				if err != nil {
@@ -163,6 +178,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 	case *models.ReqNewP2PCtrlAsClient:
 		{
 			log.Printf("作为dial方式从从洞中创建kcp连接")
+			if tokenModel == nil {
+				stream.Close()
+				return
+			}
 			go func() {
 				session, listener, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
 				if err != nil {
