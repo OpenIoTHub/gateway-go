@@ -108,10 +108,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 		}
 	case *models.NewSubSession:
 		{
-			if tokenStr == "" {
-				stream.Close()
-				return
-			}
+			//if tokenStr == "" {
+			//	stream.Close()
+			//	return
+			//}
 			//:TODO 新创建一个全新的子连接
 			log.Printf("newSubSession")
 			//snappyConn, err := modelsSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
@@ -132,10 +132,10 @@ func HandleStream(stream net.Conn, tokenStr string) {
 
 	case *models.RequestNewWorkConn:
 		{
-			if tokenStr == "" {
-				stream.Close()
-				return
-			}
+			//if tokenStr == "" {
+			//	stream.Close()
+			//	return
+			//}
 			log.Println("server请求一个新的工作连接")
 			stream.Close()
 			go newWorkConn(tokenStr)
@@ -281,6 +281,9 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 
 // 新创建的工作连接
 func newWorkConn(tokenStr string) {
+	if tokenStr == "" {
+		return
+	}
 	conn, err := login.LoginWorkConn(tokenStr)
 	if err != nil {
 		log.Println("创建一个到服务端的新的工作连接失败：")
