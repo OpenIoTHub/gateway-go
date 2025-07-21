@@ -72,6 +72,7 @@ func (ss *ServerSession) loopStream() {
 		stream, err := ss.session.AcceptStream()
 		if err != nil {
 			log.Println("accpStreamErr：" + err.Error())
+			ss.session.Close()
 			break
 		}
 		log.Println("获取到一个连接需要处理")
