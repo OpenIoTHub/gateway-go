@@ -15,6 +15,11 @@ import (
 )
 
 func HandleStream(stream net.Conn, tokenStr string) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("HandleStream: %+v", err)
+		}
+	}()
 	var err error
 	var tokenModel *models.TokenClaims
 	if tokenStr != "" {
@@ -264,8 +269,16 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 			}
 		}
 	}()
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("HandleStream: %+v", err)
+		}
+	}()
 	for {
 		// Accept a stream
+		if session == nil {
+			return
+		}
 		stream, err := session.AcceptStream()
 		if err != nil {
 			log.Println("accept stream form session got err：" + err.Error())
