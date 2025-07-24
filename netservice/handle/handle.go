@@ -271,7 +271,7 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 	}()
 	defer func() {
 		if err := recover(); err != nil {
-			log.Printf("HandleStream: %+v", err)
+			log.Printf("HandleSession: %+v", err)
 		}
 	}()
 	for {
