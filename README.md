@@ -1,5 +1,6 @@
 # gateway-go
-[![Build Status](https://travis-ci.com/OpenIoTHub/gateway-go.svg?branch=master)](https://travis-ci.com/OpenIoTHub/gateway-go)
+
+##### gateway-go is continuously running on the LAN to receive access requests for [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub)
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gateway-go)
 
