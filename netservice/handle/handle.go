@@ -17,7 +17,7 @@ import (
 func HandleStream(stream net.Conn, tokenStr string) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Printf("HandleStream: %+v", err)
+			log.Printf("panic HandleStream: %+v", err)
 		}
 	}()
 	var err error
@@ -271,7 +271,7 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 	}()
 	defer func() {
 		if err := recover(); err != nil {
-			log.Printf("HandleSession: %+v", err)
+			log.Printf("panic HandleSession: %+v", err)
 		}
 	}()
 	for {

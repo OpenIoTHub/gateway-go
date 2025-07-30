@@ -35,6 +35,11 @@ func Run() {
 }
 
 func start() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("gateway-go panic:%+v", err)
+		}
+	}()
 	tasks.RunTasks()
 	//启动http服务
 	go func() {
