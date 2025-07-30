@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"github.com/OpenIoTHub/gateway-go/v2/config"
 	"github.com/OpenIoTHub/gateway-go/v2/info"
+	"github.com/OpenIoTHub/gateway-go/v2/register"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/gateway-go/v2/tasks"
 	"github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/gateway"
 	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/gin-gonic/gin"
 	"github.com/grandcat/zeroconf"
+	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -21,7 +23,7 @@ import (
 var (
 	IsLibrary = true
 	GRpcPort  = 55443
-	HttpPort  = 0
+	HttpPort  = config.ConfigMode.HttpServicePort
 )
 
 type LoginManager struct {
@@ -43,9 +45,16 @@ func start() {
 	tasks.RunTasks()
 	//启动http服务
 	go func() {
-		if HttpPort == 0 {
-			HttpPort = config.ConfigMode.HttpServicePort
-		}
+		register.RegisterService("localhost-gateway-go",
+			"_http._tcp",
+			"local",
+			"localhost",
+			HttpPort,
+			[]string{"name=gateway-go", fmt.Sprintf("id=gateway-go@%s", uuid.Must(uuid.NewV4()).String()), "home-page=https://github.com/OpenIoTHub/gateway-go"},
+			0,
+			[]net.IP{net.ParseIP("127.0.0.1")},
+			[]net.IP{},
+		)
 		r := gin.Default()
 		r.GET("/", services.GatewayManager.IndexHandler)
 		r.GET("/DisplayQrHandler", services.GatewayManager.DisplayQrHandler)

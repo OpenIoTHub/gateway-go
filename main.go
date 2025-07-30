@@ -4,7 +4,6 @@ import (
 	"fmt"
 	client "github.com/OpenIoTHub/gateway-go/v2/client"
 	"github.com/OpenIoTHub/gateway-go/v2/config"
-	"github.com/OpenIoTHub/gateway-go/v2/register"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/login_utils"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
@@ -15,7 +14,6 @@ import (
 	"gopkg.in/yaml.v3"
 	"io"
 	"log"
-	"net"
 	"os"
 	"sync"
 )
@@ -102,16 +100,6 @@ func main() {
 		wg.Wait()
 		return nil
 	}
-	register.RegisterService("localhost-gateway-go",
-		"_http._tcp",
-		"local",
-		"localhost",
-		client.HttpPort,
-		[]string{"name=gateway-go", fmt.Sprintf("id=gateway-go@%s", uuid.Must(uuid.NewV4()).String()), "home-page=https://github.com/OpenIoTHub/gateway-go"},
-		0,
-		[]net.IP{net.ParseIP("127.0.0.1")},
-		[]net.IP{},
-	)
 	err := myApp.Run(os.Args)
 	if err != nil {
 		log.Println(err.Error())
