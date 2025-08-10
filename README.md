@@ -1,6 +1,7 @@
 # gateway-go
 
-##### gateway-go is continuously running on the LAN to receive access requests for [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub)
+##### gateway-go is continuously running on the LAN to receive remote access requests for [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub)
+###### Just run gateway-go,gateway-go showing a QR code, then use [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub) scan this QR code add this gateway-go, now you can access all network port and service from OpenIoTHub client
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gateway-go)
 
