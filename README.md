@@ -1,11 +1,9 @@
 # gateway-go
-
-##### gateway-go is continuously running on the LAN to receive remote access requests for [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub)
+🇺🇸English | 🇨🇳[中文](https://docs.iothub.cloud/gateway/index.html)
+#### gateway-go is continuously running on the LAN to receive remote access requests for [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub) like frpc
 ###### Just run gateway-go,gateway-go showing a QR code, then use [OpenIoTHub](https://github.com/OpenIoTHub/OpenIoTHub) scan this QR code add this gateway-go, now you can access all network port and service from OpenIoTHub client
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gateway-go)
-
-[中文文档](https://docs.iothub.cloud/gateway/index.html)
 
 You can install the pre-compiled binary (in several different ways),
 use Docker.
@@ -38,11 +36,6 @@ opkg install gateway-go
 
 ## Install the pre-compiled binary
 
-**one script** :
-```sh
-curl -fsSL https://get.iothub.cloud | sudo bash
-```
-
 **homebrew** (may not be the latest version):
 
 ```sh
@@ -64,7 +57,6 @@ $ sudo snap install gateway-go
 >```text
 > /root/snap/gateway-go/current/gateway-go.yaml
 >```
-
 
 **scoop**:
 
@@ -90,10 +82,10 @@ copy to the desired location.
 ## Running with Docker
 
 You can also use it within a Docker container. To do that, you'll need to
-execute something more-or-less like the following:
+execute something more-or-less like the following, console will show a QR code for adding:
 
 ```sh
-$ docker run -it --net=host openiothub/gateway-go:latest -t <your Token>
+$ docker run -it --net=host openiothub/gateway-go:latest
 ```
 
 Note that the image will almost always have the last stable Go version.
