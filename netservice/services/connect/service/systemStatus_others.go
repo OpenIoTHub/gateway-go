@@ -4,6 +4,7 @@ package service
 
 import (
 	"encoding/json"
+
 	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/OpenIoTHub/utils/v2/msg"
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -84,6 +85,8 @@ func GetSystemStatus(stream net.Conn, service *models.NewService) error {
 		diskMapArr = append(diskMapArr, diskMap)
 	}
 	statMap["disks"] = diskMapArr
+	statMap["code"] = 0
+	statMap["message"] = "success"
 	rstByte, err := json.Marshal(statMap)
 	if err != nil {
 		log.Println("json.Marshal(statMap)：")

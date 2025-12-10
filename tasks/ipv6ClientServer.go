@@ -1,21 +1,17 @@
 package tasks
 
 import (
-	"github.com/OpenIoTHub/gateway-go/v2/chans"
-	"github.com/OpenIoTHub/gateway-go/v2/config"
-	"github.com/OpenIoTHub/gateway-go/v2/netservice/handle"
-	"github.com/OpenIoTHub/utils/v2/models"
-	"github.com/OpenIoTHub/utils/v2/msg"
-	"github.com/libp2p/go-yamux"
 	"log"
 	"net"
 	"time"
-)
 
-func RunTasks() {
-	go ipv6ServerTask()
-	go ipv6ClientTask()
-}
+	"github.com/OpenIoTHub/gateway-go/v2/chans"
+	"github.com/OpenIoTHub/gateway-go/v2/config"
+	"github.com/OpenIoTHub/gateway-go/v2/netservice/handle"
+	utilsmodels "github.com/OpenIoTHub/utils/v2/models"
+	"github.com/OpenIoTHub/utils/v2/msg"
+	"github.com/libp2p/go-yamux"
+)
 
 // Ipv6ClientTask 接收配置创建新的Client handle
 func ipv6ClientTask() {
@@ -36,7 +32,7 @@ func ipv6ClientTask() {
 		}
 		log.Println("ipv6 net.DialTCP connected:" + remoteIpv6Server.Ipv6AddrIp)
 		//TODO 发送凭证
-		runIdMsg := &models.JsonResponse{}
+		runIdMsg := &utilsmodels.JsonResponse{}
 		err = msg.WriteMsg(ipv6conn, runIdMsg)
 		if err != nil {
 			log.Println("ipv6 msg.WriteMsg" + err.Error())

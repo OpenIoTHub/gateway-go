@@ -3,13 +3,14 @@ package mdns
 import (
 	"context"
 	"encoding/json"
+	"log"
+	"net"
+	"time"
+
 	"github.com/OpenIoTHub/gateway-go/v2/register"
 	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/OpenIoTHub/utils/v2/msg"
 	"github.com/grandcat/zeroconf"
-	"log"
-	"net"
-	"time"
 )
 
 func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) error {
@@ -23,7 +24,9 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 	}
 
 	resolver, err := zeroconf.NewResolver(nil)
-	if err == nil {
+	if err != nil {
+		log.Println("zeroconf.NewResolver:" + err.Error())
+	} else {
 		entries := make(chan *zeroconf.ServiceEntry)
 		go func(results <-chan *zeroconf.ServiceEntry) {
 			for entry := range results {
@@ -52,16 +55,10 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 			return err
 		}
 		<-ctx.Done()
-	} else {
-		log.Println("zeroconf.NewResolver:" + err.Error())
 	}
-	//log.Println("获取完成：")
-	//if len(rst) > 0 {
-	//	log.Println(rst[0])
-	//}
+	registeredServices := register.GetRegisteredServices()
 	//发现_services._dns-sd._udp类型的时候添加所有手动注册的类型
 	if config.Service == "_services._dns-sd._udp" {
-		registeredServices := register.GetRegisteredServices()
 		registeredType := make([]string, 0)
 	Loop1:
 		for _, registeredService := range registeredServices {
@@ -79,7 +76,6 @@ func (mc *MdnsCtrl) FindAllmDNS(stream net.Conn, service *models.NewService) err
 			registeredType = append(registeredType, registeredService.Service)
 		}
 	} else {
-		registeredServices := register.GetRegisteredServices()
 		for _, registeredService := range registeredServices {
 			rst = append(rst, &models.MDNSResult{
 				Instance: registeredService.Instance,
