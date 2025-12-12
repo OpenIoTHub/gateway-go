@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/OpenIoTHub/gateway-go/v2/client"
 	"time"
+
+	"github.com/OpenIoTHub/gateway-go/v2/client"
 )
 
 func main() {

@@ -2,20 +2,21 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"os"
+	"sync"
+
 	client "github.com/OpenIoTHub/gateway-go/v2/client"
 	"github.com/OpenIoTHub/gateway-go/v2/config"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
-	"github.com/OpenIoTHub/gateway-go/v2/utils/login_utils"
+	"github.com/OpenIoTHub/gateway-go/v2/utils/login"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/str"
 	utils_models "github.com/OpenIoTHub/utils/v2/models"
 	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v3"
-	"io"
-	"log"
-	"os"
-	"sync"
 )
 
 var (
@@ -164,7 +165,7 @@ func UseConfigFile() {
 	//解析登录token列表
 	//如果CLI模式尚未登录自动登陆服务器并创建一个二维码
 	if len(config.ConfigMode.LoginWithTokenMap) == 0 {
-		err = login_utils.AutoLoginAndDisplayQRCode()
+		err = login.AutoLoginAndDisplayQRCode()
 		if err != nil {
 			log.Println(err)
 		}

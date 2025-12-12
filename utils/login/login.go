@@ -1,9 +1,12 @@
-package login_utils
+package login
 
 import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"log"
+	"net/url"
+
 	"github.com/OpenIoTHub/gateway-go/v2/config"
 	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
@@ -12,8 +15,6 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"log"
-	"net/url"
 )
 
 const (

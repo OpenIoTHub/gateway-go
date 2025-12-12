@@ -4,6 +4,7 @@ import (
 	"net"
 	"sync"
 
+	"github.com/OpenIoTHub/gateway-go/v2/utils/docker"
 	"github.com/OpenIoTHub/utils/v2/models"
 )
 
@@ -31,5 +32,9 @@ func RegisterService(instance, service, domain, hostname string, port int, text 
 func GetRegisteredServices() (services []models.MDNSResult) {
 	registeredServicesLock.RLock()
 	defer registeredServicesLock.RUnlock()
-	return registeredServices
+	//添加docker服务
+	tmp := make([]models.MDNSResult, len(registeredServices))
+	copy(tmp, registeredServices)
+	tmp = append(tmp, docker.GetContainersServices()...)
+	return tmp
 }
