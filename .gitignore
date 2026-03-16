@@ -18,3 +18,4 @@ client-*
 /gateway
 /gateway-go
 /main
+/.idea/go.imports.xml

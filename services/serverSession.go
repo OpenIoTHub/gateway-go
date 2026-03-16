@@ -1,20 +1,21 @@
 package services
 
 import (
+	"fmt"
+	"log"
+	"sync"
+	"time"
+
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/handle"
 	"github.com/OpenIoTHub/gateway-go/v2/netservice/services/login"
 	"github.com/OpenIoTHub/utils/v2/models"
 	"github.com/libp2p/go-yamux"
-	"log"
-	"sync"
-	"time"
 )
 
 type ServerSession struct {
-	//基础信息
 	token      string
 	tokenModel *models.TokenClaims
-	//内部存储
+
 	session   *yamux.Session
 	heartbeat *time.Ticker
 	quit      chan struct{}
@@ -25,57 +26,50 @@ type ServerSession struct {
 }
 
 func (ss *ServerSession) stop() {
-	ss.quit <- struct{}{}
+	select {
+	case ss.quit <- struct{}{}:
+	default:
+	}
 }
 
-func (ss *ServerSession) start() (err error) {
-	//防止多次调用
+func (ss *ServerSession) start() error {
+	ss.quit = make(chan struct{}, 1)
+	ss.heartbeat = time.NewTicker(20 * time.Second)
 	ss.checkSessionStatus()
-	ss.heartbeat = time.NewTicker(time.Second * 20)
-	ss.quit = make(chan struct{})
 	go ss.task()
-	return
+	return nil
 }
 
-func (ss *ServerSession) loginServer() (err error) {
+func (ss *ServerSession) loginServer() error {
 	ss.loginLock.Lock()
 	defer ss.loginLock.Unlock()
 	if ss.session != nil && !ss.session.IsClosed() {
-		return
+		return nil
 	}
-	ss.session, err = login.LoginServer(ss.token)
+	session, err := login.LoginServer(ss.token)
 	if err != nil {
-		log.Println("登录失败：" + err.Error())
-		return err
+		return fmt.Errorf("登录失败: %w", err)
 	}
-	return
+	ss.session = session
+	return nil
 }
 
 func (ss *ServerSession) loopStream() {
 	ss.loopStreamLock.Lock()
 	defer ss.loopStreamLock.Unlock()
-	//防止影响新创建的会话，不关闭会话
-	//defer func() {
-	//	if ss.session != nil {
-	//		err := ss.session.Close()
-	//		if err != nil {
-	//			log.Println(err.Error())
-	//		}
-	//	}
-	//}()
 	for {
-		if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
-			log.Println("ss.session is nil")
+		if ss.session == nil || ss.session.IsClosed() {
+			log.Println("session is nil or closed")
 			break
 		}
-		// Accept a stream
 		stream, err := ss.session.AcceptStream()
 		if err != nil {
-			log.Println("accpStreamErr：" + err.Error())
-			ss.session.Close()
+			log.Printf("接受流失败: %v", err)
+			if ss.session != nil {
+				ss.session.Close()
+			}
 			break
 		}
-		log.Println("获取到一个连接需要处理")
 		go handle.HandleStream(stream, ss.token)
 	}
 }
@@ -83,11 +77,10 @@ func (ss *ServerSession) loopStream() {
 func (ss *ServerSession) checkSessionStatus() {
 	ss.checkSessionStatusLock.Lock()
 	defer ss.checkSessionStatusLock.Unlock()
-	if ss.session == nil || (ss.session != nil && ss.session.IsClosed()) {
-		log.Println("开始(重新)连接:", ss.tokenModel.RunId, "@", ss.tokenModel.Host)
-		err := ss.loginServer()
-		if err != nil {
-			log.Println(err)
+	if ss.session == nil || ss.session.IsClosed() {
+		log.Printf("开始(重新)连接: %s @ %s", ss.tokenModel.RunId, ss.tokenModel.Host)
+		if err := ss.loginServer(); err != nil {
+			log.Printf("检查会话状态时登录失败: %v", err)
 			return
 		}
 		go ss.loopStream()
@@ -95,17 +88,19 @@ func (ss *ServerSession) checkSessionStatus() {
 }
 
 func (ss *ServerSession) task() {
+	defer func() {
+		ss.heartbeat.Stop()
+		if ss.session != nil && !ss.session.IsClosed() {
+			if err := ss.session.Close(); err != nil {
+				log.Printf("关闭session失败: %v", err)
+			}
+		}
+	}()
 	for {
 		select {
-		//心跳来了，检测连接的存活状态
 		case <-ss.heartbeat.C:
 			ss.checkSessionStatus()
 		case <-ss.quit:
-			ss.heartbeat.Stop()
-			close(ss.quit)
-			if ss.session != nil && !ss.session.IsClosed() {
-				log.Println(ss.session.Close())
-			}
 			return
 		}
 	}

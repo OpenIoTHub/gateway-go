@@ -15,7 +15,9 @@ var ConfigFilePath = fmt.Sprintf("%s%s", "./", ConfigFileName)
 var GatewayLoginToken = ""
 
 const GRpcAddr = ""
-const GrpcPort = 0
+
+// Ipv6ListenTcpHandlePort 用于 IPv6 直连监听端口，启动后实际端口存储于此
+var Ipv6ListenTcpHandlePort int = 0
 
 var ConfigMode = &models.GatewayConfig{
 	GatewayUUID: uuid.Must(uuid.NewV4()).String(),

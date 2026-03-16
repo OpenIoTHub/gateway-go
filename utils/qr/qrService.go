@@ -14,7 +14,7 @@ const (
 
 // 通过jwt展示二维码
 func DisplayQRCodeById(id, host string) (err error) {
-	qrContent := fmt.Sprintf(GatewayQRByIdAndHostForAddTemplate, id, host)
+	var qrContent string
 	if host == "" || host == STDHost {
 		qrContent = fmt.Sprintf(GatewayQRByIdForAddTemplate, id)
 	} else {
@@ -26,13 +26,13 @@ func DisplayQRCodeById(id, host string) (err error) {
 		return
 	}
 	ascii := qrCode.ToSmallString(false)
-	fmt.Println(fmt.Sprintf("Use OpenIoTHub to scan the following QR code and add a gateway(%s)", id))
+	fmt.Printf("Use OpenIoTHub to scan the following QR code and add a gateway(%s)\n", id)
 	fmt.Println(ascii)
 	fmt.Println("If the above QR code cannot be scanned, please open the following link and scan the QR code in page:")
 	if host == "" || host == STDHost {
-		fmt.Println(fmt.Sprintf("https://api.iot-manager.iothub.cloud/v1/displayGatewayQRCodeById?id=%s", id))
+		fmt.Printf("https://api.iot-manager.iothub.cloud/v1/displayGatewayQRCodeById?id=%s\n", id)
 	} else {
-		fmt.Println(fmt.Sprintf("https://api.iot-manager.iothub.cloud/v1/displayGatewayQRCodeById?id=%s&host=%s", id, host))
+		fmt.Printf("https://api.iot-manager.iothub.cloud/v1/displayGatewayQRCodeById?id=%s&host=%s\n", id, host)
 	}
 	return
 }

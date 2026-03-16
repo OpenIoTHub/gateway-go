@@ -10,40 +10,30 @@ import (
 )
 
 // 将配置写入指定的路径的文件
-func WriteConfigFile(ConfigMode *models.GatewayConfig, path string) (err error) {
+func WriteConfigFile(ConfigMode *models.GatewayConfig, path string) error {
 	configByte, err := yaml.Marshal(ConfigMode)
 	if err != nil {
-		log.Println(err.Error())
-		return
+		return fmt.Errorf("marshal config failed: %w", err)
 	}
-	if os.WriteFile(path, configByte, 0644) == nil {
-		return
+	if err := os.WriteFile(path, configByte, 0644); err != nil {
+		return fmt.Errorf("write config file failed: %w", err)
 	}
-	return
+	return nil
 }
 
 func InitConfigFile() {
 	//	生成配置文件模板
-	err := os.MkdirAll(filepath.Dir(ConfigFilePath), 0644)
-	if err != nil {
+	dir := filepath.Dir(ConfigFilePath)
+	if dir != "." && dir != "" {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			log.Printf("创建配置目录失败: %v", err)
+			return
+		}
+	}
+	if err := WriteConfigFile(ConfigMode, ConfigFilePath); err != nil {
+		log.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
+		log.Println(err.Error())
 		return
 	}
-	err = WriteConfigFile(ConfigMode, ConfigFilePath)
-	if err == nil {
-		fmt.Println("config created")
-		return
-	}
-	log.Println("写入配置文件模板出错，请检查本程序是否具有写入权限！或者手动创建配置文件。")
-	log.Println(err.Error())
+	fmt.Println("config created")
 }
-
-//func UseGateWayToken() {
-//	//使用服务器签发的Token登录
-//	err := GatewayManager.AddServer(GatewayLoginToken)
-//	if err != nil {
-//		log.Printf(err.Error())
-//		log.Printf("登陆失败！请重新登陆。")
-//		return
-//	}
-//	log.Printf("登陆成功！\n")
-//}

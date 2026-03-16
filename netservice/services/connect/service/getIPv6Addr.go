@@ -35,7 +35,6 @@ func GetIPv6Addr(stream net.Conn, service *models.NewService) error {
 		log.Println(err.Error())
 		return err
 	}
-	//log.Println(string(rstByte))
 	err = msg.WriteMsg(stream, &models.JsonResponse{Code: 0, Msg: "Success", Result: string(rstByte)})
 	if err != nil {
 		stream.Close()

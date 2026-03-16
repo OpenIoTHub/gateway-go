@@ -1,4 +1,4 @@
-package login
+package services
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 	"net/url"
 
 	"github.com/OpenIoTHub/gateway-go/v2/config"
-	"github.com/OpenIoTHub/gateway-go/v2/services"
 	"github.com/OpenIoTHub/gateway-go/v2/utils/qr"
 	pb "github.com/OpenIoTHub/openiothub_grpc_api/pb-go/proto/manager"
 	"google.golang.org/grpc"
@@ -17,14 +16,12 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-const (
-	IoTManagerAddr = "api.iot-manager.iothub.cloud:50051"
-)
+const ioTManagerAddr = "api.iot-manager.iothub.cloud:50051"
 
-// 自动创建jwt并登陆，并展示二维码
+// AutoLoginAndDisplayQRCode 通过远程 API 自动创建 JWT 并登录，同时展示二维码供用户扫码绑定
 func AutoLoginAndDisplayQRCode() (err error) {
 	tlsConfig := grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{}))
-	conn, err := grpc.NewClient(IoTManagerAddr, tlsConfig)
+	conn, err := grpc.NewClient(ioTManagerAddr, tlsConfig)
 	if err != nil {
 		log.Println("grpc.NewClient:", err)
 		return
@@ -38,7 +35,7 @@ func AutoLoginAndDisplayQRCode() (err error) {
 		log.Println(err)
 		return
 	}
-	err = services.GatewayManager.AddServer(rst.GatewayJwt)
+	err = GatewayManager.AddServer(rst.GatewayJwt)
 	if err != nil {
 		log.Println(err)
 		return

@@ -12,23 +12,11 @@ import (
 	"time"
 )
 
-func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false :dont retry
+func LoginServer(tokenstr string) (*yamux.Session, error) {
 	token, err := models.DecodeUnverifiedToken(tokenstr)
 	if err != nil {
-		log.Println(err.Error())
 		return nil, err
 	}
-	//KCP方式
-	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
-	//conn.SetStreamMode(true)
-	//conn.SetWriteDelay(false)
-	//conn.SetNoDelay(0, 40, 2, 1)
-	//conn.SetWindowSize(1024, 1024)
-	//conn.SetMtu(1472)
-	//conn.SetACKNoDelay(true)
-	//Tls
-	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
-	//TCP
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)), time.Second*2)
 	if err != nil {
 		return nil, err
@@ -39,40 +27,24 @@ func LoginServer(tokenstr string) (*yamux.Session, error) { //bool retry? false 
 		Arch:    runtime.GOARCH,
 		Version: info.Version,
 	}
-
-	err = msg.WriteMsg(conn, login)
+	if err := msg.WriteMsg(conn, login); err != nil {
+		conn.Close()
+		return nil, err
+	}
+	session, err := yamux.Server(conn, yamux.DefaultConfig())
 	if err != nil {
 		conn.Close()
 		return nil, err
 	}
-	config := yamux.DefaultConfig()
-	//config.EnableKeepAlive = false
-	session, err := yamux.Server(conn, config)
-	if err != nil {
-		conn.Close()
-		return nil, err
-	}
-	log.Printf("login OK!")
+	log.Println("login OK!")
 	return session, nil
 }
 
 func LoginWorkConn(tokenStr string) (net.Conn, error) {
 	token, err := models.DecodeUnverifiedToken(tokenStr)
 	if err != nil {
-		log.Println(err.Error())
 		return nil, err
 	}
-	//KCP方式
-	//conn, err := kcp.DialWithOptions(fmt.Sprintf("%s:%d", token.Host, token.KcpPort), nil, 10, 3)
-	//conn.SetStreamMode(true)
-	//conn.SetWriteDelay(false)
-	//conn.SetNoDelay(0, 40, 2, 1)
-	//conn.SetWindowSize(1024, 1024)
-	//conn.SetMtu(1472)
-	//conn.SetACKNoDelay(true)
-	//Tls
-	//conn, err := tls.Dial("tcp", fmt.Sprintf("%s:%d", token.Host, token.TlsPort), &tls.Config{InsecureSkipVerify: true})
-	//TCP
 	conn, err := net.Dial("tcp", net.JoinHostPort(token.Host, strconv.Itoa(token.TcpPort)))
 	if err != nil {
 		return nil, err
@@ -82,9 +54,7 @@ func LoginWorkConn(tokenStr string) (net.Conn, error) {
 		Secret:  tokenStr,
 		Version: info.Version,
 	}
-
-	err = msg.WriteMsg(conn, loginWorkConn)
-	if err != nil {
+	if err := msg.WriteMsg(conn, loginWorkConn); err != nil {
 		conn.Close()
 		return nil, err
 	}

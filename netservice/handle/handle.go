@@ -8,9 +8,8 @@ import (
 	"github.com/OpenIoTHub/utils/v2/msg"
 	"github.com/OpenIoTHub/utils/v2/net/p2p/gateway"
 	"log"
-
 	"net"
-	//"github.com/xtaci/smux"
+
 	"github.com/libp2p/go-yamux"
 )
 
@@ -20,274 +19,191 @@ func HandleStream(stream net.Conn, tokenStr string) {
 			log.Printf("panic HandleStream: %+v", err)
 		}
 	}()
-	var err error
 	var tokenModel *models.TokenClaims
 	if tokenStr != "" {
+		var err error
 		tokenModel, err = models.DecodeUnverifiedToken(tokenStr)
 		if err != nil {
-			log.Println(err.Error())
-			//return
+			log.Printf("解析token失败: %v", err)
+			// 继续执行，某些操作可能不需要token
 		}
 	}
 	rawMsg, err := msg.ReadMsg(stream)
 	if err != nil {
-		log.Println(err.Error() + "从stream读取数据错误")
+		log.Printf("从stream读取数据错误: %v", err)
 		stream.Close()
 		return
 	}
-	//log.Printf("begin Swc")
 	switch m := rawMsg.(type) {
 	case *models.ConnectTCP:
-		{
-			log.Printf("tcp")
-			err = connect.JoinTCP(stream, m.TargetIP, m.TargetPort)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理TCP连接: %s:%d", m.TargetIP, m.TargetPort)
+		if err := connect.JoinTCP(stream, m.TargetIP, m.TargetPort); err != nil {
+			log.Printf("TCP连接失败: %v", err)
+			return
 		}
 	case *models.ConnectSTCP:
-		{
-			log.Printf("stcp")
-			err = connect.JoinSTCP(stream, m.TargetIP, m.TargetPort)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理STCP连接: %s:%d", m.TargetIP, m.TargetPort)
+		if err := connect.JoinSTCP(stream, m.TargetIP, m.TargetPort); err != nil {
+			log.Printf("STCP连接失败: %v", err)
+			return
 		}
 	case *models.ConnectUDP:
-		{
-			log.Printf("udp")
-			err = connect.JoinUDP(stream, m.TargetIP, m.TargetPort)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理UDP连接: %s:%d", m.TargetIP, m.TargetPort)
+		if err := connect.JoinUDP(stream, m.TargetIP, m.TargetPort); err != nil {
+			log.Printf("UDP连接失败: %v", err)
+			return
 		}
 	case *models.ConnectSerialPort:
-		{
-			log.Printf("sertp")
-			err = connect.JoinSerialPort(stream, m)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理串口连接")
+		if err := connect.JoinSerialPort(stream, m); err != nil {
+			log.Printf("串口连接失败: %v", err)
+			return
 		}
-
 	case *models.ConnectWs:
-		{
-			log.Printf("wstp")
-			err = connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理WebSocket连接: %s", m.TargetUrl)
+		if err := connect.JoinWs(stream, m.TargetUrl, m.Protocol, m.Origin); err != nil {
+			log.Printf("WebSocket连接失败: %v", err)
+			return
 		}
-
 	case *models.ConnectWss:
-		{
-			log.Printf("wsstp")
-			err = connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理WebSocket Secure连接: %s", m.TargetUrl)
+		if err := connect.JoinWss(stream, m.TargetUrl, m.Protocol, m.Origin); err != nil {
+			log.Printf("WebSocket Secure连接失败: %v", err)
+			return
 		}
 	case *models.ConnectSSH:
-		{
-			log.Printf("ssh")
-			err = connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		log.Printf("处理SSH连接: %s:%d", m.TargetIP, m.TargetPort)
+		if err := connect.JoinSSH(stream, m.TargetIP, m.TargetPort, m.UserName, m.PassWord); err != nil {
+			log.Printf("SSH连接失败: %v", err)
+			return
 		}
 	case *models.NewService:
-		{
-			//log.Printf("case *models.NewService")
-			err = service.ServiceHdl(stream, m)
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+		if err := service.ServiceHdl(stream, m); err != nil {
+			log.Printf("处理新服务失败: %v", err)
+			return
 		}
 	case *models.NewSubSession:
-		{
-			//if tokenStr == "" {
-			//	stream.Close()
-			//	return
-			//}
-			//:TODO 新创建一个全新的子连接
-			log.Printf("newSubSession")
-			//snappyConn, err := modelsSnappy.Convert(stream, []byte("BUDIS**$(&CHSKCNNCJSH"))
-			//if err != nil {
-			//	log.Printf(err.Error())
-			//	stream.Close()
-			//	return
-			//}
-			config := yamux.DefaultConfig()
-			//config.EnableKeepAlive = false
-			session, err := yamux.Server(stream, config)
-			if err != nil {
-				stream.Close()
-				return
-			}
-			go HandleSession(session, tokenStr)
+		log.Printf("创建新的子会话")
+		config := yamux.DefaultConfig()
+		session, err := yamux.Server(stream, config)
+		if err != nil {
+			log.Printf("创建yamux会话失败: %v", err)
+			stream.Close()
+			return
 		}
+		go HandleSession(session, tokenStr)
 
 	case *models.RequestNewWorkConn:
-		{
-			//if tokenStr == "" {
-			//	stream.Close()
-			//	return
-			//}
-			log.Println("server请求一个新的工作连接")
-			stream.Close()
-			go newWorkConn(tokenStr)
-		}
+		log.Println("服务器请求一个新的工作连接")
+		stream.Close()
+		go newWorkConn(tokenStr)
 
 	case *models.Ping:
-		{
-			//log.Printf("Ping from server")
-			err = msg.WriteMsg(stream, &models.Pong{})
-			if err != nil {
-				log.Println(err.Error())
-			}
-			//TODO 防止未关闭的连接，取决于请求方是否关闭
-			//stream.Close()
+		if err := msg.WriteMsg(stream, &models.Pong{}); err != nil {
+			log.Printf("发送Pong失败: %v", err)
 		}
+		//TODO 防止未关闭的连接，取决于请求方是否关闭
+		//stream.Close()
 
 	case *models.ReqNewP2PCtrlAsServer:
-		{
-			log.Printf("作为listener方式从洞中获取kcp连接")
-			if tokenModel == nil {
-				stream.Close()
+		log.Printf("作为listener方式从洞中获取kcp连接")
+		if tokenModel == nil {
+			log.Println("tokenModel为空，无法创建P2P会话")
+			stream.Close()
+			return
+		}
+		go func() {
+			session, listener, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
+			if err != nil {
+				if listener != nil {
+					listener.Close()
+				}
+				log.Printf("创建P2P服务器会话失败: %v", err)
 				return
 			}
-			go func() {
-				session, listener, err := gateway.MakeP2PSessionAsServer(stream, m, tokenModel)
-				if err != nil {
-					if listener != nil {
-						listener.Close()
-					}
-					log.Println("gateway.MakeP2PSessionAsServer:", err)
-					return
-				}
-				HandleSession(session, tokenStr)
+			defer func() {
 				if listener != nil {
 					listener.Close()
 				}
 			}()
-
-		}
+			HandleSession(session, tokenStr)
+		}()
 	case *models.ReqNewP2PCtrlAsClient:
-		{
-			log.Printf("作为dial方式从从洞中创建kcp连接")
-			if tokenModel == nil {
-				stream.Close()
+		log.Printf("作为dial方式从洞中创建kcp连接")
+		if tokenModel == nil {
+			log.Println("tokenModel为空，无法创建P2P会话")
+			stream.Close()
+			return
+		}
+		go func() {
+			session, listener, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
+			if err != nil {
+				if listener != nil {
+					listener.Close()
+				}
+				log.Printf("创建P2P客户端会话失败: %v", err)
 				return
 			}
-			go func() {
-				session, listener, err := gateway.MakeP2PSessionAsClient(stream, m, tokenModel)
-				if err != nil {
-					if listener != nil {
-						listener.Close()
-					}
-					log.Println("gateway.MakeP2PSessionAsClient:", err)
-					return
-				}
-				HandleSession(session, tokenStr)
+			defer func() {
 				if listener != nil {
 					listener.Close()
 				}
 			}()
-		}
+			HandleSession(session, tokenStr)
+		}()
 	//	获取检查TCP或者UDP端口状态的请求
 	case *models.CheckStatusRequest:
-		{
-			//log.Println("CheckStatusRequest")
-			switch m.Type {
-			case "tcp", "udp", "tls":
-				{
-					code, message := service.CheckTcpUdpTls(m.Type, m.Addr)
-					err := msg.WriteMsg(stream, &models.CheckStatusResponse{
-						Code:    code,
-						Message: message,
-					})
-					if err != nil {
-						log.Println(err.Error())
-					}
-				}
-			default:
-				err := msg.WriteMsg(stream, &models.CheckStatusResponse{
-					Code:    1,
-					Message: "type not support",
-				})
-				if err != nil {
-					log.Println(err.Error())
-				}
+		var response *models.CheckStatusResponse
+		switch m.Type {
+		case "tcp", "udp", "tls":
+			code, message := service.CheckTcpUdpTls(m.Type, m.Addr)
+			response = &models.CheckStatusResponse{
+				Code:    code,
+				Message: message,
 			}
-			//TODO 是否关闭
-			stream.Close()
+		default:
+			response = &models.CheckStatusResponse{
+				Code:    1,
+				Message: "type not support",
+			}
 		}
+		if err := msg.WriteMsg(stream, response); err != nil {
+			log.Printf("发送检查状态响应失败: %v", err)
+		}
+		stream.Close()
 	//由于用户在服务器账户删掉了这个网关，所有网关删掉服务器登录以供新用户绑定
 	case *models.DeleteGatewayJwt:
-		{
-			//	log.Println("删除配置:", tokenModel.RunId)
-			//	GatewayManager.DelServer(tokenModel.RunId)
-			//	delete(ConfigMode.LoginWithTokenMap, tokenModel.RunId)
-			//	err = WriteConfigFile(ConfigMode, ConfigFilePath)
-			//	if err != nil {
-			//		log.Println(err)
-			//		err = msg.WriteMsg(stream, &models.Error{
-			//			Code:    1,
-			//			Message: err.Error(),
-			//		})
-			//		if err != nil {
-			//			log.Println(err.Error())
-			//		}
-			//		return
-			//	}
-			//	err = msg.WriteMsg(stream, &models.OK{})
-			//	if err != nil {
-			//		log.Println(err.Error())
-			//	}
-			stream.Close()
-		}
+		//	TODO: 实现删除网关JWT的逻辑
+		stream.Close()
 	default:
-		log.Printf("type err")
+		log.Printf("未知的消息类型: %T", rawMsg)
 		stream.Close()
 	}
 }
 
 func HandleSession(session *yamux.Session, tokenStr string) {
 	defer func() {
-		if session != nil {
-			err := session.Close()
-			if err != nil {
-				log.Println(err.Error())
-			}
-		}
-	}()
-	defer func() {
 		if err := recover(); err != nil {
 			log.Printf("panic HandleSession: %+v", err)
 		}
+		if session != nil {
+			if err := session.Close(); err != nil {
+				log.Printf("关闭session失败: %v", err)
+			}
+		}
 	}()
 	for {
-		// Accept a stream
 		if session == nil {
 			return
 		}
 		stream, err := session.AcceptStream()
 		if err != nil {
-			log.Println("accept stream form session got err：" + err.Error())
+			log.Printf("从session接受流失败: %v", err)
 			if stream != nil {
 				stream.Close()
 			}
 			break
 		}
-		//log.Println("获取到一个连接需要处理")
 		go HandleStream(stream, tokenStr)
 	}
 }
@@ -295,17 +211,17 @@ func HandleSession(session *yamux.Session, tokenStr string) {
 // 新创建的工作连接
 func newWorkConn(tokenStr string) {
 	if tokenStr == "" {
+		log.Println("token为空，无法创建工作连接")
 		return
 	}
 	conn, err := login.LoginWorkConn(tokenStr)
 	if err != nil {
-		log.Println("创建一个到服务端的新的工作连接失败：")
-		log.Println(err.Error())
+		log.Printf("创建到服务端的工作连接失败: %v", err)
 		if conn != nil {
 			conn.Close()
 		}
 		return
 	}
-	log.Println("创建一个到服务端的新的工作连接成功！")
+	log.Println("创建到服务端的工作连接成功")
 	go HandleStream(conn, tokenStr)
 }
